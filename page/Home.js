@@ -6,7 +6,6 @@ import Table from "../component/Table";
 import { OPTION_TABLE, ACTIVE_TABLE, STATUS_TABLE } from '../config/config'
 import Icon from 'react-native-vector-icons/Ionicons';
 import BookedTable from "../component/BookedTable";
-import { Linking } from 'react-native'
 
 const employee = {
     _id: 0,
