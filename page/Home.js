@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FlatList, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import ButtonActiveTable from "../component/ButtonActiveTable";
 import ButtonStatusTable from "../component/ButtonStatusTable";
 import Table from "../component/Table";
 import { OPTION_TABLE, ACTIVE_TABLE, STATUS_TABLE } from '../config/config'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { API_Tables } from "../config/api";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllTable } from "../redux/api/tableApi";
-
-
+import BookedTable from "../component/BookedTable";
+import { Linking } from 'react-native'
 
 const employee = {
     _id: 0,
@@ -55,59 +52,34 @@ const LIST_TABLE = [
 
 const listBookedTable = [
     {
-        id: 0,
-        number: 1,
-        time: new Date().getTime(),
+        _id: 0,
+        table_num: 1,
+        time: new Date(),
         name: 'Chị Hồng',
         phone: "0334172541",
     },
     {
-        id: 1,
-        number: 4,
-        time: new Date().getTime(),
+        _id: 1,
+        table_num: 4,
+        time: new Date(),
         name: 'Chị Hồng',
         phone: "0334172541",
     },
     {
-        id: 2,
-        number: 6,
-        time: new Date().getTime(),
-        name: 'Chị Hồng',
-        phone: "0334172541",
+        _id: 2,
+        table_num: 6,
+        time: new Date(),
+        name: 'Anh Hoàng',
+        phone: "0948639037",
     },
 ];
 
 const Home = ({ navigation }) => {
-
-    // const table = useSelector((state) => state.);
-
-    const [isLoading, setLoading] = useState(true);
-    const [dataTabale, setDataTable] = useState([]);
     const [selectedIdOptionFood, setSelectedIdOptionFood] = useState(0);
-    const [selectedIdActiveTable, setSelectedIdActiveTable] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
     const [isShowBooked, setIsShowBooked] = useState(false);
 
-    const dispatch = useDispatch();
-    console.log(API_Tables);
-    const getMovies = async () => {
-        try {
-            const response = await fetch(API_Tables);
-            const data = await response.json();
-            setDataTable(data);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    useEffect(() => {
-        getAllTable(dispatch);
-    }, []);
-
     const listTable = LIST_TABLE.filter(table => table.employee === employee._id);
-
-
 
     const renderKindOfTable = ({ item }) => {
         const backgroundColor = item.id === selectedIdOptionFood ? '#EE6F57' : '#dcdcdc';
@@ -115,7 +87,7 @@ const Home = ({ navigation }) => {
 
         const handleChangeButton = () => {
             setSelectedIdOptionFood(item.id);
-
+            navigation.navigate('Details')
             console.log("click button: " + item.title);
         }
 
@@ -133,7 +105,7 @@ const Home = ({ navigation }) => {
 
         const handleMoveToDesTable = () => {
             setModalVisible(true);
-            console.log("Click: Table " + item.number);
+            console.log("Click: Table " + item.table_num);
         }
 
         let status = {};
@@ -170,13 +142,16 @@ const Home = ({ navigation }) => {
     }
 
     const renderActiveTable = ({ item }) => {
-        const backgroundColor = item.id === selectedIdActiveTable ? '#EE6F57' : '#dcdcdc';
-        const color = item.id === selectedIdActiveTable ? '#fafafa' : '#343434';
-
         const handleChangeButton = () => {
-            setSelectedIdActiveTable(item.id);
-
+            switch (item.id) {
+                case 0:
+                    navigation.navigate('ListFood');
+                    break;
+                default:
+                    break;
+            }
             console.log("click button: " + item.title);
+            setModalVisible(!modalVisible);
         }
 
         return (
@@ -188,6 +163,12 @@ const Home = ({ navigation }) => {
             />
         );
     };
+
+    const renderBookedInTable = ({ item }) => {
+        return (
+            <BookedTable item={item} />
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -209,8 +190,9 @@ const Home = ({ navigation }) => {
             </View>
 
             <View style={[styles.listBooked, { flex: isShowBooked ? 1 : 0 }]}>
-                <Pressable onPress={() => setIsShowBooked(!isShowBooked)}>
-                    <View style={{
+                <Pressable
+                    onPress={() => setIsShowBooked(!isShowBooked)}
+                    style={{
                         flexDirection: 'row',
                         padding: 10,
                         borderBottomWidth: 1,
@@ -218,18 +200,28 @@ const Home = ({ navigation }) => {
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }}>
-                        <Text style={{ fontSize: 16, fontWeight: "600" }}>Danh Sách Bàn Đã Đặt</Text>
-                        <Icon name={isShowBooked ? 'chevron-down' : 'chevron-up'} size={24} />
-                    </View>
-                    <View
-                        style={{
-                            display: isShowBooked ? "flex" : "none",
-                            height: 100,
-                            borderWidth: 1,
-                            backgroundColor: "black",
-                        }}>
-                    </View>
+                    <Text style={{ fontSize: 16, fontWeight: "600" }}>Danh Sách Bàn Đã Đặt</Text>
+                    <Icon name={isShowBooked ? 'chevron-down' : 'chevron-up'} size={24} />
                 </Pressable>
+                <View style={{
+                    display: isShowBooked ? "flex" : "none",
+                    backgroundColor: "#fafafa",
+                }}>
+                    <View style={styles.tableHeader}>
+                        <Text style={styles.tableTitle}>Số bàn</Text>
+                        <Text style={styles.tableTitle}>Thời gian</Text>
+                        <Text style={styles.tableTitle}>Tên KH</Text>
+                        <Text style={styles.tableTitle}>SĐT</Text>
+                    </View>
+                    <View>
+                        {/* renderBookedInTable */}
+                        <FlatList
+                            data={listBookedTable}
+                            renderItem={renderBookedInTable}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </View>
+                </View>
             </View>
 
             <Modal
@@ -288,6 +280,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
 
+    // Style Modal
     centeredView: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -329,6 +322,20 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         textTransform: "uppercase",
+    },
+
+    // style Table
+    tableHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+        backgroundColor: "#EE6F57",
+    },
+    tableTitle: {
+        flex: 1,
+        fontSize: 14,
+        fontWeight: "500",
+        color: "#fafafa",
     },
 });
 

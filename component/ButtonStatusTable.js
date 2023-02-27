@@ -17,10 +17,9 @@ const styles = StyleSheet.create({
     background: {
         justifyContent: "center",
         alignItems: "center",
+        paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 4,
-
-        height: 48,
 
         // Box Shadow
         shadowColor: "#000",
