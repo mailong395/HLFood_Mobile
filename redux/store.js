@@ -3,6 +3,8 @@ import { combineReducers } from 'redux';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import tableReducer from './slice/tableSlice';
+import foodReducer from './slice/foodSlice';
+import tableOfEmpReducer from './slice/tableOfEmpSlice';
 
 const persistConfig = {
     key: 'root',
@@ -11,7 +13,9 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    table: tableReducer
+    table: tableReducer,
+    tableOfEmp: tableOfEmpReducer,
+    food: foodReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -26,4 +30,4 @@ export const store = configureStore({
         }),
 });
 
-export let persistor = persistStore(store);
+export let persister = persistStore(store);

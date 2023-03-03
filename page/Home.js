@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import ButtonActiveTable from "../component/ButtonActiveTable";
 import ButtonStatusTable from "../component/ButtonStatusTable";
@@ -6,48 +6,12 @@ import Table from "../component/Table";
 import { OPTION_TABLE, ACTIVE_TABLE, STATUS_TABLE } from '../config/config'
 import Icon from 'react-native-vector-icons/Ionicons';
 import BookedTable from "../component/BookedTable";
+import { useDispatch, useSelector } from "react-redux";
+import { getListTableByIdEmp } from "../redux/api/tableApi";
 
 const employee = {
-    _id: 0,
+    _id: '63fb7060fc13ae34f3000492',
 };
-const LIST_TABLE = [
-    {
-        _id: 0,
-        table_num: 1,
-        status: 0,
-        employee: 0,
-    },
-    {
-        _id: 1,
-        table_num: 2,
-        status: 0,
-        employee: 0,
-    },
-    {
-        _id: 2,
-        table_num: 3,
-        status: 1,
-        employee: 0,
-    },
-    {
-        _id: 3,
-        table_num: 4,
-        status: 0,
-        employee: 0,
-    },
-    {
-        _id: 4,
-        table_num: 5,
-        status: 0,
-        employee: 0,
-    },
-    {
-        _id: 5,
-        table_num: 6,
-        status: 0,
-        employee: 0,
-    },
-];
 
 const listBookedTable = [
     {
@@ -74,20 +38,35 @@ const listBookedTable = [
 ];
 
 const Home = ({ navigation }) => {
-    const [selectedIdOptionFood, setSelectedIdOptionFood] = useState(0);
-    const [modalVisible, setModalVisible] = useState(false);
-    const [isShowBooked, setIsShowBooked] = useState(false);
+    const dispatch = useDispatch();
+    const tableOfEmp = useSelector(state => state.tableOfEmp);
 
-    const listTable = LIST_TABLE.filter(table => table.employee === employee._id);
+    const [selectedIdOptionFood, setSelectedIdOptionFood] = useState(-1);
+    const [modalVisible, setModalVisible] = useState(-1);
+    const [isShowBooked, setIsShowBooked] = useState(false);
+    const [listTable, setListTable] = useState([]);
+
+
+    // Update data if data is empty
+    if (listTable.length === 0 && tableOfEmp?.success) {
+        setListTable([...tableOfEmp?.data]);
+    }
+
+    // Sort table from min to max
+    listTable?.sort((a, b) => a.table_num - b.table_num);
 
     const renderKindOfTable = ({ item }) => {
-        const backgroundColor = item.id === selectedIdOptionFood ? '#EE6F57' : '#dcdcdc';
-        const color = item.id === selectedIdOptionFood ? '#fafafa' : '#343434';
+        const backgroundColor = item._id === selectedIdOptionFood ? '#EE6F57' : '#dcdcdc';
+        const color = item._id === selectedIdOptionFood ? '#fafafa' : '#343434';
 
         const handleChangeButton = () => {
-            setSelectedIdOptionFood(item.id);
-            navigation.navigate('Details')
-            console.log("click button: " + item.title);
+            if (item._id === -1) {
+                setListTable([...tableOfEmp?.data]);
+            } else {
+                const newData = tableOfEmp?.data.filter(status => status?.status === item._id);
+                setListTable(newData);
+            }
+            setSelectedIdOptionFood(item._id);
         }
 
         return (
@@ -101,10 +80,8 @@ const Home = ({ navigation }) => {
     };
 
     const renderListTable = ({ item }) => {
-
         const handleMoveToDesTable = () => {
-            setModalVisible(true);
-            console.log("Click: Table " + item.table_num);
+            setModalVisible(item.status);
         }
 
         let status = {};
@@ -141,16 +118,20 @@ const Home = ({ navigation }) => {
     }
 
     const renderActiveTable = ({ item }) => {
+        const isShow = item.id === 1 ? (modalVisible <= 1 ? false : true) : true;
+
         const handleChangeButton = () => {
             switch (item.id) {
                 case 0:
                     navigation.navigate('ListFood');
                     break;
+                case 1:
+                    navigation.navigate('DetailListFood');
+                    break;
                 default:
                     break;
             }
-            console.log("click button: " + item.title);
-            setModalVisible(!modalVisible);
+            setModalVisible(-1);
         }
 
         return (
@@ -158,6 +139,7 @@ const Home = ({ navigation }) => {
                 label={item.title}
                 onPress={handleChangeButton}
                 backgroundColor={item.color}
+                isShow={isShow}
                 textColor={"#fff"}
             />
         );
@@ -168,6 +150,13 @@ const Home = ({ navigation }) => {
             <BookedTable item={item} />
         );
     }
+
+    useEffect(() => {
+        if (tableOfEmp?.success === false) {
+            getListTableByIdEmp(dispatch, employee._id);
+            console.log("get data table");
+        }
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -180,12 +169,14 @@ const Home = ({ navigation }) => {
                 />
             </View>
             <View style={styles.tableList}>
-                <FlatList
-                    data={listTable}
-                    renderItem={renderListTable}
-                    numColumns={2}
-                    showsVerticalScrollIndicator={false}
-                />
+                {tableOfEmp?.isFetching ?
+                    <Text>Loading...</Text> :
+                    <FlatList
+                        data={listTable}
+                        renderItem={renderListTable}
+                        numColumns={2}
+                        showsVerticalScrollIndicator={false}
+                    />}
             </View>
 
             <View style={[styles.listBooked, { flex: isShowBooked ? 1 : 0 }]}>
@@ -226,10 +217,9 @@ const Home = ({ navigation }) => {
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible}
+                visible={modalVisible > -1}
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setModalVisible(!modalVisible);
+                    setModalVisible(-1);
                 }}>
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -240,7 +230,7 @@ const Home = ({ navigation }) => {
                             <Text style={styles.modalText}>Chức năng</Text>
                             <Pressable
                                 style={styles.buttonClose}
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={() => setModalVisible(-1)}
                             >
                                 <Icon name="close" size={24} color={"#c4c4c4"} />
                             </Pressable>

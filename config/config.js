@@ -1,51 +1,51 @@
 // List kind of table
 const OPTION_TABLE = [
     {
-        id: 0,
+        _id: -1,
         title: "Tất cả",
     },
     {
-        id: 1,
+        _id: 0,
         title: "Trống",
     },
     {
-        id: 2,
-        title: "Đã có món",
-    },
-    {
-        id: 3,
+        _id: 1,
         title: "Bàn Đặt",
     },
     {
-        id: 4,
+        _id: 2,
         title: "Đợi món",
+    },
+    {
+        _id: 3,
+        title: "Đã có món",
     },
 ];
 
 // List kind of fond
 const OPTION_FOOD = [
     {
-        id: 0,
+        _id: -1,
         title: 'Tất cả',
     },
     {
-        id: 1,
+        _id: 0,
         title: 'Món No',
     },
     {
-        id: 2,
+        _id: 1,
         title: 'Món Tráng Miệng',
     },
     {
-        id: 3,
+        _id: 2,
         title: 'Nước Uống',
     },
     {
-        id: 4,
+        _id: 3,
         title: 'Món Khô',
     },
     {
-        id: 5,
+        _id: 4,
         title: 'Món Nước',
     },
 ];
@@ -58,11 +58,16 @@ const ACTIVE_TABLE = [
     },
     {
         id: 1,
+        title: "Xem chi tiết",
+        color: "#0052CC",
+    },
+    {
+        id: 2,
         title: "Chuyển bàn",
         color: "#EE6F57",
     },
     {
-        id: 2,
+        id: 3,
         title: "Ghép bàn",
         color: "#3E3E3E",
     },
