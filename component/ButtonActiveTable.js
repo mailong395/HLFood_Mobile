@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function ButtonActiveTable({ label, onPress, backgroundColor, textColor }) {
+export default function ButtonActiveTable({ label, onPress, backgroundColor, textColor, isShow = true }) {
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { display: isShow ? 'flex' : 'none' }]}>
             <Pressable onPress={onPress} style={({ pressed }) => [
                 { backgroundColor: pressed ? 'rgb(210, 230, 255)' : backgroundColor },
                 styles.background,
