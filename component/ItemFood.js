@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import { formatCurrency } from "react-native-format-currency";
+import { FoodContext } from "../context/FoodContext";
 
 const ItemFood = ({ item, handlerAddFood, handlerRemoveFood, countDefault = 0 }) => {
-    const [count, setCount] = useState(countDefault);
+    const { foodOrdered } = useContext(FoodContext);
+    const [count, setCount] = useState(0);
 
     const handlerAdd = () => {
         handlerAddFood();
@@ -17,6 +19,11 @@ const ItemFood = ({ item, handlerAddFood, handlerRemoveFood, countDefault = 0 })
             setCount(count - 1);
         }
     }
+
+    useEffect(() => {
+        setCount(countDefault);
+    }, [foodOrdered]);
+
 
     return (
         <View style={styles.container}>

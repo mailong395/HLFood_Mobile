@@ -1,9 +1,12 @@
 import axios from "axios";
 
 import {
-    getAllTableFailed,
     getAllTableStart,
-    getAllTableSuccess
+    getAllTableSuccess,
+    getAllTableFailed,
+    updateTableStart,
+    updateTableSuccess,
+    updateTableFailed,
 } from "../slice/tableSlice";
 
 import {
@@ -19,6 +22,7 @@ export const getAllTable = async (dispatch) => {
     try {
         const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`);
         dispatch(getAllTableSuccess(res.data));
+        return await res.data;
     } catch (error) {
         dispatch(getAllTableFailed());
         console.log(error);
@@ -35,3 +39,17 @@ export const getListTableByIdEmp = async (dispatch, idEmp) => {
         console.log(error);
     }
 };
+
+export const updateTable = async (dispatch, idTable, status) => {
+    dispatch(updateTableStart());
+    try {
+        await axios.put(`${REACT_APP_HOST_API}/api/tables/status?id=${idTable}`, {
+            status: status,
+        });
+        dispatch(updateTableSuccess());
+    } catch (error) {
+        dispatch(updateTableFailed());
+        console.log(error);
+    }
+};
+

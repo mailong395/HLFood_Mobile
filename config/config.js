@@ -1,3 +1,13 @@
+const backgroundColor = {
+    white: '#fff',
+    orange: '#EE6F57',
+    gray: '#d9d9d9',
+}
+const color = {
+    white: '#fafafa',
+    black: '#343434',
+}
+
 // List kind of table
 const OPTION_TABLE = [
     {
@@ -54,22 +64,26 @@ const ACTIVE_TABLE = [
     {
         id: 0,
         title: "Thêm món",
-        color: "#379237",
+        backgroundColor: backgroundColor.orange,
+        color: color.white,
     },
     {
         id: 1,
         title: "Xem chi tiết",
-        color: "#0052CC",
+        backgroundColor: backgroundColor.orange,
+        color: color.white,
     },
     {
         id: 2,
         title: "Chuyển bàn",
-        color: "#EE6F57",
+        backgroundColor: backgroundColor.orange,
+        color: color.white,
     },
     {
         id: 3,
         title: "Ghép bàn",
-        color: "#3E3E3E",
+        backgroundColor: backgroundColor.orange,
+        color: color.white,
     },
 ];
 
@@ -86,7 +100,7 @@ const STATUS_TABLE = {
     },
     wait: {
         title: 'Đợi món',
-        color: '#fafafa',
+        color: '#343434',
         backgroundColor: '#F9E060',
     },
     ship: {

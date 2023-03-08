@@ -1,25 +1,27 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { FlatList, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import FlatListCustom from "../component/FlatListCustom";
 import Textfield from "../component/Textfield";
-import { Keyboard } from 'react-native';
 import ButtonCustom from "../component/ButtonStatusTable";
 import { OPTION_FOOD } from '../config/config';
 import ItemFood from "../component/ItemFood";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllFood } from "../redux/api/foodApi";
+import { FoodContext } from '../context/FoodContext';
 
 export default function ListFood({ navigation }) {
     // Using Redux to get data
     const dispatch = useDispatch();
     const data = useSelector(state => state.food);
+    const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
 
     // Use State to update UI
     const [search, onChangeSearch] = useState('');
     const [selectedKOF, setSelectedKOF] = useState(-1);
     const [foods, setFoods] = useState([]);
     const [isShowBtn, setIsShowBtn] = useState(false);
-    const [orders, setOrders] = useState([]);
+
+    console.log({ ordered: foodOrdered.length });
 
     if (foods.length === 0 && data?.success) {
         setFoods([...data?.data])
@@ -58,45 +60,52 @@ export default function ListFood({ navigation }) {
     };
 
     const renderFoods = ({ item }) => {
+        const food = foodOrdered.find((order => order.item._id == item._id))
+        const countDefault = food ? food.count : 0;
         const handlerAddFood = () => {
-            if (orders.length === 0) {
+            if (foodOrdered.length === 0) {
                 const newOrder = {
                     item: item,
                     count: 1
                 }
-                orders.push(newOrder);
+                foodOrdered.push(newOrder);
                 setIsShowBtn(true);
             } else {
-                const index = orders.findIndex((order => order.item._id == item._id));
+                const index = foodOrdered.findIndex((order => order.item._id == item._id));
                 if (index === -1) {
                     const newOrder = {
                         item: item,
                         count: 1
                     }
-                    orders.push(newOrder);
+                    foodOrdered.push(newOrder);
                 } else {
-                    orders[index].count++;
+                    foodOrdered[index].count++;
                 }
             }
         }
 
         const handlerRemoveFood = () => {
-            const index = orders.findIndex((order => order.item._id == item._id));
+            const index = foodOrdered.findIndex((order => order.item._id == item._id));
             if (index > -1) {
-                orders[index].count > 1 ? orders[index].count-- : orders.splice(index, 1);
+                foodOrdered[index].count > 1 ? foodOrdered[index].count-- : foodOrdered.splice(index, 1);
             }
-            orders.length === 0 && setIsShowBtn(false);
+            foodOrdered.length === 0 && setIsShowBtn(false);
         }
 
         return (
-            <ItemFood item={item} handlerAddFood={handlerAddFood} handlerRemoveFood={handlerRemoveFood} />
+            <ItemFood
+                item={item}
+                handlerAddFood={handlerAddFood}
+                handlerRemoveFood={handlerRemoveFood}
+                countDefault={countDefault}
+            />
         );
     }
 
     // Handler 
     const handleMoveToFoodDetail = () => {
-        console.log(orders);
-        navigation.navigate('ListFoodOrder', { orders: orders });
+        setFoodOrdered(foodOrdered);
+        navigation.navigate('ListFoodOrder');
     }
 
     useEffect(() => {

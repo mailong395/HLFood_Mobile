@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 const DetailListFood = () => {
 
+
     return <View style={styles.container}>
         <View style={styles.info}>
             <Text style={styles.title}>Thông tin chung</Text>
