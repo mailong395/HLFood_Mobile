@@ -21,13 +21,28 @@ const tableSlice = createSlice({
             state.isFetching = false;
             state.error = true;
         },
+        updateTableStart: (state) => {
+            state.isFetching = true;
+        },
+        updateTableSuccess: (state) => {
+            state.isFetching = false;
+            state.success = true;
+        },
+        updateTableFailed: (state) => {
+            state.isFetching = false;
+            state.error = true;
+        },
     }
 });
 
 export const {
     getAllTableStart,
     getAllTableSuccess,
-    getAllTableFailed
+    getAllTableFailed,
+    updateTableStart,
+    updateTableSuccess,
+    updateTableFailed,
+
 } = tableSlice.actions;
 
 export default tableSlice.reducer;

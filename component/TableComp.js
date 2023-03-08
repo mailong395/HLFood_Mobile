@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const Table = ({ nTable, status, onPress, backgroundColor = 'white', color = "#343434", borderWidth = 0 }) => {
+const TableComp = ({ nTable, status, onPress, backgroundColor = 'white', color = "#343434", borderWidth = 0 }) => {
     return (
         <View style={styles.container}>
             <Pressable
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Table;
+export default TableComp;
