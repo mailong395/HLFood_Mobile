@@ -8,84 +8,35 @@ import ListFoodOrder from './ListFoodOrder';
 import Table from './Table'
 import { useDispatch } from "react-redux";
 import { TableContext } from "../context/TableContext";
+import { getAllFood } from "../redux/api/foodApi";
 
 const employee = {
-    _id: '63fb7060fc13ae34f3000492',
+  _id: '641f0f17fc13ae30f60014d3',
 };
 
 const Stack = createNativeStackNavigator();
 
 const Home = () => {
-    const { getData } = useContext(TableContext);
-    const dispatch = useDispatch();
+  const { getData } = useContext(TableContext);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        getListTableByIdEmp(dispatch, employee._id);
-        console.log('get data');
-    }, [getData]);
+  useEffect(() => {
+    getListTableByIdEmp(dispatch, employee._id);
+    getAllFood(dispatch);
+    console.log('get data');
+  }, [getData]);
 
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Table"
-                    component={Table}
-                    options={{
-                        title: 'HLFood',
-                        headerStyle: {
-                            backgroundColor: '#CB3737',
-                        },
-                        headerTintColor: '#FAFAFA',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                        },
-                    }}
-                />
-                <Stack.Screen
-                    name="ListFood"
-                    component={ListFood}
-                    options={{
-                        title: 'Danh Sách Món Ăn',
-                        headerStyle: {
-                            backgroundColor: '#CB3737',
-                        },
-                        headerTintColor: '#FAFAFA',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                        },
-                    }}
-                />
-                <Stack.Screen
-                    name="DetailListFood"
-                    component={DetailListFood}
-                    options={{
-                        title: 'Danh Sách Món Ăn',
-                        headerStyle: {
-                            backgroundColor: '#CB3737',
-                        },
-                        headerTintColor: '#FAFAFA',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                        },
-                    }}
-                />
-                <Stack.Screen
-                    name="ListFoodOrder"
-                    component={ListFoodOrder}
-                    options={{
-                        title: 'Món đã chọn',
-                        headerStyle: {
-                            backgroundColor: '#CB3737',
-                        },
-                        headerTintColor: '#FAFAFA',
-                        headerTitleStyle: {
-                            fontWeight: 'bold',
-                        },
-                    }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Table" component={Table} />
+        <Stack.Screen name="ListFood" component={ListFood} />
+        <Stack.Screen name="DetailListFood" component={DetailListFood} />
+        <Stack.Screen name="ListFoodOrder" component={ListFoodOrder} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default Home;
