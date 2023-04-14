@@ -4,9 +4,9 @@ const FoodContext = createContext();
 
 function FoodContextProvider({ children }) {
     const [foodOrdered, setFoodOrdered] = useState([]);
-    const [foodWait, setFoodWait] = useState([]);
+    const [foodWaitContext, setFoodWaitContext] = useState([]);
 
-    const value = { foodOrdered, setFoodOrdered, foodWait, setFoodWait };
+    const value = { foodOrdered, setFoodOrdered, foodWaitContext, setFoodWaitContext };
 
     return <FoodContext.Provider value={value}>
         {children}

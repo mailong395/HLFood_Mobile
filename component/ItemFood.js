@@ -7,7 +7,6 @@ import { IconButton } from "react-native-paper";
 const ItemFood = ({ item, handlerAddFood, handlerRemoveFood, countDefault = 0 }) => {
   const { foodOrdered } = useContext(FoodContext);
   const [count, setCount] = useState(countDefault);
-  console.log(countDefault, 'item food');
 
   const handlerAdd = () => {
     handlerAddFood();
@@ -24,7 +23,6 @@ const ItemFood = ({ item, handlerAddFood, handlerRemoveFood, countDefault = 0 })
 
   useEffect(() => {
     setCount(countDefault);
-    console.log(countDefault, 'useEffect count item food order');
   }, [countDefault]);
 
 

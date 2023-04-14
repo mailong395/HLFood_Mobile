@@ -32,8 +32,8 @@ export const getOrderById = async (dispatch, idOrder) => {
         id: idOrder
       }
     })
-    dispatch(getOrderByIdSuccess(res.data))
-    return await res.data;
+    dispatch(getOrderByIdSuccess(res?.data));
+    return await res?.data;
   } catch (error) {
     console.log(error)
     dispatch(getOrderByIdFailed())
