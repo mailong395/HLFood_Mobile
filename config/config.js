@@ -8,6 +8,14 @@ const color = {
     black: '#343434',
 }
 
+const CMS = {
+    logo: 'HLFood',
+    nChair: 'Chỗ',
+    search: 'Tìm kiếm',
+    add: 'Thêm Món',
+    cook: 'Chế biến'
+}
+
 // List kind of table
 const OPTION_TABLE = [
     {
@@ -64,26 +72,22 @@ const ACTIVE_TABLE = [
     {
         id: 0,
         title: "Thêm món",
-        backgroundColor: backgroundColor.orange,
-        color: color.white,
+        icon: 'plus',
     },
     {
         id: 1,
-        title: "Xem chi tiết",
-        backgroundColor: backgroundColor.orange,
-        color: color.white,
+        title: "Ghép/Chuyển bàn",
+        icon: 'arrow-all'
     },
     {
         id: 2,
-        title: "Chuyển bàn",
-        backgroundColor: backgroundColor.orange,
-        color: color.white,
+        title: "Món đã đặt",
+        icon: 'food',
     },
     {
         id: 3,
-        title: "Ghép bàn",
-        backgroundColor: backgroundColor.orange,
-        color: color.white,
+        title: "Xem chi tiết",
+        icon: 'information'
     },
 ];
 
@@ -115,4 +119,4 @@ const STATUS_TABLE = {
     },
 }
 
-export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE };
+export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE, CMS };
