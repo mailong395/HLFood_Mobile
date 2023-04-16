@@ -1,15 +1,19 @@
 import { StyleSheet, View } from 'react-native'
-import React from 'react'
-import { getOrderById } from '../../redux/api/orderApi';
-import { useDispatch } from 'react-redux';
+import React, { useContext } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import List from './list';
 import Header from '../../common/Header';
-import { Button } from 'react-native-paper';
+import { ActivityIndicator, Button, MD2Colors } from 'react-native-paper';
 import { CMS } from '../../config/config';
+import { getAllFood } from '../../redux/api/foodApi';
+import { FoodContext } from '../../context/FoodContext';
 
 const ListFoodOrdered = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const selector = useSelector(state => state.order);
+  const [ordered, setOrdered] = React.useState([]);
+  const { setFoodWaitContext } = useContext(FoodContext);;
 
   // Handle
   const handleGoBack = () => {
@@ -17,17 +21,17 @@ const ListFoodOrdered = ({ route, navigation }) => {
   }
 
   const handleGoToListFood = () => {
+    getAllFood(dispatch);
     navigation.navigate('ListFood', { numTable: numTable, idOrdered: idOrdered });
   }
 
   // Fetch Data
-  const fetchData = async () => {
-    getOrderById(dispatch, idOrdered);
-  }
-
   React.useEffect(() => {
-    fetchData();
-  }, []);
+    if (selector?.data) {
+      setOrdered(selector?.data.order_details);
+      setFoodWaitContext(selector?.data.order_details);
+    }
+  }, [selector]);
 
   return (
     <View style={styles.container}>
@@ -37,9 +41,16 @@ const ListFoodOrdered = ({ route, navigation }) => {
         title={"Các món chờ lên - Bàn " + numTable}
         mode="small"
       />
-      <View style={styles.listFood}>
-        <List idOrdered={idOrdered} />
-      </View>
+
+      {selector?.isFetching ?
+        <View style={styles.loading}>
+          <ActivityIndicator size={"large"} animating={true} color={MD2Colors.red800} />
+        </View>
+        :
+        <View style={styles.listFood}>
+          <List data={ordered} />
+        </View>
+      }
 
       <View style={styles.buttonBottom}>
         <Button icon='plus' mode="contained" onPress={handleGoToListFood}>
@@ -56,6 +67,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   listFood: {
     flex: 1,

@@ -1,16 +1,17 @@
-import { BackHandler, FlatList, StyleSheet, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 // import ItemFood from "../../component/ItemFood";
 import { formatCurrency } from "react-native-format-currency";
 import { TableContext } from "../../context/TableContext";
-import { useContext, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { updateTable } from "../../redux/api/tableApi";
 import { FoodContext } from "../../context/FoodContext";
-import { Text, Appbar, Button, MD2Colors, useTheme, Divider } from "react-native-paper";
+import { Text, Button, Divider } from "react-native-paper";
 import { CMS } from "../../config/config";
-import { getOrderById, saveOrder, saveOrderDetails } from "../../redux/api/orderApi";
+import { saveOrder, saveOrderDetails } from "../../redux/api/orderApi";
 import Header from "../../common/Header";
 import List from "./List";
+import { priceTotal } from "../../common/common";
 
 const employee = {
   _id: '63fb7060fc13ae34f3000492',
@@ -22,24 +23,24 @@ const ListFoodOrder = ({ route, navigation }) => {
 
   const { table, getData, setGetData } = useContext(TableContext);
   const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
-
-  const [total, setTotal] = useState(0);
-  // const [listFood, setListFood] = useState([]);
-  
+  console.log('foodOrdered', foodOrdered);
 
   // Handle
-  const handleAddFood = (id) => {
-    const newData = foodOrdered.map(
-      order => order.food._id === id ?
-        { ...order, quantity: order.quantity + 1 }
-        : order
-    );
+  const handleAddFood = (value) => {
+    const newData = foodOrdered.map(tempFood => {
+      return tempFood.food._id === value.food._id ?
+        {
+          ...value,
+          quantity: value.quantity + 1,
+        }
+        : tempFood;
+    });
     setFoodOrdered(newData);
   }
 
-  const handleRemoveFood = (id) => {
+  const handleRemoveFood = (value) => {
     const newData = [...foodOrdered];
-    const index = newData.findIndex(order => order.food._id === id);
+    const index = newData.findIndex(order => order.food._id === value.food._id);
 
     newData[index].quantity--;
     if (newData[index].quantity === 0) {
@@ -51,7 +52,7 @@ const ListFoodOrder = ({ route, navigation }) => {
 
 
   const handlerAddMoreFood = () => {
-    navigation.navigate('ListFood', { numTable: numTable, _idOrder: _idOrder });
+    navigation.navigate('ListFood', { numTable: numTable, idOrdered: idOrdered });
   }
 
   const handlerProcess = async () => {
@@ -75,27 +76,9 @@ const ListFoodOrder = ({ route, navigation }) => {
     navigation.popToTop();
   }
 
-  const calculatorTotal = (list = []) => {
-    const initTotal = 0;
-    const total = list.reduce(
-      (accumulator, currentValue) => accumulator + (currentValue.quantity * currentValue.food.price),
-      initTotal,
-    )
-    setTotal(total);
-  }
-
   const handleGoBack = () => {
-    if (_idOrder !== "") {
-      setFoodOrdered([]);
-    }
     navigation.goBack();
   }
-
-  // Fetch Data
-  useEffect(() => {
-    console.log('foodOrdered', foodOrdered);
-    calculatorTotal(foodOrdered);
-  }, [foodOrdered]);
 
   return (
     <View style={styles.container}>
@@ -107,7 +90,6 @@ const ListFoodOrder = ({ route, navigation }) => {
       />
 
       <View style={styles.listFood}>
-        <Text variant="bodyLarge">Danh sách món đang chế biến</Text>
         <List
           data={foodOrdered}
           addFood={handleAddFood}
@@ -115,7 +97,7 @@ const ListFoodOrder = ({ route, navigation }) => {
         />
         <Divider />
         <Text variant="titleLarge" style={styles.total}>Tổng tiền: {
-          formatCurrency({ amount: total, code: "VND" })[0]
+          formatCurrency({ amount: priceTotal(foodOrdered), code: "VND" })[0]
         }</Text>
         <Divider />
       </View>

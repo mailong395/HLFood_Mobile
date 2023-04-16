@@ -4,12 +4,16 @@ import ItemFood from '../../component/ItemFood';
 
 const List = ({ data, addFood, removeFood }) => {
   const renderItem = ({ item }) => {
+
     return (
       <ItemFood
-        item={item.food}
-        countDefault={item.quantity}
-        handlerAddFood={() => addFood(item.food._id)}
-        handlerRemoveFood={() => removeFood(item.food._id)}
+        isEdit={true}
+        name={item.food.name}
+        image={item.food.image}
+        price={item.food.price}
+        quantity={item.quantity}
+        handleAddFood={() => addFood(item)}
+        handleRemoveFood={() => removeFood(item)}
       />
     );
   }

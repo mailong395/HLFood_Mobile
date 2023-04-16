@@ -9,6 +9,9 @@ import Filter from "../../common/Filter";
 import List from "./List";
 import { getListTableByIdEmp } from "../../redux/api/tableApi";
 import ModalComp from "./ModalComp";
+import { getAllFood } from "../../redux/api/foodApi";
+import { FoodContext } from '../../context/FoodContext';
+import { getOrderById } from "../../redux/api/orderApi";
 
 // Demo Data
 const employee = {
@@ -17,6 +20,7 @@ const employee = {
 
 const Table = ({ navigation }) => {
   const { setTable, getData } = useContext(TableContext);
+  const { setFoodWaitContext } = useContext(FoodContext);
   const numTable = useRef();
   const dispatch = useDispatch();
 
@@ -44,11 +48,14 @@ const Table = ({ navigation }) => {
   const handleMovePage = async (id) => {
     switch (id) {
       case 0:
+        setFoodWaitContext([]);
+        getAllFood(dispatch);
         navigation.navigate('ListFood', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 1:
         break;
       case 2:
+        getOrderById(dispatch, orderId);
         navigation.navigate('ListFoodOrdered', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 3:
