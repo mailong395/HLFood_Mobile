@@ -1,85 +1,89 @@
 import { useContext, useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { formatCurrency } from "react-native-format-currency";
 import { FoodContext } from "../context/FoodContext";
-import { IconButton } from "react-native-paper";
+import { IconButton, TextInput, useTheme } from "react-native-paper";
+import { Avatar, Button, Card, Text } from 'react-native-paper';
+import { CONTENT, LABEL } from "../config/lang_vn";
 
-const ItemFood = ({ item, handlerAddFood, handlerRemoveFood, countDefault = 0 }) => {
-  const { foodOrdered } = useContext(FoodContext);
-  const [count, setCount] = useState(countDefault);
-
-  const handlerAdd = () => {
-    handlerAddFood();
-    setCount(count + 1);
-  }
-
-  const handlerRemove = () => {
-    if (count > 0) {
-      handlerRemoveFood();
-      setCount(count - 1);
-
-    }
-  }
-
-  useEffect(() => {
-    setCount(countDefault);
-  }, [countDefault]);
-
+const ItemFood = ({ image, name, price, quantity, handleAddFood, handleRemoveFood, isEdit = false }) => {
+  // const [note, setNote] = useState(false);
+  // const [text, setText] = useState("");
+  const theme = useTheme();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <View style={styles.image}>
-          <Image style={{ flex: 1, resizeMode: "center", borderRadius: 6 }} source={{ uri: item?.image }} alt={"image food"} />
-        </View>
-        <View style={{ flex: 1, justifyContent: "space-between", padding: 8, }}>
-          <Text style={styles.textTitle}>{item?.name}</Text>
-          <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center' }}>
-            <Text style={styles.textPrice}>{formatCurrency({ amount: item?.price, code: "VND" })[0]}</Text>
-            <View style={{ flexDirection: 'row', alignItems: "center" }}>
-              <IconButton
-                icon="minus"
-                size={24}
-                onPress={() => handlerRemove()}
-              />
-              <Text style={{ fontSize: 16, margin: 10, }}>{count}</Text>
-              <IconButton
-                icon="plus"
-                size={24}
-                onPress={() => handlerAdd()}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
+    <Card mode="contained" style={styles.container}>
+      <Card.Cover source={{ uri: image }} />
+      <Card.Content style={styles.content}>
+        <Text variant="titleLarge">{name}</Text>
+        <Text variant="titleMedium">{formatCurrency({ amount: price, code: "VND" })[0]}</Text>
+        {!isEdit && <Text>{CONTENT.quantity} : <Text variant="titleMedium">{quantity}</Text></Text>}
+
+      </Card.Content>
+
+      {/* {note && <Card.Content>
+        <TextInput
+          label={LABEL.detailsFood}
+          value={text}
+          mode="outlined"
+          onChangeText={text => setText(text)}
+        />
+      </Card.Content>} */}
+
+      {isEdit ?
+        <Card.Actions>
+          <IconButton
+            mode="contained"
+            icon="minus"
+            size={24}
+            onPress={() => handleRemoveFood()}
+          />
+          <Text>{quantity}</Text>
+          <IconButton
+            icon="plus"
+            size={24}
+            onPress={() => handleAddFood()}
+          />
+          {/* {!note &&
+          <IconButton
+            mode="contained"
+            icon="square-edit-outline"
+            size={24}
+            onPress={() => setNote(!note)}
+          />} */}
+        </Card.Actions>
+        :
+        <Card.Actions>
+          <IconButton
+            mode="contained"
+            icon="pencil-outline"
+            size={24}
+            onPress={handleRemoveFood}
+          />
+          <IconButton
+            mode="contained"
+            icon="delete-outline"
+            size={24}
+            iconColor={theme.colors.error}
+            onPress={handleRemoveFood}
+          />
+        </Card.Actions>
+      }
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    margin: 8,
+    padding: 8,
   },
   content: {
-    flexDirection: "row",
-    backgroundColor: "white",
-    borderRadius: 6,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
+    marginVertical: 8,
   },
   image: {
-    height: 80,
-    width: 80,
-
+    height: 46,
+    width: 46,
   },
   textTitle: {
     fontSize: 16,

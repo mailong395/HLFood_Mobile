@@ -1,18 +1,12 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import ItemFood from '../../component/ItemFood';
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
-import { getOrderById } from '../../redux/api/orderApi';
+import { FoodContext } from '../../context/FoodContext';
 
-const List = ({ idOrdered }) => {
-  const selector = useSelector(state => state.order);
-  const [ordered, setOrdered] = React.useState([]);
-  const dispatch = useDispatch();
-
+const List = ({ data }) => {
   // render
   const renderItem = ({ item }) => {
-
     const handleAddFood = () => {
 
     }
@@ -21,29 +15,23 @@ const List = ({ idOrdered }) => {
 
     }
 
-    return <ItemFood
-      item={item.food}
-      countDefault={item.quantity}
-      handlerAddFood={handleAddFood}
-      handlerRemoveFood={handleRemoveFood}
-    />
+    return (
+      <ItemFood
+        name={item.food.name}
+        image={item.food.image}
+        price={item.food.price}
+        quantity={item.quantity}
+        handleAddFood={handleAddFood}
+        handleRemoveFood={handleRemoveFood}
+      />
+    );
   }
 
-  // Fetch Data
-  React.useEffect(() => {
-    if (selector?.data) {
-      setOrdered(selector?.data.order_details);
-    }
-  }, [selector]);
-
-
   return (
-    selector?.isFetching ?
-      <ActivityIndicator size={"large"} animating={true} color={MD2Colors.red800} />
-      :<FlatList
-        data={ordered}
-        renderItem={renderItem}
-      />
+    <FlatList
+      data={data}
+      renderItem={renderItem}
+    />
   )
 }
 

@@ -60,7 +60,6 @@ const List = ({ props, isShowModal = false, filterData }) => {
     if (selector?.success) {
       setTables([...selector?.data]);
     }
-    console.log('Redux Fetch data table', tables);
   }, [selector])
 
   React.useEffect(() => {
