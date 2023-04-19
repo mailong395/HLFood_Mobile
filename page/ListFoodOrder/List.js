@@ -2,10 +2,15 @@ import { FlatList } from 'react-native'
 import React from 'react'
 import ItemFood from '../../component/ItemFood';
 
-const List = ({ data, addFood, removeFood }) => {
+const List = ({ data, addFood, removeFood, onchangeText }) => {
   const renderItem = ({ item }) => {
 
+    const handleInputDescription = (value) => {
+      onchangeText(item.food._id, value);
+    }
+
     return (
+      item.quantity > 0 &&
       <ItemFood
         isEdit={true}
         name={item.food.name}
@@ -14,6 +19,8 @@ const List = ({ data, addFood, removeFood }) => {
         quantity={item.quantity}
         handleAddFood={() => addFood(item)}
         handleRemoveFood={() => removeFood(item)}
+        onchangeText={handleInputDescription}
+        description={item.description}
       />
     );
   }

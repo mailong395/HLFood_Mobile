@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native"
 // import ItemFood from "../../component/ItemFood";
 import { formatCurrency } from "react-native-format-currency";
 import { TableContext } from "../../context/TableContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateTable } from "../../redux/api/tableApi";
 import { FoodContext } from "../../context/FoodContext";
@@ -20,10 +20,11 @@ const employee = {
 const ListFoodOrder = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;
   const dispatch = useDispatch();
-
+  
   const { table, getData, setGetData } = useContext(TableContext);
   const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
-  console.log('foodOrdered', foodOrdered);
+  const count = useRef(0);
+  console.log('count', count);
 
   // Handle
   const handleAddFood = (value) => {
@@ -31,23 +32,24 @@ const ListFoodOrder = ({ route, navigation }) => {
       return tempFood.food._id === value.food._id ?
         {
           ...value,
+          description: newFood.quantity === 1 ? '' : newFood.quantity,
           quantity: value.quantity + 1,
         }
         : tempFood;
     });
     setFoodOrdered(newData);
+    count.current++;
   }
 
   const handleRemoveFood = (value) => {
-    const newData = [...foodOrdered];
-    const index = newData.findIndex(order => order.food._id === value.food._id);
-
-    newData[index].quantity--;
-    if (newData[index].quantity === 0) {
-      newData.splice(index, 1);
+    if (value.quantity > 0) {
+      const newData = [...foodOrdered];
+      const index = newData.findIndex(order => order.food._id === value.food._id);
+      newData[index].quantity--;
+      if (newData[index].quantity === 0) newData[index].description = '';
+      setFoodOrdered(newData);
+      count.current--;
     }
-
-    !newData.length ? setFoodOrdered([]) : setFoodOrdered(newData);
   }
 
 
@@ -62,23 +64,50 @@ const ListFoodOrder = ({ route, navigation }) => {
     const order = idOrdered ? idOrdered : await saveOrder(dispatch, employee._id, listTable.join(","), dateNow);
 
     foodOrdered.map(element => {
-      const newData = {
-        quantity: element.quantity,
-        food: element.food._id,
-        order: order,
-      };
-      orderDetails.push(newData);
+      if (element.quantity > 0) {
+        const newData = {
+          food: element.food._id,
+          quantity: element.quantity,
+          description: element.description,
+          order: order,
+        };
+        orderDetails.push(newData);
+      }
     });
-    saveOrderDetails(dispatch, orderDetails);
-    updateTable(dispatch, table._id, 2);
-    setGetData(!getData);
-    setFoodOrdered([]);
-    navigation.popToTop();
+    if (orderDetails.length) {
+      saveOrderDetails(dispatch, orderDetails);
+      updateTable(dispatch, table._id, 2);
+      setGetData(!getData);
+      setFoodOrdered([]);
+      count.current = 0;
+      navigation.popToTop();
+    }
   }
 
   const handleGoBack = () => {
     navigation.goBack();
   }
+
+  const handleInputDescription = (id, value) => {
+    const newData = foodOrdered.map((item) => {
+      if (item.food._id === id) {
+        console.log('item', item);
+        return {
+          ...item,
+          description: value,
+        }
+      }
+      return item
+    })
+    setFoodOrdered(newData);
+  }
+
+  useEffect(() => {
+    foodOrdered.map((item) => {
+      count.current += item.quantity;
+    })
+  }, []);
+  
 
   return (
     <View style={styles.container}>
@@ -94,6 +123,7 @@ const ListFoodOrder = ({ route, navigation }) => {
           data={foodOrdered}
           addFood={handleAddFood}
           removeFood={handleRemoveFood}
+          onchangeText={handleInputDescription}
         />
         <Divider />
         <Text variant="titleLarge" style={styles.total}>Tổng tiền: {
@@ -107,7 +137,7 @@ const ListFoodOrder = ({ route, navigation }) => {
           {CMS.add}
         </Button>
         {
-          foodOrdered.length > 0 &&
+          count.current > 0 &&
           <Button style={styles.button} mode="contained" onPress={() => handlerProcess()}>
             {CMS.cook}
           </Button>
