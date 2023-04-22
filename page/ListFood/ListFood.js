@@ -12,11 +12,11 @@ import { addFood } from "../../common/common";
 export default function ListFood({ route, navigation }) {
   const { numTable, idOrdered } = route.params;
   const { foodOrdered, setFoodOrdered, foodWaitContext } = useContext(FoodContext);
+  const temp = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isShowDialog, setIsShowDialog] = useState(false);
   const selector = useSelector(state => state.food);
-  const [foods, setFoods] = useState([]);
-  const temp = useRef(null);
+  const count = useRef(0);
 
   // Handler 
   const onChangeSearch = query => setSearchQuery(query);
@@ -42,36 +42,52 @@ export default function ListFood({ route, navigation }) {
     return false;
   }
 
+  const handleCloseDialog = () => {
+    setIsShowDialog(false);
+  }
+
   const handleAddFood = (data) => {
     const isAdd = handleShowDialog(data);
     if (!isAdd) {
-      const newData = addFood(foods, data.food._id);
-      setFoods(newData);
+      const newData = addFood(foodOrdered, data.food._id);
       setFoodOrdered(newData);
+      count.current++;
     }
   }
 
   const addFoodInDialog = () => {
-    const newData = addFood(foods, temp.current.food._id);
-    setFoods(newData);
+    const newData = addFood(foodOrdered, temp.current.food._id);
     setFoodOrdered(newData);
+    count.current++;
     setIsShowDialog(false);
   }
 
   const handleRemoveFood = (data) => {
     if (data.quantity > 0) {
-      let indexRemove = 0;
-      const newArray = foods.map((newFood, index) => {
+      const newArray = foodOrdered.map((newFood, index) => {
         newFood.food._id === data.food._id && (indexRemove = index);
         return newFood.food._id === data.food._id && {
           ...newFood,
+          description: newFood.quantity === 1 ? '' : newFood.quantity,
           quantity: newFood.quantity - 1
         }
       });
-      setFoods([...newArray]);
-      newArray[indexRemove].quantity === 0 && newArray.splice(indexRemove, 1);
       setFoodOrdered(newArray);
+      count.current--;
     }
+  };
+
+  const handleInputDescription = (id, value) => {
+    const newData =foodOrdered.map((item) => {
+      if (item.food._id === id) {
+        return {
+          ...item,
+          description: value,
+        }
+      }
+      return item
+    })
+    setFoodOrdered(newData);
   }
 
   // Fetch data
@@ -80,12 +96,13 @@ export default function ListFood({ route, navigation }) {
       return {
         food: tempFood,
         quantity: 0,
+        description: '',
       }
     })
     const filter = newData.filter(item => {
       return item.food.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
-    setFoods([...filter]);
+    setFoodOrdered([...filter]);
   }, [searchQuery])
 
 
@@ -116,11 +133,15 @@ export default function ListFood({ route, navigation }) {
           </View>
 
           <View style={styles.boxContain}>
-            <List data={foods} propsAdd={handleAddFood} propsRemove={handleRemoveFood} />
+            <List data={foodOrdered}
+              propsAdd={handleAddFood}
+              propsRemove={handleRemoveFood}
+              onchangeText={handleInputDescription}
+            />
           </View>
 
           {
-            foodOrdered.length > 0 &&
+            count.current > 0 &&
             <View style={styles.boxButtonBottom}>
               <Button icon="plus" mode="contained" onPress={handleMoveToListFoodOrder}>
                 Thêm món
@@ -134,6 +155,7 @@ export default function ListFood({ route, navigation }) {
         title="Món Đã Tồn Tại"
         content="Bạn có đồng ý thêm không?"
         visibleDefault={isShowDialog}
+        propsClose={handleCloseDialog}
         propsAddFood={addFoodInDialog}
       />
     </View>

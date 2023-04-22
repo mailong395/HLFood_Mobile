@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet } from 'react-native'
 import ItemFood from '../../component/ItemFood';
 
-const List = ({ data, propsAdd, propsRemove }) => {
+const List = ({ data, propsAdd, propsRemove, onchangeText }) => {
   
   const renderItem = ({ item }) => {
     
@@ -13,6 +13,10 @@ const List = ({ data, propsAdd, propsRemove }) => {
       propsRemove(item);
     }
 
+    const handleInputDescription = (value) => {
+      onchangeText(item.food._id, value);
+    }
+
     return (
       <ItemFood
         isEdit={true}
@@ -22,6 +26,8 @@ const List = ({ data, propsAdd, propsRemove }) => {
         quantity={item.quantity}
         handleAddFood={handleAddFood}
         handleRemoveFood={handleRemoveFood}
+        onchangeText={handleInputDescription}
+        description={item.description}
       />
     );
   }

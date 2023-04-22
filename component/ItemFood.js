@@ -6,9 +6,17 @@ import { IconButton, TextInput, useTheme } from "react-native-paper";
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { CONTENT, LABEL } from "../config/lang_vn";
 
-const ItemFood = ({ image, name, price, quantity, handleAddFood, handleRemoveFood, isEdit = false }) => {
-  // const [note, setNote] = useState(false);
-  // const [text, setText] = useState("");
+const ItemFood = ({
+  image,
+  name,
+  price,
+  quantity,
+  handleAddFood,
+  handleRemoveFood,
+  isEdit = false,
+  onchangeText,
+  description }) => {
+  const [note, setNote] = useState(false);
   const theme = useTheme();
 
   return (
@@ -21,14 +29,14 @@ const ItemFood = ({ image, name, price, quantity, handleAddFood, handleRemoveFoo
 
       </Card.Content>
 
-      {/* {note && <Card.Content>
+      {(note || description) && <Card.Content>
         <TextInput
           label={LABEL.detailsFood}
-          value={text}
+          value={description}
           mode="outlined"
-          onChangeText={text => setText(text)}
+          onChangeText={text => onchangeText(text)}
         />
-      </Card.Content>} */}
+      </Card.Content>}
 
       {isEdit ?
         <Card.Actions>
@@ -44,13 +52,13 @@ const ItemFood = ({ image, name, price, quantity, handleAddFood, handleRemoveFoo
             size={24}
             onPress={() => handleAddFood()}
           />
-          {/* {!note &&
-          <IconButton
-            mode="contained"
-            icon="square-edit-outline"
-            size={24}
-            onPress={() => setNote(!note)}
-          />} */}
+          {!note &&
+            <IconButton
+              mode="contained"
+              icon="square-edit-outline"
+              size={24}
+              onPress={() => setNote(!note)}
+            />}
         </Card.Actions>
         :
         <Card.Actions>
@@ -75,8 +83,7 @@ const ItemFood = ({ image, name, price, quantity, handleAddFood, handleRemoveFoo
 
 const styles = StyleSheet.create({
   container: {
-    margin: 8,
-    padding: 8,
+    marginHorizontal: 16,
   },
   content: {
     marginVertical: 8,
