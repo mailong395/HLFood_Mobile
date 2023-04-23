@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import { Avatar, Button, Card, Text, useTheme } from 'react-native-paper';
+import { StyleSheet, View } from "react-native";
+import { Card, Text, useTheme } from 'react-native-paper';
 import { CMS } from "../config/config";
 
 
@@ -45,10 +45,8 @@ const TableComp = ({
 
 const styles = StyleSheet.create({
    container: {
-      alignItems: "center",
+      flex: 1,
       padding: 8,
-
-      width: "50%",
    },
    boxFlex: {
       flexDirection: 'row',
@@ -56,8 +54,8 @@ const styles = StyleSheet.create({
       alignItems: "center",
    },
    headerCard: {
-      borderBottomWidth: 1,
-      paddingBottom: 8,
+      // borderBottomWidth: 1,
+      // paddingBottom: 8,
    }
 });
 

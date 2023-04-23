@@ -23,8 +23,6 @@ const ListFoodOrder = ({ route, navigation }) => {
   
   const { table, getData, setGetData } = useContext(TableContext);
   const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
-  const count = useRef(0);
-  console.log('count', count);
 
   // Handle
   const handleAddFood = (value) => {

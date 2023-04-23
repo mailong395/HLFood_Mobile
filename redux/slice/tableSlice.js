@@ -32,6 +32,17 @@ const tableSlice = createSlice({
             state.isFetching = false;
             state.error = true;
         },
+        tableMergeStart: (state) => {
+            state.isFetching = true;
+        },
+        tableMergeSuccess: (state) => {
+            state.isFetching = false;
+            state.success = true;
+        },
+        tableMergeFailed: (state) => {
+            state.isFetching = false;
+            state.error = true;
+        }
     }
 });
 
@@ -42,6 +53,9 @@ export const {
     updateTableStart,
     updateTableSuccess,
     updateTableFailed,
+    tableMergeStart,
+    tableMergeSuccess,
+    tableMergeFailed,
 
 } = tableSlice.actions;
 
