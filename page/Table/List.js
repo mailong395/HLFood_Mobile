@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import { STATUS_TABLE } from '../../config/config'
 import TableComp from '../../component/TableComp';
@@ -6,12 +6,11 @@ import { useSelector } from 'react-redux';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 const List = ({ props, isShowModal = false, filterData }) => {
-  const selector = useSelector(state => state.tableOfEmp);
+  const selector = useSelector(state => state.table);
   const [selected, setSelected] = React.useState(-1);
   const [tables, setTables] = React.useState([]);
 
-  // Sort table from min to max
-  tables?.sort((a, b) => a.table_num - b.table_num);
+  console.log('tables', tables);
 
   // Render
   const renderItem = ({ item }) => {
@@ -57,9 +56,9 @@ const List = ({ props, isShowModal = false, filterData }) => {
 
   // Fetch data
   React.useEffect(() => {
-    if (selector?.success) {
-      setTables([...selector?.data]);
-    }
+    const newData = [...selector?.data];
+    newData?.sort((a, b) => a.table_num - b.table_num);
+    setTables(newData);
   }, [selector])
 
   React.useEffect(() => {
@@ -70,7 +69,6 @@ const List = ({ props, isShowModal = false, filterData }) => {
       setTables(newData);
     }
   }, [filterData])
-  
 
 
   return selector?.isFetching ?
@@ -89,5 +87,5 @@ export default List
 const styles = StyleSheet.create({
   container: {
     padding: 8,
-  }
+  },
 })

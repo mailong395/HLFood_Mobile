@@ -5,6 +5,7 @@ import Table from "./Table/Table";
 import ListFood from './ListFood/ListFood';
 import ListFoodOrder from './ListFoodOrder/ListFoodOrder';
 import ListFoodOrdered from './ListFoodOrdered/listFoodOrdered';
+import TableMerge from './TableMerge/index'
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +15,7 @@ const Home = () => {
       <Stack.Navigator
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Table" component={Table} />
+        <Stack.Screen name="TableMerge" component={TableMerge} />
         <Stack.Screen name="ListFood" component={ListFood} />
         <Stack.Screen name="DetailListFood" component={DetailListFood} />
         <Stack.Screen name="ListFoodOrder" component={ListFoodOrder} />

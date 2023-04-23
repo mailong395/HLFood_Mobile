@@ -7,6 +7,9 @@ import {
     updateTableStart,
     updateTableSuccess,
     updateTableFailed,
+    tableMergeStart,
+    tableMergeSuccess,
+    tableMergeFailed,
 } from "../slice/tableSlice";
 
 import {
@@ -16,15 +19,27 @@ import {
 } from "../slice/tableOfEmpSlice";
 
 import { REACT_APP_HOST_API } from "@env"
+import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess } from "../slice/tableMergeSlice";
 
-export const getAllTable = async (dispatch) => {
+export const getAllTable = async (dispatch, params) => {
     dispatch(getAllTableStart());
     try {
-        const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`);
-        dispatch(getAllTableSuccess(res.data));
-        return await res.data;
+        const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`, {params});
+        console.log('res?.data', res?.data);
+        dispatch(getAllTableSuccess(res?.data));
     } catch (error) {
         dispatch(getAllTableFailed());
+        console.log(error);
+    }
+};
+
+export const getAllTableMerge = async (dispatch, params) => {
+    dispatch(getAllTableMergeStart());
+    try {
+        const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`, {params});
+        dispatch(getAllTableMergeSuccess(res?.data));
+    } catch (error) {
+        dispatch(getAllTableMergeFailed());
         console.log(error);
     }
 };
@@ -53,3 +68,13 @@ export const updateTable = async (dispatch, idTable, status) => {
     }
 };
 
+export const mergeTable = async (dispatch, body) => {
+    dispatch(tableMergeStart());
+    try {
+        await axios.post(`${REACT_APP_HOST_API}/api/tables:order`, body);
+        dispatch(tableMergeSuccess());
+    } catch (error) {
+        dispatch(tableMergeFailed());
+        console.log(error);
+    }
+}
