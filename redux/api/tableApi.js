@@ -25,7 +25,6 @@ export const getAllTable = async (dispatch, params) => {
     dispatch(getAllTableStart());
     try {
         const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`, {params});
-        console.log('res?.data', res?.data);
         dispatch(getAllTableSuccess(res?.data));
     } catch (error) {
         dispatch(getAllTableFailed());

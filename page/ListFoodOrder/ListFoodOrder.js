@@ -18,11 +18,13 @@ const employee = {
 };
 
 const ListFoodOrder = ({ route, navigation }) => {
-  const { numTable, idOrdered } = route.params;
+  const { numTable, idOrdered, countFood } = route.params;
   const dispatch = useDispatch();
   
   const { table, getData, setGetData } = useContext(TableContext);
   const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
+  const count = useRef(countFood);
+  console.log('count', count);
 
   // Handle
   const handleAddFood = (value) => {
@@ -89,7 +91,6 @@ const ListFoodOrder = ({ route, navigation }) => {
   const handleInputDescription = (id, value) => {
     const newData = foodOrdered.map((item) => {
       if (item.food._id === id) {
-        console.log('item', item);
         return {
           ...item,
           description: value,

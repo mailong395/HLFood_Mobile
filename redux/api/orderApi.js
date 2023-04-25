@@ -1,6 +1,22 @@
 import axios from "axios";
 import { REACT_APP_HOST_API_SERVER } from "@env"
-import { getOrderByIdFailed, getOrderByIdStart, getOrderByIdSuccess, saveOrderDetailsFailed, saveOrderDetailsStart, saveOrderDetailsSuccess, saveOrderFailed, saveOrderStart, saveOrderSuccess } from "../slice/orderSlice";
+import { 
+  deleteOrderDetailFailed,
+  deleteOrderDetailStart,
+  deleteOrderDetailSuccess,
+  getOrderByIdFailed, 
+  getOrderByIdStart, 
+  getOrderByIdSuccess, 
+  saveOrderDetailsFailed, 
+  saveOrderDetailsStart, 
+  saveOrderDetailsSuccess, 
+  saveOrderFailed, 
+  saveOrderStart, 
+  saveOrderSuccess, 
+  updateOrderDetailFailed, 
+  updateOrderDetailStart, 
+  updateOrderDetailSuccess 
+} from "../slice/orderSlice";
 
 export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking) => {
   dispatch(saveOrderStart());
@@ -49,6 +65,28 @@ export const saveOrderDetails = (dispatch, orderDetails) => {
     dispatch(saveOrderDetailsSuccess());
   } catch (error) {
     dispatch(saveOrderDetailsFailed());
+    console.log(error);
+  }
+}
+
+export const updateOrderDetail = async (dispatch, orderDetails) => {
+  dispatch(updateOrderDetailStart());
+  try {
+    await axios.put(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, orderDetails);
+    dispatch(updateOrderDetailSuccess());
+  } catch (error) {
+    dispatch(updateOrderDetailFailed());
+    console.log(error);
+  }
+}
+
+export const deleteOrderDetail = async (dispatch, idOrderDetail) => {
+  dispatch(deleteOrderDetailStart());
+  try {
+    await axios.delete(`${REACT_APP_HOST_API_SERVER}/api/booking/food/` + idOrderDetail);
+    dispatch(deleteOrderDetailSuccess());
+  } catch (error) {
+    dispatch(deleteOrderDetailFailed());
     console.log(error);
   }
 }

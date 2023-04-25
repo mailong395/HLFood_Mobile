@@ -4,6 +4,8 @@ const BUTTON = {
   Assert: 'Xác nhận',
   MergeTable: 'Ghép bàn',
   MoveTable: 'Chuyển bàn', 
+  MoveCook: 'Báo chế biến',
+  AddFood: 'Thêm món',
 }
 
 const LABEL = {

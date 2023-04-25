@@ -22,7 +22,7 @@ export default function ListFood({ route, navigation }) {
   const onChangeSearch = query => setSearchQuery(query);
 
   const handleMoveToListFoodOrder = () => {
-    navigation.navigate('ListFoodOrder', { numTable: numTable, idOrdered: idOrdered });
+    navigation.navigate('ListFoodOrder', { numTable: numTable, idOrdered: idOrdered, countFood: count.current });
   }
 
   const handleGoBack = () => {
@@ -68,7 +68,7 @@ export default function ListFood({ route, navigation }) {
         newFood.food._id === data.food._id && (indexRemove = index);
         return newFood.food._id === data.food._id && {
           ...newFood,
-          description: newFood.quantity === 1 ? '' : newFood.quantity,
+          description: newFood.quantity === 1 ? '' : newFood.description,
           quantity: newFood.quantity - 1
         }
       });
@@ -78,7 +78,7 @@ export default function ListFood({ route, navigation }) {
   };
 
   const handleInputDescription = (id, value) => {
-    const newData =foodOrdered.map((item) => {
+    const newData = foodOrdered.map((item) => {
       if (item.food._id === id) {
         return {
           ...item,

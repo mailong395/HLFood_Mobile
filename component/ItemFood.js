@@ -14,9 +14,11 @@ const ItemFood = ({
   handleAddFood,
   handleRemoveFood,
   isEdit = false,
+  isHiddenPlus = false,
   onchangeText,
   description }) => {
   const [note, setNote] = useState(false);
+  const [edit, setEdit] = useState(isEdit);
   const theme = useTheme();
 
   return (
@@ -25,7 +27,7 @@ const ItemFood = ({
       <Card.Content style={styles.content}>
         <Text variant="titleLarge">{name}</Text>
         <Text variant="titleMedium">{formatCurrency({ amount: price, code: "VND" })[0]}</Text>
-        {!isEdit && <Text>{CONTENT.quantity} : <Text variant="titleMedium">{quantity}</Text></Text>}
+        {!edit && <Text>{CONTENT.quantity} : <Text variant="titleMedium">{quantity}</Text></Text>}
 
       </Card.Content>
 
@@ -38,7 +40,7 @@ const ItemFood = ({
         />
       </Card.Content>}
 
-      {isEdit ?
+      {edit ?
         <Card.Actions>
           <IconButton
             mode="contained"
@@ -47,11 +49,11 @@ const ItemFood = ({
             onPress={() => handleRemoveFood()}
           />
           <Text>{quantity}</Text>
-          <IconButton
+          {!isHiddenPlus && <IconButton
             icon="plus"
             size={24}
             onPress={() => handleAddFood()}
-          />
+          />}
           {!note &&
             <IconButton
               mode="contained"
@@ -66,7 +68,7 @@ const ItemFood = ({
             mode="contained"
             icon="pencil-outline"
             size={24}
-            onPress={handleRemoveFood}
+            onPress={() => setEdit(true)}
           />
           <IconButton
             mode="contained"
@@ -75,6 +77,7 @@ const ItemFood = ({
             iconColor={theme.colors.error}
             onPress={handleRemoveFood}
           />
+          
         </Card.Actions>
       }
     </Card>
