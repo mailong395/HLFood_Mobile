@@ -10,8 +10,6 @@ const List = ({ props, isShowModal = false, filterData }) => {
   const [selected, setSelected] = React.useState(-1);
   const [tables, setTables] = React.useState([]);
 
-  console.log('tables', tables);
-
   // Render
   const renderItem = ({ item }) => {
     const borderWidth = isShowModal && selected === item._id ? 4 : 0;

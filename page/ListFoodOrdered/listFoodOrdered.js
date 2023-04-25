@@ -7,13 +7,17 @@ import { ActivityIndicator, Button, MD2Colors } from 'react-native-paper';
 import { CMS } from '../../config/config';
 import { getAllFood } from '../../redux/api/foodApi';
 import { FoodContext } from '../../context/FoodContext';
+import { BUTTON } from '../../config/lang_vn';
+import { deleteOrderDetail, updateOrderDetail } from '../../redux/api/orderApi';
+import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
 
 const ListFoodOrdered = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;
   const dispatch = useDispatch()
   const selector = useSelector(state => state.order);
   const [ordered, setOrdered] = React.useState([]);
-  const { setFoodWaitContext } = useContext(FoodContext);;
+  const [isUpdate, setIsUpdate] = React.useState(false);
+  const { setFoodWaitContext } = useContext(FoodContext);
 
   // Handle
   const handleGoBack = () => {
@@ -23,6 +27,58 @@ const ListFoodOrdered = ({ route, navigation }) => {
   const handleGoToListFood = () => {
     getAllFood(dispatch);
     navigation.navigate('ListFood', { numTable: numTable, idOrdered: idOrdered });
+  }
+
+  const handleRemoveFood = (data) => {
+    const temp = {
+      index: -1,
+      id: '',
+    };
+    if (data.quantity > 0) {
+      const newArray = ordered.map((newFood, index) => {
+        if (newFood.quantity === 1) {
+          temp.index = index;
+          temp.id = newFood._id;
+        }
+        return newFood.food._id === data.food._id && {
+          ...newFood,
+          description: newFood.quantity === 1 ? '' : newFood.description,
+          quantity: newFood.quantity - 1
+        }
+      });
+      if (temp.index !== -1) {
+        const newOrder = selector?.data;
+        const array = [...newOrder.order_details];
+        array.shift(temp.index, 1);
+        const orderChange = {
+          ...newOrder,
+          order_details: [...array]
+        }
+        deleteOrderDetail(dispatch, temp.id);
+        dispatch(getOrderByIdSuccess(orderChange));
+      }
+      setOrdered(newArray);
+      setIsUpdate(temp.index === -1);
+    }
+  };
+
+  const handleInputDescription = (id, value) => {
+    const newData = ordered.map((item) => {
+      if (item.food._id === id) {
+        return {
+          ...item,
+          description: value,
+        }
+      }
+      return item
+    })
+    setOrdered(newData);
+    setIsUpdate(true);
+  }
+
+  const handleUpdateOrderDetail = async () => {
+    await updateOrderDetail(dispatch, ordered);
+    navigation.goBack();
   }
 
   // Fetch Data
@@ -48,14 +104,18 @@ const ListFoodOrdered = ({ route, navigation }) => {
         </View>
         :
         <View style={styles.listFood}>
-          <List data={ordered} />
+          <List data={ordered} onChangeText={handleInputDescription} propsRemove={handleRemoveFood} />
         </View>
       }
 
       <View style={styles.buttonBottom}>
-        <Button icon='plus' mode="contained" onPress={handleGoToListFood}>
-          {CMS.add}
+        <Button icon='plus' style={styles.button} mode="contained" onPress={handleGoToListFood}>
+          {BUTTON.AddFood}
         </Button>
+        {isUpdate && <Button icon='arrow-right-bold' style={styles.button} mode="contained"
+          onPress={handleUpdateOrderDetail} contentStyle={{ flexDirection: 'row-reverse' }}>
+          {BUTTON.MoveCook}
+        </Button>}
       </View>
     </View>
   )
@@ -78,6 +138,12 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   buttonBottom: {
-    padding: 16,
+    flexDirection: 'row',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  button: {
+    flex: 1,
+    marginHorizontal: 8,
   },
 })
