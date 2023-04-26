@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import ItemFood from '../../component/ItemFood';
 import { FoodContext } from '../../context/FoodContext';
 
-const List = ({ data, onChangeText, propsRemove }) => {
+const List = ({ data, onChangeText, propsRemove, onRemove }) => {
   
   // render
   const renderItem = ({ item }) => {
@@ -16,6 +16,10 @@ const List = ({ data, onChangeText, propsRemove }) => {
 
     const handleInputDescription = (value) => {
       onChangeText(item.food._id, value);
+    }
+
+    const handleOnRemove = () => {
+      onRemove(item)
     }
 
     return (
@@ -30,6 +34,7 @@ const List = ({ data, onChangeText, propsRemove }) => {
         handleRemoveFood={handleRemoveFood}
         onchangeText={handleInputDescription}
         description={item.description}
+        onRemove={handleOnRemove}
       />
     );
   }

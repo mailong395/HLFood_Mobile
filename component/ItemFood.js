@@ -16,6 +16,7 @@ const ItemFood = ({
   isEdit = false,
   isHiddenPlus = false,
   onchangeText,
+  onRemove,
   description }) => {
   const [note, setNote] = useState(false);
   const [edit, setEdit] = useState(isEdit);
@@ -75,7 +76,7 @@ const ItemFood = ({
             icon="delete-outline"
             size={24}
             iconColor={theme.colors.error}
-            onPress={handleRemoveFood}
+            onPress={onRemove}
           />
           
         </Card.Actions>
