@@ -62,6 +62,21 @@ const ListFoodOrdered = ({ route, navigation }) => {
     }
   };
 
+  const handleRemove = (data) => {
+    const index = ordered.findIndex(element => element._id === data._id);
+    if (index !== -1) {
+      const newOrder = selector?.data;
+      const array = [...newOrder.order_details];
+      array.shift(index, 1);
+      const orderChange = {
+        ...newOrder,
+        order_details: [...array]
+      }
+      deleteOrderDetail(dispatch, data._id);
+      dispatch(getOrderByIdSuccess(orderChange));
+    }
+  }
+
   const handleInputDescription = (id, value) => {
     const newData = ordered.map((item) => {
       if (item.food._id === id) {
@@ -104,7 +119,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
         </View>
         :
         <View style={styles.listFood}>
-          <List data={ordered} onChangeText={handleInputDescription} propsRemove={handleRemoveFood} />
+          <List data={ordered} onChangeText={handleInputDescription} propsRemove={handleRemoveFood} onRemove={handleRemove} />
         </View>
       }
 
