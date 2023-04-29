@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Button, DrawerLayoutAndroid, StyleSheet, Text, View } from "react-native";
 import { OPTION_TABLE, CMS } from '../../config/config'
 import { useDispatch } from "react-redux";
 import { TableContext } from "../../context/TableContext";
@@ -12,8 +12,10 @@ import ModalComp from "./ModalComp";
 import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
 import { getOrderById } from "../../redux/api/orderApi";
+import LeftDrawer from "../../component/LeftDrawer";
 
 const Table = ({ navigation }) => {
+  const drawer = useRef(null);
   const { setTable, getData } = useContext(TableContext);
   const { setFoodWaitContext } = useContext(FoodContext);
   const numTable = useRef();
@@ -48,7 +50,7 @@ const Table = ({ navigation }) => {
         break;
       case 1:
         getOrderById(dispatch, orderId);
-        navigation.navigate('TableMerge', {idOrder: orderId});
+        navigation.navigate('TableMerge', { idOrder: orderId });
         break;
       case 2:
         getOrderById(dispatch, orderId);
@@ -63,6 +65,17 @@ const Table = ({ navigation }) => {
     handleCloseModal();
   }
 
+  const handleOpenDrawer = () => {
+    drawer.current.openDrawer();
+  }
+  const handleCloseDrawer = () => {
+    drawer.current.closeDrawer();
+  }
+
+  const renderDrawer = () => {
+    return <LeftDrawer closeDrawer={handleCloseDrawer} />
+  }
+
   // Fetch Data
   useEffect(() => {
     const param = {
@@ -73,30 +86,37 @@ const Table = ({ navigation }) => {
   }, [getData]);
 
   return (
-    <View style={styles.container}>
-      <Header title={CMS.logo} mode="center-aligned" />
+    <DrawerLayoutAndroid
+      ref={drawer}
+      drawerWidth={300}
+      drawerPosition={'left'}
+      renderNavigationView={renderDrawer}
+    >
+      <View style={styles.container}>
+        <Header isShowDrawer={true} title={CMS.logo} mode="center-aligned" openDrawer={handleOpenDrawer} />
 
-      <View>
-        <Filter data={OPTION_TABLE} props={handleFilter} />
-      </View>
-      <Divider />
+        <View>
+          <Filter data={OPTION_TABLE} props={handleFilter} />
+        </View>
+        <Divider />
 
-      <View style={styles.tableList}>
-        <List
-          filterData={filterData}
-          props={handleShowModal}
-          isShowModal={modalVisible > -1}
+        <View style={styles.tableList}>
+          <List
+            filterData={filterData}
+            props={handleShowModal}
+            isShowModal={modalVisible > -1}
+          />
+        </View>
+
+        <ModalComp
+          isShow={modalVisible > -1}
+          modalVisible={modalVisible}
+          handleCloseModal={handleCloseModal}
+          navigation={navigation}
+          props={handleMovePage}
         />
       </View>
-
-      <ModalComp
-        isShow={modalVisible > -1}
-        modalVisible={modalVisible}
-        handleCloseModal={handleCloseModal}
-        navigation={navigation}
-        props={handleMovePage}
-      />
-    </View>
+    </DrawerLayoutAndroid>
   );
 }
 

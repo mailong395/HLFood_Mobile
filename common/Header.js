@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BackHandler, StyleSheet } from "react-native";
+import { BackHandler, StyleSheet, Text } from "react-native";
 import { Appbar, useTheme } from "react-native-paper";
 
 /**
@@ -8,8 +8,12 @@ import { Appbar, useTheme } from "react-native-paper";
  * @param {"small" | "medium" | "large" | "center-aligned" | undefined} param.mode
  * @returns 
  */
-const Header = ({mode, isShowButtonGoBack = false, title = '', props}) => {
+const Header = ({ mode, isShowButtonGoBack = false, isShowDrawer = false, title = '', props, openDrawer }) => {
   const theme = useTheme();
+
+  const handleCloseDrawer = () => {
+    openDrawer();
+  }
 
   useEffect(() => {
     const backAction = () => {
@@ -27,6 +31,7 @@ const Header = ({mode, isShowButtonGoBack = false, title = '', props}) => {
 
   return (
     <Appbar.Header mode={mode} style={{ backgroundColor: theme.colors.primaryContainer }}>
+      {isShowDrawer && <Appbar.Action icon="menu" onPress={openDrawer} />}
       {isShowButtonGoBack && <Appbar.BackAction onPress={() => props()} />}
       <Appbar.Content title={title} style={styles.title} />
     </Appbar.Header>
