@@ -7,33 +7,35 @@ import foodReducer from './slice/foodSlice';
 import orderReducer from './slice/orderSlice';
 import tableOfEmpReducer from './slice/tableOfEmpSlice';
 import tableMergeReducer from './slice/tableMergeSlice'
+import authReducer from './slice/authSlice';
 
 const persistConfig = {
-    key: 'root',
-    version: 1,
-    storage: AsyncStorage,
+  key: 'root',
+  version: 1,
+  storage: AsyncStorage,
 };
 
 const rootReducer = combineReducers({
-    table: tableReducer,
-    tableMerge: tableMergeReducer,
-    tableOfEmp: tableOfEmpReducer,
-    food: foodReducer,
-    order: orderReducer,
+  table: tableReducer,
+  tableMerge: tableMergeReducer,
+  tableOfEmp: tableOfEmpReducer,
+  food: foodReducer,
+  order: orderReducer,
+  auth: authReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-            },
-            immutableCheck: false,
-            serializableCheck: false,
-        }),
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
 });
 
 export let persister = persistStore(store);
