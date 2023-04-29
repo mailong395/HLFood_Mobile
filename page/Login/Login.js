@@ -27,8 +27,13 @@ const Login = () => {
     );
   };
 
-  const handleLogin = () => {
-    loginUser(dispatch, userName, password);
+  const handleLogin = async () => {
+    const res = await loginUser(dispatch, userName, password);
+    if (!res) {
+      loginFail();
+    } else {
+      loginSuccess();
+    }
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Button,
   DrawerLayoutAndroid,
@@ -7,11 +7,12 @@ import {
   View,
 } from 'react-native';
 import { TableContext } from '../context/TableContext';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/api/authApi';
 import { BUTTON } from '../config/lang_vn';
 
 const LeftDrawer = ({ closeDrawer }) => {
+  const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const handleCloseDrawer = () => {
@@ -20,7 +21,7 @@ const LeftDrawer = ({ closeDrawer }) => {
   }
 
   const handleLogout = () => {
-    logoutUser(dispatch);
+    logoutUser(dispatch, userSelector?.data.accessToken);
   }
 
   return (

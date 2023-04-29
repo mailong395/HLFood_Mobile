@@ -10,16 +10,19 @@ export const loginUser = async (dispatch, userName, password) => {
       'password': password
     });
     dispatch(loginSuccess(res?.data));
+    return res?.data;
   } catch (error) {
     dispatch(loginFailed());
     console.log('error', error);
   }
 };
 
-export const logoutUser = async (dispatch) => {
+export const logoutUser = async (dispatch, accessToken) => {
   dispatch(logoutStart());
   try {
-    await axios.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`);
+    await axios.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`, {
+      headers: { token: `bear ${accessToken}` },
+    });
     dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutFailed());
