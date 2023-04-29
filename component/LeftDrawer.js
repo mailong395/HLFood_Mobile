@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import {
   Button,
-  DrawerLayoutAndroid,
   Text,
   StyleSheet,
   View,

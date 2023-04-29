@@ -5,7 +5,7 @@ import { BUTTON, HEADER_TITLE } from '../../config/lang_vn'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActivityIndicator, Button, MD2Colors } from 'react-native-paper'
 import { TableContext } from "../../context/TableContext";
-import { getAllTable, mergeTable, updateTable } from "../../redux/api/tableApi";
+import { mergeTable } from "../../redux/api/tableApi";
 import List from './List'
 import Filter from './filter'
 import { useContext } from 'react'
@@ -18,6 +18,7 @@ const Container = ({ navigation, idOrder }) => {
   const [loading, setLoading] = React.useState(false);
   const [floors, setFloors] = React.useState([]);
   const [order, setOrder] = React.useState();
+  const userSelector = useSelector(state => state.auth);
 
   const handleGoBack = () => {
     setTableMerge([]);
@@ -39,7 +40,7 @@ const Container = ({ navigation, idOrder }) => {
       order_id: order._id,
       status: table.status,
     };
-    mergeTable(dispatch, body);
+    mergeTable(dispatch, body, userSelector?.data.accessToken);
     setTableMerge([]);
     setGetData(!getData);
     navigation.popToTop();

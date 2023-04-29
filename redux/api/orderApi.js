@@ -21,10 +21,13 @@ import {
 export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking) => {
   dispatch(saveOrderStart());
   try {
-    const res = await axios.post(`${REACT_APP_HOST_API_SERVER}/api/order`, {
+    const res = await axios.post(`${REACT_APP_HOST_API_SERVER}/api/order`, 
+    {
       employee: employeeId,
       bookingTable: bookingTable,
       time_booking: time_booking,
+    }, {
+      headers: { token: `bear ${accessToken}` },
     });
     dispatch(saveOrderSuccess());
     return await res.data.orderId;
@@ -40,13 +43,16 @@ export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking
  * @param {String} IdOrder Id of Order 
  * @returns Object Order
  */
-export const getOrderById = async (dispatch, idOrder) => {
+export const getOrderById = async (dispatch, idOrder, accessToken) => {
   dispatch(getOrderByIdStart())
   try {
-    const res = await axios.get(`${REACT_APP_HOST_API_SERVER}/api/order`, {
+    const res = await axios.get(`${REACT_APP_HOST_API_SERVER}/api/order`, 
+    {
       params: {
         id: idOrder
       }
+    }, {
+      headers: { token: `bear ${accessToken}` },
     })
     dispatch(getOrderByIdSuccess(res?.data));
     return await res?.data;
@@ -56,11 +62,13 @@ export const getOrderById = async (dispatch, idOrder) => {
   }
 }
 
-export const saveOrderDetails = (dispatch, orderDetails) => {
+export const saveOrderDetails = (dispatch, orderDetails, accessToken) => {
   dispatch(saveOrderDetailsStart());
   try {
     axios.post(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, {
       orderDetails: orderDetails
+    }, {
+      headers: { token: `bear ${accessToken}` },
     });
     dispatch(saveOrderDetailsSuccess());
   } catch (error) {
@@ -69,10 +77,12 @@ export const saveOrderDetails = (dispatch, orderDetails) => {
   }
 }
 
-export const updateOrderDetail = async (dispatch, orderDetails) => {
+export const updateOrderDetail = async (dispatch, orderDetails, accessToken) => {
   dispatch(updateOrderDetailStart());
   try {
-    await axios.put(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, orderDetails);
+    await axios.put(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, orderDetails, {
+      headers: { token: `bear ${accessToken}` },
+    });
     dispatch(updateOrderDetailSuccess());
   } catch (error) {
     dispatch(updateOrderDetailFailed());
@@ -80,10 +90,12 @@ export const updateOrderDetail = async (dispatch, orderDetails) => {
   }
 }
 
-export const deleteOrderDetail = async (dispatch, idOrderDetail) => {
+export const deleteOrderDetail = async (dispatch, idOrderDetail, accessToken) => {
   dispatch(deleteOrderDetailStart());
   try {
-    await axios.delete(`${REACT_APP_HOST_API_SERVER}/api/booking/food/` + idOrderDetail);
+    await axios.delete(`${REACT_APP_HOST_API_SERVER}/api/booking/food/` + idOrderDetail, {
+      headers: { token: `bear ${accessToken}` },
+    });
     dispatch(deleteOrderDetailSuccess());
   } catch (error) {
     dispatch(deleteOrderDetailFailed());

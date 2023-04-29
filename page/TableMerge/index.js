@@ -7,12 +7,13 @@ import Container from './Container';
 const TableMerge = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const { idOrder } = route?.params;
+  const userSelector = useSelector(state => state.auth);
 
   React.useEffect(() => {
     const params = {
       status: 0
     }
-    getAllTableMerge(dispatch, params);
+    getAllTableMerge(dispatch, params, userSelector?.data.accessToken);
   }, []);
 
   return (

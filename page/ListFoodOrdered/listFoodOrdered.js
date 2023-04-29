@@ -14,6 +14,7 @@ import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
 const ListFoodOrdered = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;
   const dispatch = useDispatch()
+  const userSelector = useSelector(state => state.auth);
   const selector = useSelector(state => state.order);
   const [ordered, setOrdered] = React.useState([]);
   const [isUpdate, setIsUpdate] = React.useState(false);
@@ -25,7 +26,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
   }
 
   const handleGoToListFood = () => {
-    getAllFood(dispatch);
+    getAllFood(dispatch, userSelector?.data.accessToken);
     navigation.navigate('ListFood', { numTable: numTable, idOrdered: idOrdered });
   }
 
@@ -54,8 +55,8 @@ const ListFoodOrdered = ({ route, navigation }) => {
           ...newOrder,
           order_details: [...array]
         }
-        deleteOrderDetail(dispatch, temp.id);
-        dispatch(getOrderByIdSuccess(orderChange));
+        deleteOrderDetail(dispatch, temp.id, userSelector?.data.accessToken);
+        dispatch(getOrderByIdSuccess(orderChange), );
       }
       setOrdered(newArray);
       setIsUpdate(temp.index === -1);
@@ -72,7 +73,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
         ...newOrder,
         order_details: [...array]
       }
-      deleteOrderDetail(dispatch, data._id);
+      deleteOrderDetail(dispatch, data._id, userSelector?.data.accessToken);
       dispatch(getOrderByIdSuccess(orderChange));
     }
   }
@@ -92,7 +93,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
   }
 
   const handleUpdateOrderDetail = async () => {
-    await updateOrderDetail(dispatch, ordered);
+    await updateOrderDetail(dispatch, ordered, userSelector?.data.accessToken);
     navigation.goBack();
   }
 

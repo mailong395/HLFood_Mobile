@@ -24,7 +24,7 @@ const ListFoodOrder = ({ route, navigation }) => {
   const { table, getData, setGetData } = useContext(TableContext);
   const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
   const count = useRef(countFood);
-  console.log('count', count);
+  const userSelector = useSelector(state => state.auth);
 
   // Handle
   const handleAddFood = (value) => {
@@ -75,8 +75,8 @@ const ListFoodOrder = ({ route, navigation }) => {
       }
     });
     if (orderDetails.length) {
-      saveOrderDetails(dispatch, orderDetails);
-      updateTable(dispatch, table._id, 2);
+      saveOrderDetails(dispatch, orderDetails, userSelector?.data.accessToken);
+      updateTable(dispatch, table._id, 2, userSelector?.data.accessToken);
       setGetData(!getData);
       setFoodOrdered([]);
       count.current = 0;
