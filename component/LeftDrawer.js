@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Text,
-  StyleSheet,
-  View,
-  ToastAndroid,
-} from 'react-native';
+import { Button, Text, StyleSheet, View, TouchableOpacity, ToastAndroid } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/api/authApi';
 import { BUTTON, TOAST } from '../config/lang_vn';
@@ -18,22 +12,16 @@ const LeftDrawer = ({closeDrawer}) => {
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const [loading, setLoading] = React.useState(false);
+  // const navigation = useNavigation();
 
   const logoutSuccess = () => {
-    ToastAndroid.showWithGravity(
-      TOAST.logout_success,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-    );
+    ToastAndroid.showWithGravity(TOAST.logout_success, ToastAndroid.SHORT, ToastAndroid.TOP);
   };
 
   const logoutFail = () => {
-    ToastAndroid.showWithGravity(
-      TOAST.logout_fail,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-    );
+    ToastAndroid.showWithGravity(TOAST.logout_fail, ToastAndroid.SHORT, ToastAndroid.TOP);
   };
+
 
   const handleCloseDrawer = () => {
     handleLogout();
@@ -56,14 +44,18 @@ const LeftDrawer = ({closeDrawer}) => {
 
   return (
     <View style={[styles.container, styles.navigationContainer]}>
-      <Text style={styles.paragraph}>I'm in the Drawer!</Text>
-      <Button
-        title={BUTTON.Logout}
-        onPress={handleCloseDrawer}
-      />
-      {loading  && <View style={styles.loading}>
-        <ActivityIndicator animating={true} color={MD2Colors.red800} />
-      </View>}
+      <TouchableOpacity style={styles.buttons} onPress={() => handleNavigatePage('Table')}>
+        <Text style={styles.text}>{BUTTON.OdrerFood}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttons} onPress={() => handleNavigatePage('EmployeeManager')}>
+        <Text style={styles.text}>{BUTTON.Employee}</Text>
+      </TouchableOpacity>
+      <Button style={styles.buttons} title={BUTTON.Logout} onPress={handleCloseDrawer} />
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator animating={true} color={MD2Colors.red800} />
+        </View>
+      )}
     </View>
   );
 };
@@ -71,8 +63,10 @@ const LeftDrawer = ({closeDrawer}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 30,
     alignItems: 'center',
-    justifyContent: 'center',
+    padding: 16,
+    height: '100%',
   },
   navigationContainer: {
     backgroundColor: '#ecf0f1',
@@ -90,7 +84,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'black',
     opacity: 0.8,
-  }
+  },
+
+  buttons: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 75,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#f4978e',
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
 });
 
 export default LeftDrawer;

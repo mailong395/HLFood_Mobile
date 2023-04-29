@@ -12,7 +12,6 @@ import ModalComp from "./ModalComp";
 import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
 import { getOrderById } from "../../redux/api/orderApi";
-import LeftDrawer from "../../component/LeftDrawer";
 import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
 import React from "react";
