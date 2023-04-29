@@ -4,25 +4,49 @@ import {
   Text,
   StyleSheet,
   View,
+  ToastAndroid,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/api/authApi';
-import { BUTTON } from '../config/lang_vn';
+import { BUTTON, TOAST } from '../config/lang_vn';
 import { loginSuccess } from '../redux/slice/authSlice';
 import { createAxios } from '../redux/createInstance';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
-const LeftDrawer = ({ closeDrawer }) => {
+const LeftDrawer = () => {
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const [loading, setLoading] = React.useState(false);
+
+  const logoutSuccess = () => {
+    ToastAndroid.showWithGravity(
+      TOAST.logout_success,
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP,
+    );
+  };
+
+  const logoutFail = () => {
+    ToastAndroid.showWithGravity(
+      TOAST.logout_fail,
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP,
+    );
+  };
 
   const handleCloseDrawer = () => {
     handleLogout();
-    closeDrawer();
   }
 
-  const handleLogout = () => {
-    logoutUser(dispatch, userSelector?.data.accessToken, axiosJWT);
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      await logoutUser(dispatch, userSelector?.data.accessToken, axiosJWT);
+      !loading && logoutSuccess();
+    } catch (error) {
+      logoutFail();
+    }
   }
 
   return (
@@ -32,6 +56,9 @@ const LeftDrawer = ({ closeDrawer }) => {
         title={BUTTON.Logout}
         onPress={handleCloseDrawer}
       />
+      {loading  && <View style={styles.loading}>
+        <ActivityIndicator animating={true} color={MD2Colors.red800} />
+      </View>}
     </View>
   );
 };
@@ -41,7 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
   },
   navigationContainer: {
     backgroundColor: '#ecf0f1',
@@ -51,6 +77,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
   },
+  loading: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    opacity: 0.8,
+  }
 });
 
 export default LeftDrawer;
