@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosJWT from 'axios-jwt';
 
 import {
   getAllTableStart,
@@ -12,19 +12,13 @@ import {
   tableMergeFailed,
 } from "../slice/tableSlice";
 
-import {
-  getAllTableOfEmpFailed,
-  getAllTableOfEmpStart,
-  getAllTableOfEmpSuccess
-} from "../slice/tableOfEmpSlice";
-
 import { REACT_APP_HOST_API } from "@env"
 import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess } from "../slice/tableMergeSlice";
 
 export const getAllTable = async (dispatch, params, accessToken) => {
   dispatch(getAllTableStart());
   try {
-    const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(getAllTableSuccess(res?.data));
@@ -37,7 +31,7 @@ export const getAllTable = async (dispatch, params, accessToken) => {
 export const getAllTableMerge = async (dispatch, params, accessToken) => {
   dispatch(getAllTableMergeStart());
   try {
-    const res = await axios.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(getAllTableMergeSuccess(res?.data));
@@ -50,7 +44,7 @@ export const getAllTableMerge = async (dispatch, params, accessToken) => {
 export const updateTable = async (dispatch, idTable, status, accessToken) => {
   dispatch(updateTableStart());
   try {
-    await axios.put(`${REACT_APP_HOST_API}/api/tables/status?id=${idTable}`, {
+    await axiosJWT.put(`${REACT_APP_HOST_API}/api/tables/status?id=${idTable}`, {
       status: status,
     }, {
       headers: { token: `bear ${accessToken}` },
@@ -65,7 +59,7 @@ export const updateTable = async (dispatch, idTable, status, accessToken) => {
 export const mergeTable = async (dispatch, body, accessToken) => {
   dispatch(tableMergeStart());
   try {
-    await axios.post(`${REACT_APP_HOST_API}/api/tables:order`, body, {
+    await axiosJWT.post(`${REACT_APP_HOST_API}/api/tables:order`, body, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(tableMergeSuccess());

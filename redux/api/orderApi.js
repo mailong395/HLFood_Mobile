@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosJWT from 'axios-jwt';
 import { REACT_APP_HOST_API_SERVER } from "@env"
 import { 
   deleteOrderDetailFailed,
@@ -21,7 +21,7 @@ import {
 export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking) => {
   dispatch(saveOrderStart());
   try {
-    const res = await axios.post(`${REACT_APP_HOST_API_SERVER}/api/order`, 
+    const res = await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/order`, 
     {
       employee: employeeId,
       bookingTable: bookingTable,
@@ -46,7 +46,7 @@ export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking
 export const getOrderById = async (dispatch, idOrder, accessToken) => {
   dispatch(getOrderByIdStart())
   try {
-    const res = await axios.get(`${REACT_APP_HOST_API_SERVER}/api/order`, 
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/order`, 
     {
       params: {
         id: idOrder
@@ -65,7 +65,7 @@ export const getOrderById = async (dispatch, idOrder, accessToken) => {
 export const saveOrderDetails = (dispatch, orderDetails, accessToken) => {
   dispatch(saveOrderDetailsStart());
   try {
-    axios.post(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, {
+    axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, {
       orderDetails: orderDetails
     }, {
       headers: { token: `bear ${accessToken}` },
@@ -80,7 +80,7 @@ export const saveOrderDetails = (dispatch, orderDetails, accessToken) => {
 export const updateOrderDetail = async (dispatch, orderDetails, accessToken) => {
   dispatch(updateOrderDetailStart());
   try {
-    await axios.put(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, orderDetails, {
+    await axiosJWT.put(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, orderDetails, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(updateOrderDetailSuccess());
@@ -93,7 +93,7 @@ export const updateOrderDetail = async (dispatch, orderDetails, accessToken) => 
 export const deleteOrderDetail = async (dispatch, idOrderDetail, accessToken) => {
   dispatch(deleteOrderDetailStart());
   try {
-    await axios.delete(`${REACT_APP_HOST_API_SERVER}/api/booking/food/` + idOrderDetail, {
+    await axiosJWT.delete(`${REACT_APP_HOST_API_SERVER}/api/booking/food/` + idOrderDetail, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(deleteOrderDetailSuccess());

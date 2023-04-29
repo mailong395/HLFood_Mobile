@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosJWT from 'axios-jwt';
 import {
   getAllFoodStart,
   getAllFoodSuccess,
@@ -9,7 +9,7 @@ import { REACT_APP_HOST_API_SERVER } from "@env"
 export const getAllFood = async (dispatch, accessToken) => {
   dispatch(getAllFoodStart());
   try {
-    const res = await axios.get(`${REACT_APP_HOST_API_SERVER}/api/foods`, {
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/foods`, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(getAllFoodSuccess(res.data));
