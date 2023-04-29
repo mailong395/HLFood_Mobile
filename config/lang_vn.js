@@ -7,6 +7,7 @@ const BUTTON = {
   MoveCook: 'Báo chế biến',
   AddFood: 'Thêm món',
   Login: 'Đăng nhập',
+  Logout: 'Đăng xuất',
 }
 
 const LABEL = {

@@ -13,6 +13,7 @@ import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
 import { getOrderById } from "../../redux/api/orderApi";
 import LeftDrawer from "../../component/LeftDrawer";
+import { logoutUser } from "../../redux/api/authApi";
 
 const Table = ({ navigation }) => {
   const drawer = useRef(null);

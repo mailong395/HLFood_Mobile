@@ -15,20 +15,20 @@ const Stack = createNativeStackNavigator();
 
 const Home = () => {
   const userSelector = useSelector(state => state.auth);
-  const [auth, setAuth] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
+  console.log('isLogin', isLogin);
+  console.log('userSelector', userSelector);
 
   useEffect(() => {
-    console.log(userSelector);
-    setError(userSelector?.error);
+     setIsLogin(userSelector?.success && !userSelector?.error);
   }, [userSelector])
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {
-          error ? (
+          !isLogin ? (
             <>
               <Stack.Screen name="Login" component={Login} />
             </>
