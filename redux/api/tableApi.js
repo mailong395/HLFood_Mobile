@@ -17,8 +17,9 @@ import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess 
 export const getAllTable = async (dispatch, params, accessToken, axiosJWT) => {
   dispatch(getAllTableStart());
   try {
-    const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, {
       headers: { token: `bear ${accessToken}` },
+      params: params
     });
     dispatch(getAllTableSuccess(res?.data));
   } catch (error) {
@@ -30,8 +31,9 @@ export const getAllTable = async (dispatch, params, accessToken, axiosJWT) => {
 export const getAllTableMerge = async (dispatch, params, accessToken, axiosJWT) => {
   dispatch(getAllTableMergeStart());
   try {
-    const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, {
       headers: { token: `bear ${accessToken}` },
+      params: params,
     });
     dispatch(getAllTableMergeSuccess(res?.data));
   } catch (error) {

@@ -31,7 +31,8 @@ const HEADER_TITLE = {
 const TOAST = {
   login_success: 'Đăng nhập thành công',
   login_fail: 'Đăng nhập không thành công',
-
+  logout_success: 'Đăng xuất thành công',
+  logout_fail: 'Đăng xuất không thành công',
 }
 
 

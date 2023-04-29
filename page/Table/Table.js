@@ -3,7 +3,7 @@ import { Button, DrawerLayoutAndroid, StyleSheet, Text, View } from "react-nativ
 import { OPTION_TABLE, CMS } from '../../config/config'
 import { useDispatch, useSelector } from "react-redux";
 import { TableContext } from "../../context/TableContext";
-import { Divider } from 'react-native-paper';
+import { ActivityIndicator, Divider, MD2Colors } from 'react-native-paper';
 import Header from "../../common/Header";
 import Filter from "../../common/Filter";
 import List from "./List";
@@ -15,18 +15,21 @@ import { getOrderById } from "../../redux/api/orderApi";
 import LeftDrawer from "../../component/LeftDrawer";
 import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
+import React from "react";
 
 const Table = ({ navigation }) => {
   const drawer = useRef(null);
+  const numTable = useRef();
   const userSelector = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const { setTable, getData } = useContext(TableContext);
   const { setFoodWaitContext } = useContext(FoodContext);
-  const numTable = useRef();
-  const dispatch = useDispatch();
   const [filterData, setFilterData] = useState(-1);
   const [modalVisible, setModalVisible] = useState(-1);
   const [orderId, setOrderId] = useState("");
-  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const [loading, setLoading] = useState(false);
+  const isLoading = useRef(false);
 
   // Handle 
   const handleFilter = (idFilter = -1) => {
@@ -34,6 +37,7 @@ const Table = ({ navigation }) => {
   }
 
   const handleShowModal = (item = {}) => {
+    
     item.status > 1 ? setOrderId(item.order) : setOrderId("");
     setModalVisible(item.status);
     setTable(item);
@@ -71,21 +75,20 @@ const Table = ({ navigation }) => {
   const handleOpenDrawer = () => {
     drawer.current.openDrawer();
   }
-  const handleCloseDrawer = () => {
-    drawer.current.closeDrawer();
-  }
-
   const renderDrawer = () => {
-    return <LeftDrawer closeDrawer={handleCloseDrawer} />
+    return <LeftDrawer />
   }
 
   // Fetch Data
   useEffect(() => {
-    const param = {
-      employee: '641f0f17fc13ae30f60014d3'
+    const param = {};
+    if (userSelector?.data.job_title > 1) {
+      param.employee = userSelector?.data._id;
     }
     getAllTable(dispatch, param, userSelector?.data.accessToken, axiosJWT);
   }, [getData]);
+
+  
 
   return (
     <DrawerLayoutAndroid
@@ -117,6 +120,10 @@ const Table = ({ navigation }) => {
           navigation={navigation}
           props={handleMovePage}
         />
+
+        {loading && <View style={styles.loading}>
+          <ActivityIndicator animating={true} color={MD2Colors.red800} />
+        </View>}
       </View>
     </DrawerLayoutAndroid>
   );
@@ -133,6 +140,13 @@ const styles = StyleSheet.create({
   listBooked: {
     backgroundColor: "white",
   },
+  loading: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default Table;
