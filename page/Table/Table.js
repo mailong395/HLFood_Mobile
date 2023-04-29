@@ -1,30 +1,32 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Button, DrawerLayoutAndroid, StyleSheet, Text, View } from "react-native";
 import { OPTION_TABLE, CMS } from '../../config/config'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TableContext } from "../../context/TableContext";
 import { Divider } from 'react-native-paper';
 import Header from "../../common/Header";
 import Filter from "../../common/Filter";
 import List from "./List";
-import { getAllTable, getListTableByIdEmp } from "../../redux/api/tableApi";
+import { getAllTable } from "../../redux/api/tableApi";
 import ModalComp from "./ModalComp";
 import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
 import { getOrderById } from "../../redux/api/orderApi";
 import LeftDrawer from "../../component/LeftDrawer";
-import { logoutUser } from "../../redux/api/authApi";
+import { createAxios } from "../../redux/createInstance";
+import { loginSuccess } from "../../redux/slice/authSlice";
 
 const Table = ({ navigation }) => {
   const drawer = useRef(null);
+  const userSelector = useSelector(state => state.auth);
   const { setTable, getData } = useContext(TableContext);
   const { setFoodWaitContext } = useContext(FoodContext);
   const numTable = useRef();
   const dispatch = useDispatch();
-
   const [filterData, setFilterData] = useState(-1);
   const [modalVisible, setModalVisible] = useState(-1);
   const [orderId, setOrderId] = useState("");
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   // Handle 
   const handleFilter = (idFilter = -1) => {
@@ -46,15 +48,15 @@ const Table = ({ navigation }) => {
     switch (id) {
       case 0:
         setFoodWaitContext([]);
-        getAllFood(dispatch);
+        getAllFood(dispatch, userSelector?.data.accessToken, axiosJWT);
         navigation.navigate('ListFood', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 1:
-        getOrderById(dispatch, orderId);
+        getOrderById(dispatch, orderId, userSelector?.data.accessToken, axiosJWT);
         navigation.navigate('TableMerge', { idOrder: orderId });
         break;
       case 2:
-        getOrderById(dispatch, orderId);
+        getOrderById(dispatch, orderId, userSelector?.data.accessToken, axiosJWT);
         navigation.navigate('ListFoodOrdered', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 3:
@@ -82,8 +84,7 @@ const Table = ({ navigation }) => {
     const param = {
       employee: '641f0f17fc13ae30f60014d3'
     }
-    getAllTable(dispatch, param);
-    console.log('fetch table');
+    getAllTable(dispatch, param, userSelector?.data.accessToken, axiosJWT);
   }, [getData]);
 
   return (

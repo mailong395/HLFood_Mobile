@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native"
 import { formatCurrency } from "react-native-format-currency";
 import { TableContext } from "../../context/TableContext";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateTable } from "../../redux/api/tableApi";
 import { FoodContext } from "../../context/FoodContext";
 import { Text, Button, Divider } from "react-native-paper";
@@ -12,6 +12,8 @@ import { saveOrder, saveOrderDetails } from "../../redux/api/orderApi";
 import Header from "../../common/Header";
 import List from "./List";
 import { priceTotal } from "../../common/common";
+import { createAxios } from "../../redux/createInstance";
+import { loginSuccess } from "../../redux/slice/authSlice";
 
 const employee = {
   _id: '63fb7060fc13ae34f3000492',
@@ -20,11 +22,11 @@ const employee = {
 const ListFoodOrder = ({ route, navigation }) => {
   const { numTable, idOrdered, countFood } = route.params;
   const dispatch = useDispatch();
-  
   const { table, getData, setGetData } = useContext(TableContext);
   const { foodOrdered, setFoodOrdered } = useContext(FoodContext);
   const count = useRef(countFood);
-  console.log('count', count);
+  const userSelector = useSelector(state => state.auth);
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   // Handle
   const handleAddFood = (value) => {
@@ -61,7 +63,15 @@ const ListFoodOrder = ({ route, navigation }) => {
     const dateNow = new Date();
     const listTable = [numTable];
     const orderDetails = [];
-    const order = idOrdered ? idOrdered : await saveOrder(dispatch, employee._id, listTable.join(","), dateNow);
+    const order = idOrdered ? idOrdered :
+      await saveOrder(
+        dispatch,
+        employee._id,
+        listTable.join(","),
+        dateNow,
+        userSelector?.data.accessToken,
+        axiosJWT,
+      );
 
     foodOrdered.map(element => {
       if (element.quantity > 0) {
@@ -75,8 +85,8 @@ const ListFoodOrder = ({ route, navigation }) => {
       }
     });
     if (orderDetails.length) {
-      saveOrderDetails(dispatch, orderDetails);
-      updateTable(dispatch, table._id, 2);
+      saveOrderDetails(dispatch, orderDetails, userSelector?.data.accessToken, axiosJWT);
+      updateTable(dispatch, table._id, 2, userSelector?.data.accessToken, axiosJWT);
       setGetData(!getData);
       setFoodOrdered([]);
       count.current = 0;
@@ -106,7 +116,7 @@ const ListFoodOrder = ({ route, navigation }) => {
       count.current += item.quantity;
     })
   }, []);
-  
+
 
   return (
     <View style={styles.container}>

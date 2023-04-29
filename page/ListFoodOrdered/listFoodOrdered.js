@@ -10,14 +10,17 @@ import { FoodContext } from '../../context/FoodContext';
 import { BUTTON } from '../../config/lang_vn';
 import { deleteOrderDetail, updateOrderDetail } from '../../redux/api/orderApi';
 import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
+import { loginSuccess } from '../../redux/slice/authSlice';
 
 const ListFoodOrdered = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;
   const dispatch = useDispatch()
+  const userSelector = useSelector(state => state.auth);
   const selector = useSelector(state => state.order);
   const [ordered, setOrdered] = React.useState([]);
   const [isUpdate, setIsUpdate] = React.useState(false);
   const { setFoodWaitContext } = useContext(FoodContext);
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   // Handle
   const handleGoBack = () => {
@@ -25,7 +28,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
   }
 
   const handleGoToListFood = () => {
-    getAllFood(dispatch);
+    getAllFood(dispatch, userSelector?.data.accessToken, axiosJWT);
     navigation.navigate('ListFood', { numTable: numTable, idOrdered: idOrdered });
   }
 
@@ -54,7 +57,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
           ...newOrder,
           order_details: [...array]
         }
-        deleteOrderDetail(dispatch, temp.id);
+        deleteOrderDetail(dispatch, temp.id, userSelector?.data.accessToken, axiosJWT);
         dispatch(getOrderByIdSuccess(orderChange));
       }
       setOrdered(newArray);
@@ -72,7 +75,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
         ...newOrder,
         order_details: [...array]
       }
-      deleteOrderDetail(dispatch, data._id);
+      deleteOrderDetail(dispatch, data._id, userSelector?.data.accessToken, axiosJWT);
       dispatch(getOrderByIdSuccess(orderChange));
     }
   }
@@ -92,7 +95,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
   }
 
   const handleUpdateOrderDetail = async () => {
-    await updateOrderDetail(dispatch, ordered);
+    await updateOrderDetail(dispatch, ordered, userSelector?.data.accessToken, axiosJWT);
     navigation.goBack();
   }
 

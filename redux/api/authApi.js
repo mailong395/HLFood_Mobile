@@ -17,10 +17,10 @@ export const loginUser = async (dispatch, userName, password) => {
   }
 };
 
-export const logoutUser = async (dispatch, accessToken) => {
+export const logoutUser = async (dispatch, accessToken, axiosJWT) => {
   dispatch(logoutStart());
   try {
-    await axios.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`, {
+    await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(logoutSuccess());
