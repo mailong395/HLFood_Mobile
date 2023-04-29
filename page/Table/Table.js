@@ -13,6 +13,8 @@ import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
 import { getOrderById } from "../../redux/api/orderApi";
 import LeftDrawer from "../../component/LeftDrawer";
+import { createAxios } from "../../redux/createInstance";
+import { loginSuccess } from "../../redux/slice/authSlice";
 
 const Table = ({ navigation }) => {
   const drawer = useRef(null);
@@ -21,10 +23,10 @@ const Table = ({ navigation }) => {
   const { setFoodWaitContext } = useContext(FoodContext);
   const numTable = useRef();
   const dispatch = useDispatch();
-
   const [filterData, setFilterData] = useState(-1);
   const [modalVisible, setModalVisible] = useState(-1);
   const [orderId, setOrderId] = useState("");
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   // Handle 
   const handleFilter = (idFilter = -1) => {
@@ -46,15 +48,15 @@ const Table = ({ navigation }) => {
     switch (id) {
       case 0:
         setFoodWaitContext([]);
-        getAllFood(dispatch, userSelector?.data.accessToken);
+        getAllFood(dispatch, userSelector?.data.accessToken, axiosJWT);
         navigation.navigate('ListFood', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 1:
-        getOrderById(dispatch, orderId, userSelector?.data.accessToken);
+        getOrderById(dispatch, orderId, userSelector?.data.accessToken, axiosJWT);
         navigation.navigate('TableMerge', { idOrder: orderId });
         break;
       case 2:
-        getOrderById(dispatch, orderId, userSelector?.data.accessToken);
+        getOrderById(dispatch, orderId, userSelector?.data.accessToken, axiosJWT);
         navigation.navigate('ListFoodOrdered', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 3:
@@ -82,7 +84,7 @@ const Table = ({ navigation }) => {
     const param = {
       employee: '641f0f17fc13ae30f60014d3'
     }
-    getAllTable(dispatch, param, userSelector?.data.accessToken);
+    getAllTable(dispatch, param, userSelector?.data.accessToken, axiosJWT);
   }, [getData]);
 
   return (

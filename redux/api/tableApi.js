@@ -1,4 +1,3 @@
-import axiosJWT from 'axios-jwt';
 
 import {
   getAllTableStart,
@@ -15,7 +14,7 @@ import {
 import { REACT_APP_HOST_API } from "@env"
 import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess } from "../slice/tableMergeSlice";
 
-export const getAllTable = async (dispatch, params, accessToken) => {
+export const getAllTable = async (dispatch, params, accessToken, axiosJWT) => {
   dispatch(getAllTableStart());
   try {
     const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
@@ -28,7 +27,7 @@ export const getAllTable = async (dispatch, params, accessToken) => {
   }
 };
 
-export const getAllTableMerge = async (dispatch, params, accessToken) => {
+export const getAllTableMerge = async (dispatch, params, accessToken, axiosJWT) => {
   dispatch(getAllTableMergeStart());
   try {
     const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, { params }, {
@@ -41,7 +40,7 @@ export const getAllTableMerge = async (dispatch, params, accessToken) => {
   }
 };
 
-export const updateTable = async (dispatch, idTable, status, accessToken) => {
+export const updateTable = async (dispatch, idTable, status, accessToken, axiosJWT) => {
   dispatch(updateTableStart());
   try {
     await axiosJWT.put(`${REACT_APP_HOST_API}/api/tables/status?id=${idTable}`, {
@@ -56,7 +55,7 @@ export const updateTable = async (dispatch, idTable, status, accessToken) => {
   }
 };
 
-export const mergeTable = async (dispatch, body, accessToken) => {
+export const mergeTable = async (dispatch, body, accessToken, axiosJWT) => {
   dispatch(tableMergeStart());
   try {
     await axiosJWT.post(`${REACT_APP_HOST_API}/api/tables:order`, body, {

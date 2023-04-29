@@ -9,6 +9,8 @@ import { mergeTable } from "../../redux/api/tableApi";
 import List from './List'
 import Filter from './filter'
 import { useContext } from 'react'
+import { createAxios } from '../../redux/createInstance'
+import { loginSuccess } from '../../redux/slice/authSlice'
 
 const Container = ({ navigation, idOrder }) => {
   const selector = useSelector(state => state.tableMerge);
@@ -19,6 +21,7 @@ const Container = ({ navigation, idOrder }) => {
   const [floors, setFloors] = React.useState([]);
   const [order, setOrder] = React.useState();
   const userSelector = useSelector(state => state.auth);
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   const handleGoBack = () => {
     setTableMerge([]);
@@ -40,7 +43,7 @@ const Container = ({ navigation, idOrder }) => {
       order_id: order._id,
       status: table.status,
     };
-    mergeTable(dispatch, body, userSelector?.data.accessToken);
+    mergeTable(dispatch, body, userSelector?.data.accessToken, axiosJWT);
     setTableMerge([]);
     setGetData(!getData);
     navigation.popToTop();

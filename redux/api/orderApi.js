@@ -1,4 +1,3 @@
-import axiosJWT from 'axios-jwt';
 import { REACT_APP_HOST_API_SERVER } from "@env"
 import { 
   deleteOrderDetailFailed,
@@ -18,7 +17,7 @@ import {
   updateOrderDetailSuccess 
 } from "../slice/orderSlice";
 
-export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking) => {
+export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking, accessToken, axiosJWT) => {
   dispatch(saveOrderStart());
   try {
     const res = await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/order`, 
@@ -43,7 +42,7 @@ export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking
  * @param {String} IdOrder Id of Order 
  * @returns Object Order
  */
-export const getOrderById = async (dispatch, idOrder, accessToken) => {
+export const getOrderById = async (dispatch, idOrder, accessToken, axiosJWT) => {
   dispatch(getOrderByIdStart())
   try {
     const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/order`, 
@@ -62,7 +61,7 @@ export const getOrderById = async (dispatch, idOrder, accessToken) => {
   }
 }
 
-export const saveOrderDetails = (dispatch, orderDetails, accessToken) => {
+export const saveOrderDetails = (dispatch, orderDetails, accessToken, axiosJWT) => {
   dispatch(saveOrderDetailsStart());
   try {
     axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, {
@@ -77,7 +76,7 @@ export const saveOrderDetails = (dispatch, orderDetails, accessToken) => {
   }
 }
 
-export const updateOrderDetail = async (dispatch, orderDetails, accessToken) => {
+export const updateOrderDetail = async (dispatch, orderDetails, accessToken, axiosJWT) => {
   dispatch(updateOrderDetailStart());
   try {
     await axiosJWT.put(`${REACT_APP_HOST_API_SERVER}/api/booking/food`, orderDetails, {
@@ -90,7 +89,7 @@ export const updateOrderDetail = async (dispatch, orderDetails, accessToken) => 
   }
 }
 
-export const deleteOrderDetail = async (dispatch, idOrderDetail, accessToken) => {
+export const deleteOrderDetail = async (dispatch, idOrderDetail, accessToken, axiosJWT) => {
   dispatch(deleteOrderDetailStart());
   try {
     await axiosJWT.delete(`${REACT_APP_HOST_API_SERVER}/api/booking/food/` + idOrderDetail, {
