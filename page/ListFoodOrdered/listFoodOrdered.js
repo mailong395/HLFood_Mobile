@@ -11,6 +11,7 @@ import { BUTTON } from '../../config/lang_vn';
 import { deleteOrderDetail, updateOrderDetail } from '../../redux/api/orderApi';
 import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
 import { loginSuccess } from '../../redux/slice/authSlice';
+import { createAxios } from "../../redux/createInstance";
 
 const ListFoodOrdered = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;

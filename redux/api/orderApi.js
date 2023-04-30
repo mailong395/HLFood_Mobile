@@ -1,31 +1,31 @@
 import { REACT_APP_HOST_API_SERVER } from "@env"
-import { 
+import {
   deleteOrderDetailFailed,
   deleteOrderDetailStart,
   deleteOrderDetailSuccess,
-  getOrderByIdFailed, 
-  getOrderByIdStart, 
-  getOrderByIdSuccess, 
-  saveOrderDetailsFailed, 
-  saveOrderDetailsStart, 
-  saveOrderDetailsSuccess, 
-  saveOrderFailed, 
-  saveOrderStart, 
-  saveOrderSuccess, 
-  updateOrderDetailFailed, 
-  updateOrderDetailStart, 
-  updateOrderDetailSuccess 
+  getOrderByIdFailed,
+  getOrderByIdStart,
+  getOrderByIdSuccess,
+  saveOrderDetailsFailed,
+  saveOrderDetailsStart,
+  saveOrderDetailsSuccess,
+  saveOrderFailed,
+  saveOrderStart,
+  saveOrderSuccess,
+  updateOrderDetailFailed,
+  updateOrderDetailStart,
+  updateOrderDetailSuccess
 } from "../slice/orderSlice";
 
 export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking, accessToken, axiosJWT) => {
   dispatch(saveOrderStart());
   try {
-    const res = await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/order`, 
-    {
-      employee: employeeId,
-      bookingTable: bookingTable,
-      time_booking: time_booking,
-    }, {
+    const res = await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/order`,
+      {
+        employee: employeeId,
+        bookingTable: bookingTable,
+        time_booking: time_booking,
+      }, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(saveOrderSuccess());
@@ -45,13 +45,9 @@ export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking
 export const getOrderById = async (dispatch, idOrder, accessToken, axiosJWT) => {
   dispatch(getOrderByIdStart())
   try {
-    const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/order`, 
-    {
-      params: {
-        id: idOrder
-      }
-    }, {
+    const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/order`, {
       headers: { token: `bear ${accessToken}` },
+      params: { id: idOrder },
     })
     dispatch(getOrderByIdSuccess(res?.data));
     return await res?.data;

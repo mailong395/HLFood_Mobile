@@ -46,7 +46,8 @@ const LeftDrawer = () => {
       !loading && logoutSuccess();
     } catch (error) {
       logoutFail();
-    }
+      setLoading(false);
+    } 
   }
 
   return (
