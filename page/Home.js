@@ -26,7 +26,7 @@ const Home = ({ openDrawer }) => {
   }
 
   const RenderTable = ({ navigation }) => {
-    return <Table navigation={navigation} openDrawer={handleOpenDrawer} />
+    return <Table navigation={navigation} openDrawer={handleOpenDrawer}/>
   }
 
   useEffect(() => {

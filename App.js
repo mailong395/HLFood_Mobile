@@ -15,11 +15,14 @@ export default function App() {
   const drawer = useRef(null);
   
   const renderDrawer = () => {
-    return <LeftDrawer />
+    return <LeftDrawer closeDrawer={handleCloseDrawer} />
   }
 
   const handleOpenDrawer = () => {
     drawer.current.openDrawer();
+  }
+  const handleCloseDrawer = () => {
+    drawer.current.closeDrawer();
   }
 
   return (
@@ -32,7 +35,7 @@ export default function App() {
             drawerPosition={'left'}
             renderNavigationView={renderDrawer}
           >
-            <Home openDrawer={handleOpenDrawer} />
+            <Home openDrawer={handleOpenDrawer} closeDrawer={handleCloseDrawer} />
           </DrawerLayoutAndroid>
         </AppContext>
       </PaperProvider>

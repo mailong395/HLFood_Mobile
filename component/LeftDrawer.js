@@ -13,7 +13,7 @@ import { loginSuccess } from '../redux/slice/authSlice';
 import { createAxios } from '../redux/createInstance';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
-const LeftDrawer = () => {
+const LeftDrawer = ({closeDrawer}) => {
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
@@ -37,13 +37,17 @@ const LeftDrawer = () => {
 
   const handleCloseDrawer = () => {
     handleLogout();
+    closeDrawer();
+    setLoading(false)
   }
 
   const handleLogout = async () => {
     try {
       setLoading(true);
-      await logoutUser(dispatch, userSelector?.data.accessToken, axiosJWT);
-      !loading && logoutSuccess();
+      await logoutUser(dispatch, userSelector?.data?.accessToken, axiosJWT);
+      if (!loading) {
+        logoutSuccess();
+      }
     } catch (error) {
       logoutFail();
       setLoading(false);
