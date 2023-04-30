@@ -10,18 +10,34 @@ import Login from './Login/Login';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import Cook from './Cook';
 
 const Stack = createNativeStackNavigator();
 
-const Home = () => {
+const Home = ({ openDrawer }) => {
   const userSelector = useSelector(state => state.auth);
   const [isLogin, setIsLogin] = useState(false);
+  const [isCook, setIsCook] = useState(false);
 
-  console.log('isLogin', isLogin);
   console.log('userSelector', userSelector);
 
+  const handleOpenDrawer = () => {
+    openDrawer();
+  }
+
+  const RenderTable = ({ navigation }) => {
+    return <Table navigation={navigation} openDrawer={handleOpenDrawer} />
+  }
+
   useEffect(() => {
-     setIsLogin(userSelector?.success && !userSelector?.error);
+    if (userSelector?.data?.job_title === 4) setIsCook(true)
+    else setIsCook(false)
+
+    if (userSelector?.success && !userSelector?.error && userSelector?.data) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
   }, [userSelector])
 
   return (
@@ -33,14 +49,15 @@ const Home = () => {
               <Stack.Screen name="Login" component={Login} />
             </>
           ) : (
-            <>
-              <Stack.Screen name="Table" component={Table} />
-              <Stack.Screen name="TableMerge" component={TableMerge} />
-              <Stack.Screen name="ListFood" component={ListFood} />
-              <Stack.Screen name="DetailListFood" component={DetailListFood} />
-              <Stack.Screen name="ListFoodOrder" component={ListFoodOrder} />
-              <Stack.Screen name="ListFoodOrdered" component={ListFoodOrdered} />
-            </>
+            isCook ? <Stack.Screen name="Cook" component={Cook} />
+              : <>
+                <Stack.Screen name="Table" component={RenderTable} />
+                <Stack.Screen name="TableMerge" component={TableMerge} />
+                <Stack.Screen name="ListFood" component={ListFood} />
+                <Stack.Screen name="DetailListFood" component={DetailListFood} />
+                <Stack.Screen name="ListFoodOrder" component={ListFoodOrder} />
+                <Stack.Screen name="ListFoodOrdered" component={ListFoodOrdered} />
+              </>
           )
         }
       </Stack.Navigator>
