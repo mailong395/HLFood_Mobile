@@ -14,12 +14,15 @@ import { useRef } from 'react';
 export default function App() {
   const drawer = useRef(null);
   
-  const renderDrawer = () => {
-    return <LeftDrawer />
-  }
-
   const handleOpenDrawer = () => {
     drawer.current.openDrawer();
+  }
+  const handleCloseDrawer = () => {
+    drawer.current.closeDrawer();
+  }
+  
+  const renderDrawer = () => {
+    return <LeftDrawer closeDrawer={handleCloseDrawer} />
   }
 
   return (
@@ -32,7 +35,7 @@ export default function App() {
             drawerPosition={'left'}
             renderNavigationView={renderDrawer}
           >
-            <Home openDrawer={handleOpenDrawer} />
+            <Home openDrawer={handleOpenDrawer} closeDrawer={handleCloseDrawer} />
           </DrawerLayoutAndroid>
         </AppContext>
       </PaperProvider>

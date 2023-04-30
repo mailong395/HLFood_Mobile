@@ -26,7 +26,11 @@ const Home = ({ openDrawer }) => {
   }
 
   const RenderTable = ({ navigation }) => {
-    return <Table navigation={navigation} openDrawer={handleOpenDrawer} />
+    return <Table navigation={navigation} openDrawer={handleOpenDrawer}/>
+  }
+
+  const RenderCook = ({ navigation }) => {
+    return <Cook navigation={navigation} openDrawer={handleOpenDrawer} />
   }
 
   useEffect(() => {
@@ -49,7 +53,7 @@ const Home = ({ openDrawer }) => {
               <Stack.Screen name="Login" component={Login} />
             </>
           ) : (
-            isCook ? <Stack.Screen name="Cook" component={Cook} />
+            isCook ? <Stack.Screen name="Cook" component={RenderCook} />
               : <>
                 <Stack.Screen name="Table" component={RenderTable} />
                 <Stack.Screen name="TableMerge" component={TableMerge} />
