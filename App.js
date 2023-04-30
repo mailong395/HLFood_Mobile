@@ -14,15 +14,15 @@ import { useRef } from 'react';
 export default function App() {
   const drawer = useRef(null);
   
-  const renderDrawer = () => {
-    return <LeftDrawer closeDrawer={handleCloseDrawer} />
-  }
-
   const handleOpenDrawer = () => {
     drawer.current.openDrawer();
   }
   const handleCloseDrawer = () => {
     drawer.current.closeDrawer();
+  }
+  
+  const renderDrawer = () => {
+    return <LeftDrawer closeDrawer={handleCloseDrawer} />
   }
 
   return (

@@ -8,6 +8,7 @@ import orderReducer from './slice/orderSlice';
 import tableOfEmpReducer from './slice/tableOfEmpSlice';
 import tableMergeReducer from './slice/tableMergeSlice'
 import authReducer from './slice/authSlice';
+import orderDetail from './slice/orderDetailSlice';
 
 const persistConfig = {
   key: 'root',
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   food: foodReducer,
   order: orderReducer,
   auth: authReducer,
+  orderDetail: orderDetail,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

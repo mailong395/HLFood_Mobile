@@ -29,6 +29,10 @@ const Home = ({ openDrawer }) => {
     return <Table navigation={navigation} openDrawer={handleOpenDrawer}/>
   }
 
+  const RenderCook = ({ navigation }) => {
+    return <Cook navigation={navigation} openDrawer={handleOpenDrawer} />
+  }
+
   useEffect(() => {
     if (userSelector?.data?.job_title === 4) setIsCook(true)
     else setIsCook(false)
@@ -49,7 +53,7 @@ const Home = ({ openDrawer }) => {
               <Stack.Screen name="Login" component={Login} />
             </>
           ) : (
-            isCook ? <Stack.Screen name="Cook" component={Cook} />
+            isCook ? <Stack.Screen name="Cook" component={RenderCook} />
               : <>
                 <Stack.Screen name="Table" component={RenderTable} />
                 <Stack.Screen name="TableMerge" component={TableMerge} />

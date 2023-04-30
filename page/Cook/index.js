@@ -1,32 +1,28 @@
-import { DrawerLayoutAndroid, StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
-import LeftDrawer from '../../component/LeftDrawer'
 import Container from './Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { createAxios } from '../../redux/createInstance';
+import { loginSuccess } from '../../redux/slice/authSlice';
+import { getAllOrderDetail } from '../../redux/api/orderDetailApi';
 
-const Cook = () => {
-  const drawer = React.useRef(null);
+const Cook = ({ openDrawer }) => {
+  const userSelector = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   // handle
   const handleOpenDrawer = () => {
-    drawer.current.openDrawer();
-  }
-
-  // render
-  const renderDrawer = () => {
-    return <LeftDrawer />
+    openDrawer();
   }
 
   // fetch data
+  React.useEffect(() => {
+    getAllOrderDetail(dispatch, userSelector?.data?.accessToken, axiosJWT);
+  }, [])
 
   return (
-    <DrawerLayoutAndroid
-      ref={drawer}
-      drawerWidth={300}
-      drawerPosition={'left'}
-      renderNavigationView={renderDrawer}
-    >
-      <Container openDrawer={handleOpenDrawer} />
-    </DrawerLayoutAndroid>
+    <Container openDrawer={handleOpenDrawer} />
   )
 }
 
