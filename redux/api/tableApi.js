@@ -1,4 +1,3 @@
-
 import {
   getAllTableStart,
   getAllTableSuccess,
@@ -9,17 +8,17 @@ import {
   tableMergeStart,
   tableMergeSuccess,
   tableMergeFailed,
-} from "../slice/tableSlice";
+} from '../slice/tableSlice';
 
-import { REACT_APP_HOST_API } from "@env"
-import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess } from "../slice/tableMergeSlice";
+import { REACT_APP_HOST_API } from '@env';
+import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess } from '../slice/tableMergeSlice';
 
 export const getAllTable = async (dispatch, params, accessToken, axiosJWT) => {
   dispatch(getAllTableStart());
   try {
     const res = await axiosJWT.get(`${REACT_APP_HOST_API}/api/tables`, {
       headers: { token: `bear ${accessToken}` },
-      params: params
+      params: params,
     });
     dispatch(getAllTableSuccess(res?.data));
   } catch (error) {
@@ -45,11 +44,15 @@ export const getAllTableMerge = async (dispatch, params, accessToken, axiosJWT) 
 export const updateTable = async (dispatch, idTable, status, accessToken, axiosJWT) => {
   dispatch(updateTableStart());
   try {
-    await axiosJWT.put(`${REACT_APP_HOST_API}/api/tables/status?id=${idTable}`, {
-      status: status,
-    }, {
-      headers: { token: `bear ${accessToken}` },
-    });
+    await axiosJWT.put(
+      `${REACT_APP_HOST_API}/api/tables/status?id=${idTable}`,
+      {
+        status: status,
+      },
+      {
+        headers: { token: `bear ${accessToken}` },
+      },
+    );
     dispatch(updateTableSuccess());
   } catch (error) {
     dispatch(updateTableFailed());
@@ -68,4 +71,17 @@ export const mergeTable = async (dispatch, body, accessToken, axiosJWT) => {
     dispatch(tableMergeFailed());
     console.log(error);
   }
-}
+};
+
+export const setEmpTable = async (dispatch, body, accessToken, axiosJWT) => {
+  dispatch(updateTableStart());
+  try {
+    await axiosJWT.put(`${REACT_APP_HOST_API}/api/tables/emps`, body, {
+      headers: { token: `bear ${accessToken}` },
+    });
+    dispatch(updateTableSuccess());
+  } catch (error) {
+    dispatch(updateTableFailed());
+    console.log(error);
+  }
+};

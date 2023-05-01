@@ -6,9 +6,10 @@ import tableReducer from './slice/tableSlice';
 import foodReducer from './slice/foodSlice';
 import orderReducer from './slice/orderSlice';
 import tableOfEmpReducer from './slice/tableOfEmpSlice';
-import tableMergeReducer from './slice/tableMergeSlice'
+import tableMergeReducer from './slice/tableMergeSlice';
 import authReducer from './slice/authSlice';
 import orderDetail from './slice/orderDetailSlice';
+import employeeReducer from './slice/employeeSlice';
 
 const persistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   order: orderReducer,
   auth: authReducer,
   orderDetail: orderDetail,
+  employee: employeeReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
