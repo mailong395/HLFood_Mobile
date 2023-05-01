@@ -38,7 +38,6 @@ const authSlice = createSlice({
     },
     logoutFailed: (state) => {
       state.loading = false;
-      state.data = null;
       state.success = false;
       state.error = true;
     },

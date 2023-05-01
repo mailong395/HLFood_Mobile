@@ -12,61 +12,70 @@ import { BUTTON, TOAST } from '../config/lang_vn';
 import { loginSuccess } from '../redux/slice/authSlice';
 import { createAxios } from '../redux/createInstance';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import Table from '../page/Table/Table';
 
-const LeftDrawer = ({closeDrawer}) => {
-  const userSelector = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const [loading, setLoading] = React.useState(false);
+// const Drawer = createDrawerNavigator();
 
-  const logoutSuccess = () => {
-    ToastAndroid.showWithGravity(
-      TOAST.logout_success,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-    );
-  };
+const LeftDrawer = () => {
+  
+  // const userSelector = useSelector(state => state.auth);
+  // const dispatch = useDispatch();
+  // const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  // const [loading, setLoading] = React.useState(false);
 
-  const logoutFail = () => {
-    ToastAndroid.showWithGravity(
-      TOAST.logout_fail,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-    );
-  };
+  // const logoutSuccess = () => {
+  //   ToastAndroid.showWithGravity(
+  //     TOAST.logout_success,
+  //     ToastAndroid.SHORT,
+  //     ToastAndroid.TOP,
+  //   );
+  // };
 
-  const handleCloseDrawer = () => {
-    handleLogout();
-    closeDrawer();
-    setLoading(false)
-  }
+  // const logoutFail = () => {
+  //   ToastAndroid.showWithGravity(
+  //     TOAST.logout_fail,
+  //     ToastAndroid.SHORT,
+  //     ToastAndroid.TOP,
+  //   );
+  // };
 
-  const handleLogout = async () => {
-    try {
-      setLoading(true);
-      await logoutUser(dispatch, userSelector?.data?.accessToken, axiosJWT);
-      if (!loading) {
-        logoutSuccess();
-      }
-    } catch (error) {
-      logoutFail();
-      setLoading(false);
-    } 
-  }
+  // const handleCloseDrawer = () => {
+  //   handleLogout();
+  //   closeDrawer();
+  //   setLoading(false)
+  // }
+
+  // const handleLogout = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await logoutUser(dispatch, userSelector?.data?.accessToken, axiosJWT);
+  //     if (!loading) {
+  //       logoutSuccess();
+  //     }
+  //   } catch (error) {
+  //     logoutFail();
+  //     setLoading(false);
+  //   } 
+  // }
 
   return (
-    <View style={[styles.container, styles.navigationContainer]}>
-      <Text style={styles.paragraph}>I'm in the Drawer!</Text>
-      <Button
-        title={BUTTON.Logout}
-        onPress={handleCloseDrawer}
-      />
-      {loading  && <View style={styles.loading}>
-        <ActivityIndicator animating={true} color={MD2Colors.red800} />
-      </View>}
-    </View>
+    <View></View>
+    // <Drawer.Navigator>
+    //   <Drawer.Screen name='Table' component={Table} />
+    // </Drawer.Navigator>
   );
 };
+{/* <View style={[styles.container, styles.navigationContainer]}>
+  <Text style={styles.paragraph}>I'm in the Drawer!</Text>
+  <Button
+    title={BUTTON.Logout}
+    onPress={handleCloseDrawer}
+  />
+  {loading  && <View style={styles.loading}>
+    <ActivityIndicator animating={true} color={MD2Colors.red800} />
+  </View>}
+</View> */}
 
 const styles = StyleSheet.create({
   container: {

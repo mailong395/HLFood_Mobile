@@ -19,7 +19,7 @@ const Cook = ({ openDrawer }) => {
   // fetch data
   React.useEffect(() => {
     getAllOrderDetail(dispatch, userSelector?.data?.accessToken, axiosJWT);
-  }, [])
+  }, []);
 
   return (
     <Container openDrawer={handleOpenDrawer} />

@@ -12,31 +12,32 @@ import LeftDrawer from './component/LeftDrawer';
 import { useRef } from 'react';
 
 export default function App() {
-  const drawer = useRef(null);
+  // const drawer = useRef(null);
   
-  const handleOpenDrawer = () => {
-    drawer.current.openDrawer();
-  }
-  const handleCloseDrawer = () => {
-    drawer.current.closeDrawer();
-  }
+  // const handleOpenDrawer = () => {
+  //   drawer.current.openDrawer();
+  // }
+  // const handleCloseDrawer = () => {
+  //   drawer.current.closeDrawer();
+  // }
   
-  const renderDrawer = () => {
-    return <LeftDrawer closeDrawer={handleCloseDrawer} />
-  }
+  // const renderDrawer = () => {
+  //   return <LeftDrawer closeDrawer={handleCloseDrawer} />
+  // }
 
   return (
     <Provider store={store}>
       <PaperProvider>
         <AppContext>
-          <DrawerLayoutAndroid
+          {/* <DrawerLayoutAndroid
             ref={drawer}
             drawerWidth={300}
             drawerPosition={'left'}
             renderNavigationView={renderDrawer}
           >
             <Home openDrawer={handleOpenDrawer} closeDrawer={handleCloseDrawer} />
-          </DrawerLayoutAndroid>
+          </DrawerLayoutAndroid> */}
+          <Home />
         </AppContext>
       </PaperProvider>
     </Provider>

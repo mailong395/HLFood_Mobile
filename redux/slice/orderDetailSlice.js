@@ -24,6 +24,20 @@ const orderDetailSlice = createSlice({
       state.success = false;
       state.error = true;
     },
+    updateOderDetailStart: (state) => {
+      state.loading = true;
+    },
+    updateOderDetailSuccess: (state, action) => {
+      state.loading = false;
+      state.data = action.payload;
+      state.success = true;
+      state.error = false;
+    },
+    updateOderDetailFailed: (state, a) => {
+      state.loading = false;
+      state.success = false;
+      state.error = true;
+    }
   }
 });
 
@@ -31,6 +45,9 @@ export const {
   getAllOrderDetailStart,
   getAllOrderDetailSuccess,
   getAllOrderDetailFailed,
+  updateOderDetailStart,
+  updateOderDetailSuccess,
+  updateOderDetailFailed,
 } = orderDetailSlice.actions;
 
 export default orderDetailSlice.reducer;
