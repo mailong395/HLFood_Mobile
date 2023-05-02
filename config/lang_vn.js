@@ -13,7 +13,9 @@ const BUTTON = {
   AssignEmp: 'Giao phó bàn cho nhân viên',
   UnassignEmp: 'Xoá giao phó nhân viên này',
   addEmp: 'Thêm nhân viên',
-  editEmp: 'Sửa thông tin nhân viên'
+  editEmp: 'Sửa thông tin nhân viên',
+  addFood: 'Thêm thức ăn',
+  editFood: 'Sửa thông tin thức ăn'
 };
 
 const LABEL = {
@@ -21,10 +23,12 @@ const LABEL = {
   Empty_Floor: 'Số lầu',
   Empty_Slot: 'Số lượng khách hàng',
   name_emp: 'Tên nhân viên',
+  name_food: 'Tên món ăn',
   number_emp: 'Số điện thoại',
   job_title: 'Chức vụ',
   user_name: 'Tên đăng nhập',
   password: 'Mật khẩu',
+  price: 'Giá tiền'
 };
 
 const CONTENT = {

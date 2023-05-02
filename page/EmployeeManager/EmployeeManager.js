@@ -3,7 +3,7 @@ import { Button, DrawerLayoutAndroid, StyleSheet, Text, View } from 'react-nativ
 import { OPTION_TABLE, CMS } from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { TableContext } from '../../context/TableContext';
-import { ActivityIndicator, Divider, MD2Colors } from 'react-native-paper';
+import { ActivityIndicator, Divider, MD2Colors, Searchbar } from 'react-native-paper';
 import Header from '../../common/Header';
 import Filter from '../../common/Filter';
 import List from './List';
@@ -37,6 +37,11 @@ function EmployeeManager({ navigation }) {
   const [employees, setEmployees] = useState([]);
   const [empSelected, setEmpSelected] = useState({});
   const [isShowConfirmDelete, setIsShowConfirmDelete] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const onChangeSearch = (query) => {
+    setSearchQuery(query);
+  };
 
   // Handle
   const handleFilter = (idFilter = -1) => {
@@ -83,12 +88,29 @@ function EmployeeManager({ navigation }) {
   };
 
   const deleteEmpLocal = (emp) => {
-    const newEmp = employees.filter((employee) => employee._id !== emp._id);
+    const newEmp = employeesApiData.filter((employee) => employee._id !== emp._id);
     dispatch(getAllEmployeeSuccess(newEmp));
   };
 
   const handlePlus = () => {
     navigation.navigate('AddEmp', {});
+  };
+
+  const addStringJobTitle = (position) => {
+    switch (position) {
+      case 0:
+        return 'Chủ cửa hàng';
+      case 1:
+        return 'Quản lý';
+      case 2:
+        return 'Thu Ngân';
+      case 3:
+        return 'Phục vụ';
+      case 4:
+        return 'Đầu bếp';
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -102,6 +124,28 @@ function EmployeeManager({ navigation }) {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(employees);
+
+    if (searchQuery) {
+      const regex = new RegExp(searchQuery, 'gi');
+
+      const searchResults = employeesApiData.filter((emp) => {
+        const newEmp = { ...emp, typeString: addStringJobTitle(emp.job_title) };
+        return Object.values(newEmp).some((value) => regex.test(value.toString()));
+      });
+      if (searchResults.length > 0) {
+        setEmployees(
+          searchResults.map((emp) => {
+            let newEmp = emp;
+            delete newEmp.typeString;
+            return newEmp;
+          }),
+        );
+      }
+    } else setEmployees(employeesApiData);
+  }, [searchQuery]);
+
   return (
     <View style={styles.container}>
       <Header
@@ -112,6 +156,9 @@ function EmployeeManager({ navigation }) {
         isPlus={true}
         handlePlus={handlePlus}
       />
+      <View style={styles.boxSearch}>
+        <Searchbar placeholder={CMS.search} onChangeText={onChangeSearch} value={searchQuery} />
+      </View>
 
       <View style={styles.tableList}>
         <List
@@ -169,6 +216,10 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     marginHorizontal: 8,
+  },
+  boxSearch: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
 });
 

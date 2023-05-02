@@ -13,9 +13,10 @@ import ListFoodOrder from './ListFoodOrder/ListFoodOrder';
 import ListFoodOrdered from './ListFoodOrdered/listFoodOrdered';
 import DetailListFood from './DetailListFood';
 import EmployeeManager from './EmployeeManager/EmployeeManager';
-import AssignEmp from './AssignEmp/index';
 import Cook from './Cook/index'
-// import AddEmployee from './AddEmployee/AddEmployee';
+import AddEmp from './AddEmp/AddEmp';
+import AddFood from './FoodManager/AddFood';
+import FoodManager from './FoodManager/FoodManager';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
 import { loginSuccess } from '../redux/slice/authSlice';
@@ -60,8 +61,6 @@ const Home = () => {
   const [loading, setLoading] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(true);
   const axiosJWT = createAxios(selector?.data, dispatch, loginSuccess);
-
-  console.log('selector', selector);
 
   const handleLogout = (props) => {
     logoutUser(dispatch, selector?.data?.accessToken, axiosJWT);
@@ -109,9 +108,10 @@ const Home = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isLogin ?
-          <Stack.Screen name='Login' component={Login} />
-          : <Stack.Screen name='DrawerScreen' component={DrawerScreen} />
+        {
+          isLogin ?
+            <Stack.Screen name='Login' component={Login} />
+            : <Stack.Screen name='DrawerScreen' component={DrawerScreen} />
         }
       </Stack.Navigator>
     </NavigationContainer>
