@@ -14,6 +14,8 @@ import Cook from './Cook';
 import EmployeeManager from './EmployeeManager/EmployeeManager';
 import AssignEmp from './AssignEmp';
 import AddEmp from './AddEmp/AddEmp';
+import FoodManager from './FoodManager/FoodManager';
+import AddFood from './FoodManager/AddFood';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,12 +31,12 @@ const Home = ({ openDrawer }) => {
   };
 
   const RenderTable = ({ navigation }) => {
-    return <Table navigation={navigation} openDrawer={handleOpenDrawer}/>
-  }
+    return <Table navigation={navigation} openDrawer={handleOpenDrawer} />;
+  };
 
   const RenderCook = ({ navigation }) => {
-    return <Cook navigation={navigation} openDrawer={handleOpenDrawer} />
-  }
+    return <Cook navigation={navigation} openDrawer={handleOpenDrawer} />;
+  };
 
   useEffect(() => {
     if (userSelector?.data?.job_title === 4) setIsCook(true);
@@ -66,6 +68,8 @@ const Home = ({ openDrawer }) => {
             <Stack.Screen name="ListFoodOrdered" component={ListFoodOrdered} />
             <Stack.Screen name="AssignEmp" component={AssignEmp} />
             <Stack.Screen name="AddEmp" component={AddEmp} />
+            <Stack.Screen name="AddFood" component={AddFood} />
+            <Stack.Screen name="FoodManager" component={FoodManager} />
             <Stack.Screen name="EmployeeManager" component={EmployeeManager} />
           </>
         )}

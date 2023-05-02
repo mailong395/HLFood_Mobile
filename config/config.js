@@ -91,6 +91,19 @@ const ACTIVE_TABLE = [
   },
 ];
 
+const ACTIVE_FOOD = [
+  {
+    id: 0,
+    title: 'Chỉnh sửa thông tin',
+    icon: 'cookie-edit',
+  },
+  {
+    id: 1,
+    title: 'Xoá món ăn',
+    icon: 'delete',
+  },
+];
+
 const ACTIVE_EMP = [
   {
     id: 0,
@@ -106,7 +119,7 @@ const ACTIVE_EMP = [
     id: 2,
     title: 'Giao phó nhân viên quản lý bàn',
     icon: 'food',
-  }
+  },
 ];
 
 const STATUS_TABLE = {
@@ -137,4 +150,4 @@ const STATUS_TABLE = {
   },
 };
 
-export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE, CMS, ACTIVE_EMP };
+export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE, CMS, ACTIVE_EMP, ACTIVE_FOOD };
