@@ -25,7 +25,6 @@ function EmployeeManager({ navigation }) {
   const employeesApiData = useSelector((state) => state?.employee?.data);
   const accessToken = userSelector?.data?.accessToken;
 
-  const drawer = useRef(null);
   const numTable = useRef();
 
   const dispatch = useDispatch();
@@ -44,16 +43,9 @@ function EmployeeManager({ navigation }) {
     setFilterData(idFilter);
   };
 
-  const handleOpenDrawer = ({ navigation }) => {
-    drawer.current.openDrawer();
-  };
-  const handleCloseDrawer = () => {
-    drawer.current.closeDrawer();
-  };
-
-  const renderDrawer = () => {
-    return <LeftDrawer closeDrawer={handleCloseDrawer} />;
-  };
+  const handleOpenDrawer = () => {
+    navigation.openDrawer();
+  }
 
   const handleShowModal = (item) => {
     // item.job_title > 1 ? setOrderId(item.order) : setOrderId('');
@@ -111,49 +103,47 @@ function EmployeeManager({ navigation }) {
   }, []);
 
   return (
-    <DrawerLayoutAndroid ref={drawer} drawerWidth={300} drawerPosition={'left'} renderNavigationView={renderDrawer}>
-      <View style={styles.container}>
-        <Header
-          isShowDrawer={true}
-          title={CMS.logo}
-          mode="center-aligned"
-          openDrawer={handleOpenDrawer}
-          isPlus={true}
-          handlePlus={handlePlus}
-        />
+    <View style={styles.container}>
+      <Header
+        isShowDrawer={true}
+        title={CMS.logo}
+        mode="center-aligned"
+        openDrawer={handleOpenDrawer}
+        isPlus={true}
+        handlePlus={handlePlus}
+      />
 
-        <View style={styles.tableList}>
-          <List
-            data={employees}
-            filterData={filterData}
-            props={handleShowModal}
-            isShowModal={modalVisible}
-            color={'#343434'}
-          />
-        </View>
-
-        <ModalComp
-          isShow={modalVisible}
-          empSelected={empSelected}
-          handleCloseModal={handleCloseModal}
-          navigation={navigation}
-          props={handleMovePage}
-        />
-
-        {loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator animating={true} color={MD2Colors.red800} />
-          </View>
-        )}
-
-        <DialogComp
-          content="Bạn có chắc chắn xoá nhân viên này không ?"
-          visibleDefault={isShowConfirmDelete}
-          propsAddFood={() => handleConfirmDeleteEmp(empSelected)}
-          propsClose={() => setIsShowConfirmDelete(false)}
+      <View style={styles.tableList}>
+        <List
+          data={employees}
+          filterData={filterData}
+          props={handleShowModal}
+          isShowModal={modalVisible}
+          color={'#343434'}
         />
       </View>
-    </DrawerLayoutAndroid>
+
+      <ModalComp
+        isShow={modalVisible}
+        empSelected={empSelected}
+        handleCloseModal={handleCloseModal}
+        navigation={navigation}
+        props={handleMovePage}
+      />
+
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator animating={true} color={MD2Colors.red800} />
+        </View>
+      )}
+
+      <DialogComp
+        content="Bạn có chắc chắn xoá nhân viên này không ?"
+        visibleDefault={isShowConfirmDelete}
+        propsAddFood={() => handleConfirmDeleteEmp(empSelected)}
+        propsClose={() => setIsShowConfirmDelete(false)}
+      />
+    </View>
   );
 }
 

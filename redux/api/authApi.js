@@ -1,8 +1,15 @@
 import axios from 'axios';
 import { REACT_APP_HOST_API_SERVER } from "@env"
-import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess } from '../slice/authSlice';
-import { TOAST } from '../../config/lang_vn';
+import {
+  loginFailed,
+  loginStart,
+  loginSuccess,
+  logoutFailed,
+  logoutStart,
+  logoutSuccess
+} from '../slice/authSlice';
 import { Toast } from '../../common/toast';
+import { TOAST } from '../../config/lang_vn';
 
 export const loginUser = async (dispatch, userName, password) => {
   dispatch(loginStart());
@@ -21,10 +28,10 @@ export const loginUser = async (dispatch, userName, password) => {
   }
 };
 
-export const logoutUser = async (dispatch, accessToken, axiosJWT) => {
+export const logoutUser = (dispatch, accessToken, axiosJWT) => {
   dispatch(logoutStart());
   try {
-    await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`, {
+    axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`, {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(logoutSuccess());

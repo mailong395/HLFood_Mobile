@@ -5,10 +5,10 @@ import ItemFood from '../../component/ItemFood';
 import { FoodContext } from '../../context/FoodContext';
 
 const List = ({ data, onChangeText, propsRemove, onRemove }) => {
-  
+
   // render
   const renderItem = ({ item }) => {
-    const handleAddFood = () => {}
+    const handleAddFood = () => { }
 
     const handleRemoveFood = () => {
       propsRemove(item);
@@ -26,7 +26,7 @@ const List = ({ data, onChangeText, propsRemove, onRemove }) => {
       <ItemFood
         isEdit={false}
         isHiddenPlus={true}
-        name={item.food.name}
+        name={item?.food?.name}
         image={item.food.image}
         price={item.food.price}
         quantity={item.quantity}

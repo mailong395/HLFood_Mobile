@@ -12,7 +12,7 @@ const List = ({ data = [] }) => {
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const isShow = item.quantity === item.quantity_finished;
 
     const handlePlus = async () => {
@@ -38,11 +38,12 @@ const List = ({ data = [] }) => {
     }
 
     const handleDone = async () => {
-      const newData = data.map(element => {
-        return {
+      const newData = data.map((element, i) => {
+        return i === index ? {
           ...element,
           quantity_finished: element.quantity,
-        };
+        }
+          : element;
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
     }
@@ -59,24 +60,8 @@ const List = ({ data = [] }) => {
     />
   }
 
-  // const handleRefresh = async () => {
-  //   const newData = data.map(element => {
-  //     return {
-  //       ...element,
-  //       quantity_finished: 0,
-  //     };
-  //   })
-  //   await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
-  // }
-
   return (
     <View style={styles.container}>
-      {/* <IconButton
-        icon="arrow-u-left-top-bold"
-        iconColor={MD3Colors.neutralVariant20}
-        size={20}
-        onPress={handleRefresh}
-      /> */}
       <FlatList
         data={data}
         renderItem={renderItem}

@@ -6,14 +6,14 @@ import { createAxios } from '../../redux/createInstance';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import { getAllOrderDetail } from '../../redux/api/orderDetailApi';
 
-const Cook = ({ openDrawer }) => {
+const Cook = ({ navigation }) => {
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 
   // handle
   const handleOpenDrawer = () => {
-    openDrawer();
+    navigation.openDrawer();
   }
 
   // fetch data
