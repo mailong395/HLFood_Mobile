@@ -2,27 +2,24 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, DrawerLayoutAndroid, StyleSheet, Text, View } from 'react-native';
 import { OPTION_TABLE, CMS } from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
-import { TableContext } from '../../context/TableContext';
 import { ActivityIndicator, Divider, MD2Colors, Searchbar } from 'react-native-paper';
 import Header from '../../common/Header';
 import Filter from '../../common/Filter';
 import List from './List';
-import { getAllTable } from '../../redux/api/tableApi';
 import ModalComp from './ModalComp';
-import { getAllFood } from '../../redux/api/foodApi';
-import { FoodContext } from '../../context/FoodContext';
-import { getOrderById } from '../../redux/api/orderApi';
+import { deleteFood, getAllFood } from '../../redux/api/foodApi';
 import LeftDrawer from '../../component/LeftDrawer';
 import { createAxios } from '../../redux/createInstance';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import React from 'react';
-import { deleteEmployee, getAllEmplyee } from '../../redux/api/employeeApi';
 import DialogComp from '../../component/DialogComp';
 import { getAllEmployeeSuccess } from '../../redux/slice/employeeSlice';
+import { getAllFoodSuccess } from '../../redux/slice/foodSlice';
 
-function EmployeeManager({ navigation }) {
+function FoodManager({ navigation }) {
   const userSelector = useSelector((state) => state.auth);
-  const employeesApiData = useSelector((state) => state?.employee?.data);
+  const foodsApiData = useSelector((state) => state?.food?.data);
+
   const accessToken = userSelector?.data?.accessToken;
 
   const drawer = useRef(null);
@@ -30,13 +27,11 @@ function EmployeeManager({ navigation }) {
 
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const { setFoodWaitContext } = useContext(FoodContext);
   const [filterData, setFilterData] = useState(-1);
   const [modalVisible, setModalVisible] = useState(false);
-  const [emp, setEmp] = useState({});
   const [loading, setLoading] = useState(false);
-  const [employees, setEmployees] = useState([]);
-  const [empSelected, setEmpSelected] = useState({});
+  const [foods, setFoods] = useState([]);
+  const [itemSelected, setItemSelected] = useState({});
   const [isShowConfirmDelete, setIsShowConfirmDelete] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -64,7 +59,7 @@ function EmployeeManager({ navigation }) {
     // item.job_title > 1 ? setOrderId(item.order) : setOrderId('');
     setModalVisible(true);
     // setTable(item);
-    setEmpSelected(item);
+    setItemSelected(item);
     // numTable.current = item.job_title;
   };
 
@@ -75,13 +70,10 @@ function EmployeeManager({ navigation }) {
   const handleMovePage = async (id) => {
     switch (id) {
       case 0:
-        navigation.navigate('AddEmp', { emp: empSelected });
+        navigation.navigate('AddFood', { food: itemSelected });
         break;
       case 1:
         setIsShowConfirmDelete(true);
-        break;
-      case 2:
-        navigation.navigate('AssignEmp', { emp: empSelected });
         break;
       default:
         break;
@@ -89,69 +81,50 @@ function EmployeeManager({ navigation }) {
     handleCloseModal();
   };
 
-  const handleConfirmDeleteEmp = (emp) => {
-    deleteEmpLocal(emp);
-    deleteEmployee(dispatch, emp._id, accessToken, axiosJWT);
+  const handleConfirmDeleteEmp = (food) => {
+    deleteFoodLocal(food);
+    deleteFood(dispatch, food._id, accessToken, axiosJWT);
     setIsShowConfirmDelete(false);
   };
 
-  const deleteEmpLocal = (emp) => {
-    const newEmp = employeesApiData.filter((employee) => employee._id !== emp._id);
-    dispatch(getAllEmployeeSuccess(newEmp));
+  const deleteFoodLocal = (food) => {
+    const newFood = foodsApiData.filter((item) => item._id !== food._id);
+    dispatch(getAllFoodSuccess(newFood));
   };
 
   const handlePlus = () => {
-    navigation.navigate('AddEmp', {});
-  };
-
-  const addStringJobTitle = (position) => {
-    switch (position) {
-      case 0:
-        return 'Chủ cửa hàng';
-      case 1:
-        return 'Quản lý';
-      case 2:
-        return 'Thu Ngân';
-      case 3:
-        return 'Phục vụ';
-      case 4:
-        return 'Đầu bếp';
-      default:
-        break;
-    }
+    navigation.navigate('AddFood', {});
   };
 
   useEffect(() => {
-    setEmployees(employeesApiData);
-  }, [employeesApiData]);
+    setFoods(foodsApiData);
+  }, [foodsApiData]);
 
   useEffect(() => {
     if (userSelector?.data) {
-      getAllEmplyee(dispatch, accessToken, axiosJWT);
-      getAllTable(dispatch, {}, accessToken, axiosJWT);
+      getAllFood(dispatch, accessToken, axiosJWT);
     }
   }, []);
 
   useEffect(() => {
-    console.log(employees);
-
     if (searchQuery) {
       const regex = new RegExp(searchQuery, 'gi');
 
-      const searchResults = employeesApiData.filter((emp) => {
-        const newEmp = { ...emp, typeString: addStringJobTitle(emp.job_title) };
-        return Object.values(newEmp).some((value) => regex.test(value.toString()));
+      const searchResults = foodsApiData.filter((food) => {
+        const newFood = { ...food, typeString: food.type === 0 ? 'Thức ăn' : 'Thức uống' };
+
+        return Object.values(newFood).some((value) => regex.test(value.toString()));
       });
       if (searchResults.length > 0) {
-        setEmployees(
-          searchResults.map((emp) => {
-            let newEmp = emp;
-            delete newEmp.typeString;
-            return newEmp;
+        setFoods(
+          searchResults.map((food) => {
+            let newFood = food;
+            delete newFood.typeString;
+            return newFood;
           }),
         );
       }
-    } else setEmployees(employeesApiData);
+    } else setFoods(foodsApiData);
   }, [searchQuery]);
 
   return (
@@ -172,7 +145,7 @@ function EmployeeManager({ navigation }) {
 
         <View style={styles.tableList}>
           <List
-            data={employees}
+            data={foods}
             filterData={filterData}
             props={handleShowModal}
             isShowModal={modalVisible}
@@ -182,7 +155,7 @@ function EmployeeManager({ navigation }) {
 
         <ModalComp
           isShow={modalVisible}
-          empSelected={empSelected}
+          itemSelected={itemSelected}
           handleCloseModal={handleCloseModal}
           navigation={navigation}
           props={handleMovePage}
@@ -195,9 +168,9 @@ function EmployeeManager({ navigation }) {
         )}
 
         <DialogComp
-          content="Bạn có chắc chắn xoá nhân viên này không ?"
+          content="Bạn có chắc chắn xoá món ăn này không ?"
           visibleDefault={isShowConfirmDelete}
-          propsAddFood={() => handleConfirmDeleteEmp(empSelected)}
+          propsAddFood={() => handleConfirmDeleteEmp(itemSelected)}
           propsClose={() => setIsShowConfirmDelete(false)}
         />
       </View>
@@ -209,6 +182,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     flex: 1,
+  },
+  boxSearch: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
   },
   loading: {
     flex: 1,
@@ -228,10 +205,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
   },
-  boxSearch: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
 });
 
-export default EmployeeManager;
+export default FoodManager;
