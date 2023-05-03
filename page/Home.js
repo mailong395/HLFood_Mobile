@@ -14,9 +14,9 @@ import ListFoodOrdered from './ListFoodOrdered/listFoodOrdered';
 import DetailListFood from './DetailListFood';
 import EmployeeManager from './EmployeeManager/EmployeeManager';
 import Cook from './Cook/index'
-import AddEmp from './AddEmp/AddEmp';
-import AddFood from './FoodManager/AddFood';
-import FoodManager from './FoodManager/FoodManager';
+// import AddEmp from './AddEmp/AddEmp';
+// import AddFood from './FoodManager/AddFood';
+// import FoodManager from './FoodManager/FoodManager';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
 import { loginSuccess } from '../redux/slice/authSlice';
