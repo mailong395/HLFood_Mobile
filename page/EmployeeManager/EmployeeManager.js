@@ -29,7 +29,6 @@ function EmployeeManager({ navigation }) {
 
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const { setFoodWaitContext } = useContext(FoodContext);
   const [filterData, setFilterData] = useState(-1);
   const [modalVisible, setModalVisible] = useState(false);
   const [emp, setEmp] = useState({});
@@ -50,7 +49,7 @@ function EmployeeManager({ navigation }) {
 
   const handleOpenDrawer = () => {
     navigation.openDrawer();
-  }
+  };
 
   const handleShowModal = (item) => {
     // item.job_title > 1 ? setOrderId(item.order) : setOrderId('');
@@ -125,7 +124,6 @@ function EmployeeManager({ navigation }) {
   }, []);
 
   useEffect(() => {
-    console.log(employees);
 
     if (searchQuery) {
       const regex = new RegExp(searchQuery, 'gi');

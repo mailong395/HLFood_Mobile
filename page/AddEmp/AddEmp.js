@@ -13,7 +13,7 @@ import { loginSuccess } from '../../redux/slice/authSlice';
 import { createAxios } from '../../redux/createInstance';
 import { getAllEmployeeSuccess } from '../../redux/slice/employeeSlice';
 
-function AddEmployee({ navigation, route }) {
+function AddEmp({ navigation, route }) {
   const userSelector = useSelector((state) => state.auth);
   const employeesApiData = useSelector((state) => state?.employee?.data);
 
@@ -267,7 +267,7 @@ function AddEmployee({ navigation, route }) {
   );
 }
 
-export default AddEmployee;
+export default AddEmp;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList, createDrawerNavigator } from '@react-navigation/drawer';
@@ -13,10 +13,11 @@ import ListFoodOrder from './ListFoodOrder/ListFoodOrder';
 import ListFoodOrdered from './ListFoodOrdered/listFoodOrdered';
 import DetailListFood from './DetailListFood';
 import EmployeeManager from './EmployeeManager/EmployeeManager';
-import Cook from './Cook/index'
-// import AddEmp from './AddEmp/AddEmp';
-// import AddFood from './FoodManager/AddFood';
-// import FoodManager from './FoodManager/FoodManager';
+import Cook from './Cook/index';
+import AddEmp from './AddEmp/AddEmp';
+import AssignEmp from './AssignEmp';
+import AddFood from './FoodManager/AddFood';
+import FoodManager from './FoodManager/FoodManager';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
 import { loginSuccess } from '../redux/slice/authSlice';
@@ -27,7 +28,7 @@ const Drawer = createDrawerNavigator();
 const Waiter = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='Table' component={Table} />
+      <Stack.Screen name="Table" component={Table} />
       <Stack.Screen name="TableMerge" component={TableMerge} />
       <Stack.Screen name="ListFood" component={ListFood} />
       <Stack.Screen name="DetailListFood" component={DetailListFood} />
@@ -35,7 +36,7 @@ const Waiter = () => {
       <Stack.Screen name="ListFoodOrdered" component={ListFoodOrdered} />
     </Stack.Navigator>
   );
-}
+};
 
 const Chef = () => {
   return (
@@ -43,17 +44,26 @@ const Chef = () => {
       <Stack.Screen name="Cook" component={Cook} />
     </Stack.Navigator>
   );
-}
+};
 
 const Employee = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name='EmployeeManager' component={EmployeeManager} />
-      <Stack.Screen name='AssignEmp' component={AssignEmp} />
-      {/* <Stack.Screen name='AddEmployee' component={AddEmployee} /> */}
+      <Stack.Screen name="EmployeeManager" component={EmployeeManager} />
+      <Stack.Screen name="AddEmp" component={AddEmp} />
+      <Stack.Screen name="AssignEmp" component={AssignEmp} />
     </Stack.Navigator>
   );
-}
+};
+
+const Food = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="FoodManager" component={FoodManager} />
+      <Stack.Screen name="AddFood" component={AddFood} />
+    </Stack.Navigator>
+  );
+};
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -65,7 +75,7 @@ const Home = () => {
   const handleLogout = (props) => {
     logoutUser(dispatch, selector?.data?.accessToken, axiosJWT);
     props.navigation.closeDrawer();
-  }
+  };
 
   // render
   const CustomDrawerContent = (props) => {
@@ -73,13 +83,15 @@ const Home = () => {
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
         <DrawerItem
-          icon={({ focused, color, size }) => <MaterialCommunityIcons name={focused ? "logout-variant" : "logout"} size={size} color={color} />}
+          icon={({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? 'logout-variant' : 'logout'} size={size} color={color} />
+          )}
           label="Đăng xuất"
           onPress={() => handleLogout(props)}
         />
       </DrawerContentScrollView>
     );
-  }
+  };
 
   const DrawerScreen = () => {
     return (
@@ -88,36 +100,35 @@ const Home = () => {
         useLegacyImplementation
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
-        <Drawer.Screen name='Gọi món' component={Waiter} />
-        <Drawer.Screen name='Bếp' component={Chef} />
-        <Drawer.Screen name='Nhân sự' component={Employee} />
+        <Drawer.Screen name="Gọi món" component={Waiter} />
+        <Drawer.Screen name="Bếp" component={Chef} />
+        <Drawer.Screen name="Nhân sự" component={Employee} />
+        <Drawer.Screen name="Thực đơn" component={Food} />
       </Drawer.Navigator>
     );
-  }
+  };
 
   React.useEffect(() => {
-    if (
-      selector?.data
-    ) {
+    if (selector?.data) {
       setIsLogin(false);
     } else {
       setIsLogin(true);
     }
-  }, [selector])
+  }, [selector]);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {
-          isLogin ?
-            <Stack.Screen name='Login' component={Login} />
-            : <Stack.Screen name='DrawerScreen' component={DrawerScreen} />
-        }
+        {isLogin ? (
+          <Stack.Screen name="Login" component={Login} />
+        ) : (
+          <Stack.Screen name="DrawerScreen" component={DrawerScreen} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

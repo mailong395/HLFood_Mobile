@@ -4,16 +4,13 @@ import { OPTION_TABLE, CMS } from '../../config/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActivityIndicator, Divider, MD2Colors, Searchbar } from 'react-native-paper';
 import Header from '../../common/Header';
-import Filter from '../../common/Filter';
 import List from './List';
 import ModalComp from './ModalComp';
 import { deleteFood, getAllFood } from '../../redux/api/foodApi';
-import LeftDrawer from '../../component/LeftDrawer';
 import { createAxios } from '../../redux/createInstance';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import React from 'react';
 import DialogComp from '../../component/DialogComp';
-import { getAllEmployeeSuccess } from '../../redux/slice/employeeSlice';
 import { getAllFoodSuccess } from '../../redux/slice/foodSlice';
 
 function FoodManager({ navigation }) {
@@ -23,7 +20,6 @@ function FoodManager({ navigation }) {
   const accessToken = userSelector?.data?.accessToken;
 
   const drawer = useRef(null);
-  const numTable = useRef();
 
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
@@ -44,15 +40,8 @@ function FoodManager({ navigation }) {
     setFilterData(idFilter);
   };
 
-  const handleOpenDrawer = ({ navigation }) => {
-    drawer.current.openDrawer();
-  };
-  const handleCloseDrawer = () => {
-    drawer.current.closeDrawer();
-  };
-
-  const renderDrawer = () => {
-    return <LeftDrawer closeDrawer={handleCloseDrawer} />;
+  const handleOpenDrawer = () => {
+    navigation.openDrawer();
   };
 
   const handleShowModal = (item) => {
@@ -128,7 +117,7 @@ function FoodManager({ navigation }) {
   }, [searchQuery]);
 
   return (
-    <DrawerLayoutAndroid ref={drawer} drawerWidth={300} drawerPosition={'left'} renderNavigationView={renderDrawer}>
+    <View style={styles.container}>
       <View style={styles.container}>
         <Header
           isShowDrawer={true}
@@ -174,7 +163,7 @@ function FoodManager({ navigation }) {
           propsClose={() => setIsShowConfirmDelete(false)}
         />
       </View>
-    </DrawerLayoutAndroid>
+    </View>
   );
 }
 
