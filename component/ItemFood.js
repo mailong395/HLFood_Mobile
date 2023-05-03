@@ -8,8 +8,8 @@ import { CONTENT, LABEL } from "../config/lang_vn";
 
 const ItemFood = ({
   image,
-  name,
-  price,
+  name = "",
+  price = 0,
   quantity,
   handleAddFood,
   handleRemoveFood,
@@ -78,7 +78,7 @@ const ItemFood = ({
             iconColor={theme.colors.error}
             onPress={onRemove}
           />
-          
+
         </Card.Actions>
       }
     </Card>
@@ -88,6 +88,7 @@ const ItemFood = ({
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
+    marginVertical: 8,
   },
   content: {
     marginVertical: 8,

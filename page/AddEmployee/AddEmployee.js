@@ -1,21 +1,19 @@
-import { ActivityIndicator, Button, MD2Colors, Text, TextInput } from 'react-native-paper';
-import { Image, SafeAreaView, ScrollView, StyleSheet, ToastAndroid, View } from 'react-native';
+import { Button, Text, TextInput } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import Header from '../../common/Header';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CMS } from '../../config/config';
 import { BUTTON, LABEL } from '../../config/lang_vn';
-import DropdownComponent from '../../component/DropdownComponent';
 import { SelectCountry } from 'react-native-element-dropdown';
 import { useTheme } from 'react-native-paper';
 import { VALIDATE } from '../../config/validate';
 import { useDispatch, useSelector } from 'react-redux';
-import { addEmployee, updateEmployee } from '../../redux/api/employeeApi';
+import { updateEmployee } from '../../redux/api/employeeApi';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import { createAxios } from '../../redux/createInstance';
-import { useEffect } from 'react';
 import { getAllEmployeeSuccess } from '../../redux/slice/employeeSlice';
 
-function AddEmp({ navigation, route }) {
+function AddEmployee({ navigation, route }) {
   const userSelector = useSelector((state) => state.auth);
   const employeesApiData = useSelector((state) => state?.employee?.data);
 
@@ -269,7 +267,7 @@ function AddEmp({ navigation, route }) {
   );
 }
 
-export default AddEmp;
+export default AddEmployee;
 
 const styles = StyleSheet.create({
   container: {

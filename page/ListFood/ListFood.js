@@ -8,8 +8,9 @@ import Header from "../../common/Header";
 import List from "./List";
 import Dialog from "../../component/DialogComp";
 import { addFood } from "../../common/common";
+import { getAllFoodSuccess } from "../../redux/slice/foodSlice";
 
-export default function ListFood({ route, navigation }) {
+export default function Container({ route, navigation }) {
   const { numTable, idOrdered } = route.params;
   const { foodOrdered, setFoodOrdered, foodWaitContext } = useContext(FoodContext);
   const temp = useRef(null);
@@ -17,6 +18,8 @@ export default function ListFood({ route, navigation }) {
   const [isShowDialog, setIsShowDialog] = useState(false);
   const selector = useSelector(state => state.food);
   const count = useRef(0);
+
+  console.log('count', count);
 
   // Handler 
   const onChangeSearch = query => setSearchQuery(query);
@@ -36,7 +39,7 @@ export default function ListFood({ route, navigation }) {
     })
     if (index !== -1 && data.quantity === 0) {
       setIsShowDialog(true);
-      temp.current = data;
+      temp.current = index;
       return true;
     }
     return false;
@@ -46,33 +49,28 @@ export default function ListFood({ route, navigation }) {
     setIsShowDialog(false);
   }
 
-  const handleAddFood = (data) => {
+  const handleAddFood = (data, index) => {
     const isAdd = handleShowDialog(data);
     if (!isAdd) {
-      const newData = addFood(foodOrdered, data.food._id);
-      setFoodOrdered(newData);
+      foodOrdered[index].quantity++;
+      setFoodOrdered([...foodOrdered]);
       count.current++;
     }
   }
 
   const addFoodInDialog = () => {
-    const newData = addFood(foodOrdered, temp.current.food._id);
-    setFoodOrdered(newData);
+    // const newData = addFood(foodOrdered, temp.current.food._id);
+    foodOrdered[index].count++;
+    setFoodOrdered([...foodOrdered]);
     count.current++;
     setIsShowDialog(false);
   }
 
-  const handleRemoveFood = (data) => {
+  const handleRemoveFood = (data, index) => {
     if (data.quantity > 0) {
-      const newArray = foodOrdered.map((newFood, index) => {
-        newFood.food._id === data.food._id && (indexRemove = index);
-        return newFood.food._id === data.food._id && {
-          ...newFood,
-          description: newFood.quantity === 1 ? '' : newFood.description,
-          quantity: newFood.quantity - 1
-        }
-      });
-      setFoodOrdered(newArray);
+      foodOrdered[index].quantity--;
+      foodOrdered[index].quantity === 0 && (foodOrdered[index].description = '');
+      setFoodOrdered([...foodOrdered]);
       count.current--;
     }
   };
@@ -100,7 +98,7 @@ export default function ListFood({ route, navigation }) {
       }
     })
     const filter = newData.filter(item => {
-      return item.food.name.toLowerCase().includes(searchQuery.toLowerCase());
+      return item?.food?.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
     setFoodOrdered([...filter]);
   }, [searchQuery])

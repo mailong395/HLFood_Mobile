@@ -23,24 +23,24 @@ const LeftDrawer = ({closeDrawer}) => {
   };
 
 
-  const handleCloseDrawer = () => {
-    handleLogout();
-    closeDrawer();
-    setLoading(false)
-  }
+  // const handleCloseDrawer = () => {
+  //   handleLogout();
+  //   closeDrawer();
+  //   setLoading(false)
+  // }
 
-  const handleLogout = async () => {
-    try {
-      setLoading(true);
-      await logoutUser(dispatch, userSelector?.data?.accessToken, axiosJWT);
-      if (!loading) {
-        logoutSuccess();
-      }
-    } catch (error) {
-      logoutFail();
-      setLoading(false);
-    } 
-  }
+  // const handleLogout = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await logoutUser(dispatch, userSelector?.data?.accessToken, axiosJWT);
+  //     if (!loading) {
+  //       logoutSuccess();
+  //     }
+  //   } catch (error) {
+  //     logoutFail();
+  //     setLoading(false);
+  //   } 
+  // }
 
   return (
     <View style={[styles.container, styles.navigationContainer]}>

@@ -16,8 +16,7 @@ import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
 import React from "react";
 
-const Table = ({ navigation, openDrawer }) => {
-  const drawer = useRef(null);
+const Table = ({ navigation }) => {
   const numTable = useRef();
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
@@ -70,7 +69,7 @@ const Table = ({ navigation, openDrawer }) => {
   }
 
   const handleOpenDrawer = () => {
-    openDrawer();
+    navigation.openDrawer();
   }
 
   // Fetch Data
@@ -81,8 +80,6 @@ const Table = ({ navigation, openDrawer }) => {
     }
     getAllTable(dispatch, param, userSelector?.data?.accessToken, axiosJWT);
   }, [getData]);
-
-
 
   return (
     <View style={styles.container}>

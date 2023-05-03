@@ -7,6 +7,7 @@ const authSlice = createSlice({
     loading: false,
     success: false,
     error: false,
+
   },
   reducers: {
     // login
@@ -33,13 +34,11 @@ const authSlice = createSlice({
     logoutSuccess: (state) => {
       state.loading = false;
       state.data = null;
-      state.success = true;
+      state.success = false;
       state.error = false;
     },
     logoutFailed: (state) => {
       state.loading = false;
-      state.data = null;
-      state.success = false;
       state.error = true;
     },
   },
