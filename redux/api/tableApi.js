@@ -12,6 +12,8 @@ import {
 
 import { REACT_APP_HOST_API } from '@env';
 import { getAllTableMergeFailed, getAllTableMergeStart, getAllTableMergeSuccess } from '../slice/tableMergeSlice';
+import { TOAST } from '../../config/lang_vn';
+import { Toast } from '../../common/toast';
 
 export const getAllTable = async (dispatch, params, accessToken, axiosJWT) => {
   dispatch(getAllTableStart());
@@ -67,9 +69,11 @@ export const mergeTable = async (dispatch, body, accessToken, axiosJWT) => {
       headers: { token: `bear ${accessToken}` },
     });
     dispatch(tableMergeSuccess());
+    Toast(TOAST.Merge_Success);
   } catch (error) {
     dispatch(tableMergeFailed());
     console.log(error);
+    Toast(TOAST.Merge_fail);
   }
 };
 

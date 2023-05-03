@@ -19,8 +19,6 @@ export default function Container({ route, navigation }) {
   const selector = useSelector(state => state.food);
   const count = useRef(0);
 
-  console.log('count', count);
-
   // Handler 
   const onChangeSearch = query => setSearchQuery(query);
 
@@ -33,11 +31,12 @@ export default function Container({ route, navigation }) {
     navigation.goBack();
   }
 
-  const handleShowDialog = (data) => {
-    const index = foodWaitContext.findIndex(tempFood => {
+  const handleShowDialog = (data, index) => {
+    const i = foodWaitContext.findIndex(tempFood => {
       return tempFood.food._id === data.food._id;
     })
-    if (index !== -1 && data.quantity === 0) {
+
+    if (i !== -1 && data.quantity === 0) {
       setIsShowDialog(true);
       temp.current = index;
       return true;
@@ -50,7 +49,7 @@ export default function Container({ route, navigation }) {
   }
 
   const handleAddFood = (data, index) => {
-    const isAdd = handleShowDialog(data);
+    const isAdd = handleShowDialog(data, index);
     if (!isAdd) {
       foodOrdered[index].quantity++;
       setFoodOrdered([...foodOrdered]);
@@ -59,8 +58,7 @@ export default function Container({ route, navigation }) {
   }
 
   const addFoodInDialog = () => {
-    // const newData = addFood(foodOrdered, temp.current.food._id);
-    foodOrdered[index].count++;
+    foodOrdered[temp.current].quantity++;
     setFoodOrdered([...foodOrdered]);
     count.current++;
     setIsShowDialog(false);

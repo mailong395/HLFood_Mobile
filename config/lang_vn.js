@@ -47,6 +47,8 @@ const TOAST = {
   login_fail: 'Đăng nhập không thành công',
   logout_success: 'Đăng xuất thành công',
   logout_fail: 'Đăng xuất không thành công',
+  Merge_Success: 'Ghép/Chuyển bàn thành công',
+  Merge_fail: 'Ghép/Chuyển bàn không thành công',
 };
 
 export { BUTTON, LABEL, CONTENT, HEADER_TITLE, TOAST };

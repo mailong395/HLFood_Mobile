@@ -23,6 +23,7 @@ const List = ({ data = [] }) => {
         };
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+      await updateTable(dispatch, table._id, 3, userSelector?.data.accessToken, axiosJWT);
     }
 
     const handleMinus = async () => {
@@ -35,6 +36,7 @@ const List = ({ data = [] }) => {
         };
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+      await updateTable(dispatch, table._id, 3, userSelector?.data.accessToken, axiosJWT);
     }
 
     const handleDone = async () => {
@@ -46,6 +48,7 @@ const List = ({ data = [] }) => {
           : element;
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+      await updateTable(dispatch, table._id, 3, userSelector?.data.accessToken, axiosJWT);
     }
 
     return !isShow && <CookItem
@@ -73,5 +76,7 @@ const List = ({ data = [] }) => {
 export default List
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  }
 });
