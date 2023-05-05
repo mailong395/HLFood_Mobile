@@ -67,6 +67,18 @@ const orderSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    paymentOrderStart: (state) => {
+      state.isFetching = true;
+    },
+    paymentOrderSuccess: (state) => {
+      state.data = [];
+      state.isFetching = false;
+      state.success = false;
+      state.error = false;
+    },
+    paymentOrderFailed: (state) => {
+      state.isFetching = false;
+    },
   }
 });
 
@@ -86,6 +98,9 @@ export const {
   deleteOrderDetailStart,
   deleteOrderDetailSuccess,
   deleteOrderDetailFailed,
+  paymentOrderStart,
+  paymentOrderSuccess,
+  paymentOrderFailed,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

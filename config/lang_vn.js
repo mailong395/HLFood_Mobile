@@ -15,7 +15,8 @@ const BUTTON = {
   addEmp: 'Thêm nhân viên',
   editEmp: 'Sửa thông tin nhân viên',
   addFood: 'Thêm thức ăn',
-  editFood: 'Sửa thông tin thức ăn'
+  editFood: 'Sửa thông tin thức ăn',
+  payment: 'Thanh Toán',
 };
 
 const LABEL = {
@@ -28,7 +29,8 @@ const LABEL = {
   job_title: 'Chức vụ',
   user_name: 'Tên đăng nhập',
   password: 'Mật khẩu',
-  price: 'Giá tiền'
+  price: 'Giá tiền',
+  money_of_cus: 'Nhập số tiền khách hàng',
 };
 
 const CONTENT = {
@@ -49,6 +51,17 @@ const TOAST = {
   logout_fail: 'Đăng xuất không thành công',
   Merge_Success: 'Ghép/Chuyển bàn thành công',
   Merge_fail: 'Ghép/Chuyển bàn không thành công',
+  payment_success: 'Thanh toán thành công',
+  payment_failed: 'Thanh toán không thành công',
 };
 
-export { BUTTON, LABEL, CONTENT, HEADER_TITLE, TOAST };
+const TABLE = {
+  Status: 'Trạng thái',
+  Time: 'Thời gian',
+  Name_cus: 'Tên khách hàng',
+  Phone_cus: 'Số điện thoại',
+  Table: 'Bàn',
+  id_order: 'Số HĐ'
+}
+
+export { BUTTON, LABEL, CONTENT, HEADER_TITLE, TOAST, TABLE };

@@ -60,6 +60,8 @@ const Table = ({ navigation }) => {
         navigation.navigate('ListFoodOrdered', { numTable: numTable.current, idOrdered: orderId });
         break;
       case 3:
+        getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
+        console.log('token', userSelector?.data?.accessToken);
         navigation.navigate('DetailListFood');
         break;
       default:

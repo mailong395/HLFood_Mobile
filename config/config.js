@@ -141,7 +141,7 @@ const STATUS_TABLE = {
   ship: {
     title: 'Đã có món',
     color: '#fafafa',
-    backgroundColor: '#379237',
+    backgroundColor: '#EE6F57',
   },
   done: {
     title: 'Hoàn thành',
