@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createAxios } from '../../redux/createInstance';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import { getAllOrderDetail } from '../../redux/api/orderDetailApi';
+import { TableContext } from '../../context/TableContext';
 
 const Cook = ({ navigation }) => {
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const { getData } = React.useContext(TableContext);
 
   // handle
   const handleOpenDrawer = () => {
@@ -19,7 +21,7 @@ const Cook = ({ navigation }) => {
   // fetch data
   React.useEffect(() => {
     getAllOrderDetail(dispatch, userSelector?.data?.accessToken, axiosJWT);
-  }, []);
+  }, [getData]);
 
   return (
     <Container openDrawer={handleOpenDrawer} />

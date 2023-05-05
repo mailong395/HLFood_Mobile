@@ -6,11 +6,14 @@ import { IconButton, MD3Colors } from 'react-native-paper'
 import { updateOrderDetail } from '../../redux/api/orderDetailApi'
 import { createAxios } from '../../redux/createInstance'
 import { loginSuccess } from '../../redux/slice/authSlice'
+import { updateTable } from "../../redux/api/tableApi";
+import { TableContext } from '../../context/TableContext';
 
 const List = ({ data = [] }) => {
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const { getData, setGetData } = React.useContext(TableContext);
 
   const renderItem = ({ item, index }) => {
     const isShow = item.quantity === item.quantity_finished;
@@ -23,6 +26,10 @@ const List = ({ data = [] }) => {
         };
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+      item?.order?.tables.forEach( async element => {
+        await updateTable(dispatch, element._id, 3, userSelector?.data.accessToken, axiosJWT);
+      });
+      setGetData(!getData);
     }
 
     const handleMinus = async () => {
@@ -35,6 +42,10 @@ const List = ({ data = [] }) => {
         };
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+      item?.order?.tables.forEach( async element => {
+        await updateTable(dispatch, element._id, 3, userSelector?.data.accessToken, axiosJWT);
+      });
+      setGetData(!getData);
     }
 
     const handleDone = async () => {
@@ -46,6 +57,10 @@ const List = ({ data = [] }) => {
           : element;
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+      item?.order?.tables.forEach( async element => {
+        await updateTable(dispatch, element._id, 3, userSelector?.data.accessToken, axiosJWT);
+      });
+      setGetData(!getData);
     }
 
     return !isShow && <CookItem
@@ -73,5 +88,7 @@ const List = ({ data = [] }) => {
 export default List
 
 const styles = StyleSheet.create({
-
+  container: {
+    flex: 1,
+  }
 });

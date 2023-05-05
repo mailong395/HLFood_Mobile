@@ -29,7 +29,7 @@ const Container = ({ navigation, idOrder }) => {
   }
 
   const handleMergeTable = () => {
-    order.tables.forEach(element => tableMerge.push(element._id));
+    order?.tables.forEach(element => tableMerge.push(element._id));
     update(tableMerge)
   }
 
@@ -37,13 +37,13 @@ const Container = ({ navigation, idOrder }) => {
     update(tableMerge)
   }
 
-  const update = (data) => {
+  const update = async (data) => {
     const body = {
       table: data,
-      order_id: order._id,
+      order_id: order?._id,
       status: table.status,
     };
-    mergeTable(dispatch, body, userSelector?.data.accessToken, axiosJWT);
+    await mergeTable(dispatch, body, userSelector?.data.accessToken, axiosJWT);
     setTableMerge([]);
     setGetData(!getData);
     navigation.popToTop();

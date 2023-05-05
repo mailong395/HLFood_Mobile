@@ -14,8 +14,13 @@ import {
   saveOrderSuccess,
   updateOrderDetailFailed,
   updateOrderDetailStart,
-  updateOrderDetailSuccess
+  updateOrderDetailSuccess,
+  paymentOrderStart,
+  paymentOrderSuccess,
+  paymentOrderFailed,
 } from "../slice/orderSlice";
+import { Toast } from "../../common/toast";
+import { TOAST } from "../../config/lang_vn";
 
 export const saveOrder = async (dispatch, employeeId, bookingTable, time_booking, accessToken, axiosJWT) => {
   dispatch(saveOrderStart());
@@ -97,5 +102,21 @@ export const deleteOrderDetail = async (dispatch, idOrderDetail, accessToken, ax
   } catch (error) {
     dispatch(deleteOrderDetailFailed());
     console.log(error);
+  }
+}
+
+export const paymentOrder = async (dispatch, params, body, accessToken, axiosJWT) => {
+  dispatch(paymentOrderStart());
+  try {
+    await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/order:pay/`, body, {
+      headers: { token: `bear ${accessToken}` },
+      params: params,
+    });
+    dispatch(paymentOrderSuccess());
+    Toast(TOAST.payment_success);
+  } catch (error) {
+    dispatch(paymentOrderFailed());
+    Toast(TOAST.payment_failed);
+    throw new Error('Parameter is not a number!');
   }
 }

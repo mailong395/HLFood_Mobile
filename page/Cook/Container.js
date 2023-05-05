@@ -13,8 +13,6 @@ const Container = ({ openDrawer }) => {
   const [loading, setLoading] = useState(false);
   const [listOrderDetail, setListOrderDetail] = useState([]);
 
-  console.log('listOrderDetail', listOrderDetail);
-
   const handleOpenDrawer = () => {
     openDrawer();
   }

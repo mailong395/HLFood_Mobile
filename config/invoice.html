@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .table-info {
+      width: 100%;
+      border-spacing: 10px;
+    }
+    .label-info {
+      width: 100px;
+    }
+    .table-detail {
+      width: 100%;
+      text-align: center;
+    }
+    .table-price {
+      width: 100%;
+    }
+    .text-right {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Nhà Hàng Đồng Quê</h1>
+    <p>920/73 Quang Trung, P.8, Gò Vấp, TP.HCM</p>
+    <br>
+    <h2>Hóa Đơn Tạm Tính</h2>
+    <h3>Bàn: 1</h3>
+    <br><hr style="width: 100%;" />
+    <table class="table-info">
+      <tr>
+        <td class="label-info"><b>Số HĐ:</b></td>
+        <td>123123</td>
+      </tr>
+      <tr>
+        <td class="label-info"><b>Thời gian:</b></td>
+        <td>123123</td>
+      </tr>
+      <tr>
+        <td class="label-info"><b>MSNV:</b></td>
+        <td>123123</td>
+      </tr>
+    </table>
+    <hr style="width: 100%;" />
+    <table class="table-detail">
+      <tr>
+        <th>STT</th>
+        <th>Tên món</th>
+        <th>SL</th>
+        <th>Đơn giá</th>
+        <th>Thành tiền</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Cơm chiên hải sản</td>
+        <td>2</td>
+        <td>100.000</td>
+        <td>200.000</td>
+      </tr>
+    </table>
+    <br><hr style="width: 100%;" />
+    <table class="table-price">
+      <tr>
+        <td><b>Phải thanh toán:</b></td>
+        <td class="text-right">200.000</td>
+      </tr>
+    </table>
+    <hr style="width: 100%;" />
+    <table class="table-price">
+      <tr>
+        <td><b>Tiền khách đưa:</b></td>
+        <td class="text-right">500.000</td>
+      </tr>
+      <tr>
+        <td><b>Tiền thối lại:</b></td>
+        <td class="text-right">300.000</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
