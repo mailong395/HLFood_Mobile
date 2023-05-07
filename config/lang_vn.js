@@ -17,6 +17,10 @@ const BUTTON = {
   addFood: 'Thêm thức ăn',
   editFood: 'Sửa thông tin thức ăn',
   payment: 'Thanh Toán',
+  statisticalCustomDay: 'Doanh thu trong ngày cụ thể',
+  statisticalDay: 'Doanh thu trong ngày',
+  statisticalMonth: 'Doanh thu trong tháng',
+  statisticalYear: 'Doanh thu trong năm',
 };
 
 const LABEL = {

@@ -21,6 +21,8 @@ import DetailListFood from './DetailListFood';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
 import { loginSuccess } from '../redux/slice/authSlice';
+import Statistical from './Statistical/Statistical';
+import StatisticalDetail from './Statistical/StatisticalDetail';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -65,6 +67,15 @@ const Food = () => {
   );
 };
 
+const Statis = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Statistical" component={Statistical} />
+      <Stack.Screen name="StatisticalDetail" component={StatisticalDetail} />
+    </Stack.Navigator>
+  );
+};
+
 const Home = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.auth);
@@ -104,6 +115,7 @@ const Home = () => {
         <Drawer.Screen name="Bếp" component={Chef} />
         <Drawer.Screen name="Nhân sự" component={Employee} />
         <Drawer.Screen name="Thực đơn" component={Food} />
+        <Drawer.Screen name="Thống kê" component={Statis} />
       </Drawer.Navigator>
     );
   };

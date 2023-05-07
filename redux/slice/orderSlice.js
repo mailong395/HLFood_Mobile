@@ -3,12 +3,18 @@ import { createSlice } from '@reduxjs/toolkit';
 const orderSlice = createSlice({
   name: 'order',
   initialState: {
+    orders: [],
     data: [],
     isFetching: false,
     success: false,
     error: false,
   },
   reducers: {
+    getOrdersSuccess: (state, action) => {
+      state.isFetching = false;
+      state.orders = action.payload;
+      state.success = true;
+    },
     saveOrderStart: (state) => {
       state.isFetching = true;
     },
