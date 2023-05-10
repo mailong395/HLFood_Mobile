@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HLFood_Mobile",
+    "name": "HLFood",
     "slug": "HLFood_Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,13 +21,20 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.hlfood.Hlfood",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b712363c-2d79-4c36-96e4-0b5028df878e"
+      }
     }
   }
 }
