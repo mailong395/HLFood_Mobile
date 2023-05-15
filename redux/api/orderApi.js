@@ -29,6 +29,7 @@ export const getAllOrder = async (dispatch, accessToken, axiosJWT) => {
     const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/orders`, {
       headers: { token: `bear ${accessToken}` },
     });
+    
     dispatch(getOrdersSuccess(res.data));
   } catch (error) {
     dispatch(getOrderByIdFailed());

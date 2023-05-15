@@ -238,7 +238,12 @@ function AddFood({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Header title={CMS.logo} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
+      <Header
+        title={food ? CMS.editFood : CMS.addFood}
+        mode="center-aligned"
+        isShowButtonGoBack={true}
+        props={handleGoBack}
+      />
 
       <View style={{ padding: 20 }}>
         <View style={{ alignItems: 'center', paddingVertical: 30 }}>

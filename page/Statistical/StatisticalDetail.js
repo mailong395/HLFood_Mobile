@@ -11,7 +11,7 @@ import moment from 'moment'; // add this
 import { formatCurrency } from 'react-native-format-currency';
 
 function StatisticalDetail({ navigation, route }) {
-  const orderRedux = useSelector((state) => state?.order?.orders);
+  const orderRedux = useSelector((state) => state?.order?.listAll);
 
   const { mode } = route?.params;
 
@@ -27,6 +27,21 @@ function StatisticalDetail({ navigation, route }) {
     setDataCsv(orders);
     setRenderOrder(currentDate, orders, mode);
     setDate(currentDate);
+  };
+
+  const getHeaderTitle = (mode) => {
+    switch (mode) {
+      case 'dayCustom':
+        return CMS.dayStatistical;
+      case 'dayNow':
+        return CMS.nowStatistical;
+      case 'month':
+        return CMS.monthStatistical;
+      case 'year':
+        return CMS.yearStatistical;
+      default:
+        break;
+    }
   };
 
   const formatDate = (date, mode) => {
@@ -86,12 +101,13 @@ function StatisticalDetail({ navigation, route }) {
       }
       return result;
     }, []);
-
+    console.log(result);
     setDataCsv(result);
   };
 
   const setYearRenderOrders = (date, orders) => {
     const year = date.getFullYear();
+
     const result = orders.reduce((result, order) => {
       const dateOrder = new Date(order.time_created);
       const yearOrder = dateOrder.getFullYear();
@@ -126,7 +142,7 @@ function StatisticalDetail({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Header title={CMS.logo} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
+      <Header title={getHeaderTitle(mode)} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
 
       <View style={styles.dateInput}>
         <TextInput
