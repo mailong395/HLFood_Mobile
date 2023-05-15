@@ -20,9 +20,9 @@ import FoodManager from './FoodManager/FoodManager';
 import DetailListFood from './DetailListFood';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
-import { loginSuccess } from '../redux/slice/authSlice';
 import Statistical from './Statistical/Statistical';
 import StatisticalDetail from './Statistical/StatisticalDetail';
+import { logoutSuccess } from '../redux/slice/authSlice';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -80,10 +80,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.auth);
   const [isLogin, setIsLogin] = React.useState(true);
-  const axiosJWT = createAxios(selector?.data, dispatch, loginSuccess);
+  const axiosJWT = createAxios(selector?.data, dispatch, logoutSuccess);
 
   const handleLogout = (props) => {
-    logoutUser(dispatch, selector?.data?.accessToken, axiosJWT);
+    if (selector?.data?.accessToken) {
+      logoutUser(dispatch, selector?.data?.accessToken, axiosJWT);
+    }
     props.navigation.closeDrawer();
   };
 

@@ -31,12 +31,18 @@ const ModalComp = ({ isShow, props, handleCloseModal, modalVisible }) => {
         }
         return false;
       case 2:
-        if (modalVisible > 1) {
+        if (modalVisible === 2) {
           return true;
         }
         return false;
       case 3: {
         if (modalVisible > 2) {
+          return true;
+        }
+        return false;
+      }
+      case 4: {
+        if (modalVisible === 3) {
           return true;
         }
         return false;

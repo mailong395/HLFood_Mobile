@@ -8,7 +8,7 @@ import { SelectCountry } from 'react-native-element-dropdown';
 import { useTheme } from 'react-native-paper';
 import { VALIDATE } from '../../config/validate';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateEmployee } from '../../redux/api/employeeApi';
+import { addEmployee, updateEmployee } from '../../redux/api/employeeApi';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import { createAxios } from '../../redux/createInstance';
 import { getAllEmployeeSuccess } from '../../redux/slice/employeeSlice';
@@ -150,7 +150,7 @@ function AddEmp({ navigation, route }) {
       job_title: jobTitle,
     };
 
-    update(dispatch, bodyApi, accessToken, axiosJWT);
+    addEmployee(dispatch, bodyApi, accessToken, axiosJWT);
     handleGoBack();
   };
 

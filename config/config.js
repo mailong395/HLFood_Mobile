@@ -38,6 +38,10 @@ const OPTION_TABLE = [
     _id: 3,
     title: 'Đã có món',
   },
+  {
+    _id: 4,
+    title: 'Hoàng thành',
+  },
 ];
 
 // List kind of fond
@@ -89,6 +93,11 @@ const ACTIVE_TABLE = [
     title: 'Xem chi tiết',
     icon: 'information',
   },
+  {
+    id: 4,
+    title: 'Xác nhận chuyển món',
+    icon: 'check-bold'
+  }
 ];
 
 const ACTIVE_FOOD = [

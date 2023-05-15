@@ -1,6 +1,5 @@
 {
   "expo": {
-    "jsEngine": "hermes",
     "name": "HLFood",
     "slug": "HLFood_Mobile",
     "version": "1.0.0",

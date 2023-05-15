@@ -12,35 +12,6 @@ const LeftDrawer = ({closeDrawer}) => {
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const [loading, setLoading] = React.useState(false);
-  // const navigation = useNavigation();
-
-  const logoutSuccess = () => {
-    ToastAndroid.showWithGravity(TOAST.logout_success, ToastAndroid.SHORT, ToastAndroid.TOP);
-  };
-
-  const logoutFail = () => {
-    ToastAndroid.showWithGravity(TOAST.logout_fail, ToastAndroid.SHORT, ToastAndroid.TOP);
-  };
-
-
-  // const handleCloseDrawer = () => {
-  //   handleLogout();
-  //   closeDrawer();
-  //   setLoading(false)
-  // }
-
-  // const handleLogout = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await logoutUser(dispatch, userSelector?.data?.accessToken, axiosJWT);
-  //     if (!loading) {
-  //       logoutSuccess();
-  //     }
-  //   } catch (error) {
-  //     logoutFail();
-  //     setLoading(false);
-  //   } 
-  // }
 
   return (
     <View style={[styles.container, styles.navigationContainer]}>

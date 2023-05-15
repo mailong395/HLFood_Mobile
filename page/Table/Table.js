@@ -6,7 +6,7 @@ import { TableContext } from "../../context/TableContext";
 import { Divider } from 'react-native-paper';
 import Header from "../../common/Header";
 import List from "./List";
-import { getAllTable } from "../../redux/api/tableApi";
+import { getAllTable, updateTable } from "../../redux/api/tableApi";
 import ModalComp from "./ModalComp";
 import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
@@ -21,7 +21,7 @@ const Table = ({ navigation }) => {
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const { setTable, getData } = useContext(TableContext);
+  const { setTable, getData, setGetData } = useContext(TableContext);
   const { setFoodWaitContext } = useContext(FoodContext);
   const [modalVisible, setModalVisible] = useState(-1);
   const [orderId, setOrderId] = useState("");
@@ -56,6 +56,17 @@ const Table = ({ navigation }) => {
         getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
         console.log('token', userSelector?.data?.accessToken);
         navigation.navigate('DetailListFood');
+        break;
+      case 4:
+        const res = await getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
+        console.log('res', res);
+        const isProcessing = res?.order_details?.filter(item => item?.quantity_finished < item?.quantity);
+        if (isProcessing.length === 0) {
+          res?.tables.forEach( async element => {
+            await updateTable(dispatch, element._id, 4, userSelector?.data.accessToken, axiosJWT);
+          });
+        }
+        setGetData(!getData);
         break;
       default:
         break;
