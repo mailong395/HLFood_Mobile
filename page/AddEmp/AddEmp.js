@@ -200,7 +200,12 @@ function AddEmp({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Header title={CMS.logo} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
+      <Header
+        title={emp ? CMS.editEmp : CMS.addEmp}
+        mode="center-aligned"
+        isShowButtonGoBack={true}
+        props={handleGoBack}
+      />
 
       <View style={{ padding: 20 }}>
         {errors.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}

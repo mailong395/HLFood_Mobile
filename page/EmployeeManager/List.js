@@ -18,7 +18,7 @@ const List = ({ props, isShowModal = false, filterData, data }) => {
     const renderPosition = (position) => {
       switch (position) {
         case 0:
-          return 'Chủ nhà hàng';
+          return 'Quản lý';
         case 1:
           return 'Quản lý';
         case 2:

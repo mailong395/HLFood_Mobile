@@ -98,7 +98,7 @@ function EmployeeManager({ navigation }) {
   const addStringJobTitle = (position) => {
     switch (position) {
       case 0:
-        return 'Chủ cửa hàng';
+        return 'Quản lý';
       case 1:
         return 'Quản lý';
       case 2:
@@ -148,7 +148,7 @@ function EmployeeManager({ navigation }) {
     <View style={styles.container}>
       <Header
         isShowDrawer={true}
-        title={CMS.logo}
+        title={CMS.emp}
         mode="center-aligned"
         openDrawer={handleOpenDrawer}
         isPlus={true}

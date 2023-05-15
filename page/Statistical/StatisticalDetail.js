@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector } from 'react-redux';
 import moment from 'moment'; // add this
 import { formatCurrency } from 'react-native-format-currency';
+import MonthYearPicker from './MonthYearPicker';
 
 function StatisticalDetail({ navigation, route }) {
   const orderRedux = useSelector((state) => state?.order?.orders);
@@ -27,6 +28,21 @@ function StatisticalDetail({ navigation, route }) {
     setDataCsv(orders);
     setRenderOrder(currentDate, orders, mode);
     setDate(currentDate);
+  };
+
+  const getHeaderTitle = (mode) => {
+    switch (mode) {
+      case 'dayCustom':
+        return CMS.dayStatistical;
+      case 'dayNow':
+        return CMS.nowStatistical;
+      case 'month':
+        return CMS.monthStatistical;
+      case 'year':
+        return CMS.yearStatistical;
+      default:
+        break;
+    }
   };
 
   const formatDate = (date, mode) => {
@@ -126,7 +142,7 @@ function StatisticalDetail({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Header title={CMS.logo} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
+      <Header title={getHeaderTitle(mode)} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
 
       <View style={styles.dateInput}>
         <TextInput
@@ -143,13 +159,19 @@ function StatisticalDetail({ navigation, route }) {
         )}
 
         {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={'date'}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
+          // <DateTimePicker
+          //   testID="dateTimePicker"
+          //   value={date}
+          //   mode={'date'}
+          //   is24Hour={true}
+          //   display="default"
+          //   onChange={onChange}
+          // />
+          <MonthYearPicker
+            // selectedMonth={selectedMonth}
+            // selectedYear={selectedYear}
+            // onMonthChange={handleMonthChange}
+            // onYearChange={handleYearChange}
           />
         )}
       </View>

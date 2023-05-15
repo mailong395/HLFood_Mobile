@@ -121,7 +121,7 @@ function FoodManager({ navigation }) {
       <View style={styles.container}>
         <Header
           isShowDrawer={true}
-          title={CMS.logo}
+          title={CMS.food}
           mode="center-aligned"
           openDrawer={handleOpenDrawer}
           isPlus={true}

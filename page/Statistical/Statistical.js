@@ -28,7 +28,7 @@ function Statistical({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Header isShowDrawer={true} title={CMS.logo} mode="center-aligned" openDrawer={handleOpenDrawer} />
+      <Header isShowDrawer={true} title={CMS.statistical} mode="center-aligned" openDrawer={handleOpenDrawer} />
 
       <View style={styles.section}>
         <Button

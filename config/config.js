@@ -14,6 +14,17 @@ const CMS = {
   search: 'Tìm kiếm',
   add: 'Thêm Món',
   cook: 'Chế biến',
+  emp: 'Quản lý nhân viên',
+  addFood: 'Thêm món ăn',
+  food: 'Quản lý món ăn',
+  editFood: 'Sửa thông tin món ăn',
+  addEmp: 'Thêm nhân viên',
+  editEmp: 'Sửa thông tin nhân viên',
+  statistical: 'Thống kê doanh thu',
+  dayStatistical: 'Thống kê theo ngày',
+  nowStatistical: 'Thống kê ngày hôm nay',
+  monthStatistical: 'Thống kê theo tháng',
+  yearStatistical: 'Thống kê theo năm'
 };
 
 // List kind of table
