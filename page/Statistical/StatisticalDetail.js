@@ -9,10 +9,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useSelector } from 'react-redux';
 import moment from 'moment'; // add this
 import { formatCurrency } from 'react-native-format-currency';
-import MonthYearPicker from './MonthYearPicker';
 
 function StatisticalDetail({ navigation, route }) {
-  const orderRedux = useSelector((state) => state?.order?.orders);
+  const orderRedux = useSelector((state) => state?.order?.listAll);
 
   const { mode } = route?.params;
 
@@ -102,12 +101,13 @@ function StatisticalDetail({ navigation, route }) {
       }
       return result;
     }, []);
-
+    console.log(result);
     setDataCsv(result);
   };
 
   const setYearRenderOrders = (date, orders) => {
     const year = date.getFullYear();
+
     const result = orders.reduce((result, order) => {
       const dateOrder = new Date(order.time_created);
       const yearOrder = dateOrder.getFullYear();
@@ -159,19 +159,13 @@ function StatisticalDetail({ navigation, route }) {
         )}
 
         {show && (
-          // <DateTimePicker
-          //   testID="dateTimePicker"
-          //   value={date}
-          //   mode={'date'}
-          //   is24Hour={true}
-          //   display="default"
-          //   onChange={onChange}
-          // />
-          <MonthYearPicker
-            // selectedMonth={selectedMonth}
-            // selectedYear={selectedYear}
-            // onMonthChange={handleMonthChange}
-            // onYearChange={handleYearChange}
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={'date'}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
           />
         )}
       </View>

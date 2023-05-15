@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const orderSlice = createSlice({
   name: 'order',
   initialState: {
-    orders: [],
+    listAll: [],
     data: [],
     isFetching: false,
     success: false,
@@ -12,7 +12,7 @@ const orderSlice = createSlice({
   reducers: {
     getOrdersSuccess: (state, action) => {
       state.isFetching = false;
-      state.orders = action.payload;
+      state.listAll = action.payload;
       state.success = true;
     },
     saveOrderStart: (state) => {
@@ -107,6 +107,7 @@ export const {
   paymentOrderStart,
   paymentOrderSuccess,
   paymentOrderFailed,
+  getOrdersSuccess
 } = orderSlice.actions;
 
 export default orderSlice.reducer;
