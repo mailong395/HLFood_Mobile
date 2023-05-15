@@ -79,7 +79,6 @@ const Statis = () => {
 const Home = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.auth);
-  const [loading, setLoading] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(true);
   const axiosJWT = createAxios(selector?.data, dispatch, loginSuccess);
 

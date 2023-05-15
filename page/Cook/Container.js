@@ -19,7 +19,8 @@ const Container = ({ openDrawer }) => {
 
   useEffect(() => {
     setLoading(selector?.loading);
-    setListOrderDetail(selector?.data);
+    const newListData = selector?.data?.filter(item => item?.quantity_finished < item?.quantity)
+    setListOrderDetail(newListData);
   }, [selector])
 
 

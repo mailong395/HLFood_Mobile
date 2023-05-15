@@ -1,14 +1,15 @@
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import { FlatList, StyleSheet, View } from 'react-native'
+import React from 'react'
 import { STATUS_TABLE } from '../../config/config'
 import TableComp from '../../component/TableComp';
 import { useSelector } from 'react-redux';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
-const List = ({ props, isShowModal = false, filterData }) => {
+const List = ({ props, isShowModal = false }) => {
   const selector = useSelector(state => state.table);
   const [selected, setSelected] = React.useState(-1);
-  const [tables, setTables] = React.useState([]);
+  const [tables, setTables] = React.useState(selector?.data);
+  const [loading, setLoading] = React.useState(false);
 
   // Render
   const renderItem = ({ item }) => {
@@ -54,36 +55,42 @@ const List = ({ props, isShowModal = false, filterData }) => {
 
   // Fetch data
   React.useEffect(() => {
-    const newData = [...selector?.data];
-    newData?.sort((a, b) => a.table_num - b.table_num);
+    const newData = [...selector?.data].sort((a, b) => a.table_num - b.table_num);
     setTables(newData);
-  }, [selector])
+    setLoading(selector?.isFetching);
+  }, [selector]);
 
-  React.useEffect(() => {
-    if (filterData === -1) {
-      setTables([...selector?.data]);
-    } else {
-      const newData = [...selector?.data].filter(status => status?.status === filterData);
-      setTables(newData);
-    }
-  }, [filterData])
+  return (
+    <View style={styles.container}>
 
+      {
+        loading ? 
+        <View style={styles.loading}>
+          <ActivityIndicator animating={true} color={MD2Colors.red800} />
+        </View>
+          : <FlatList
+            data={tables}
+            renderItem={renderItem}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+          />
+      }
+    </View>
+  )
 
-  return selector?.isFetching ?
-    <ActivityIndicator size={"large"} animating={true} color={MD2Colors.red800} />
-    : <FlatList
-      data={tables}
-      renderItem={renderItem}
-      numColumns={2}
-      showsVerticalScrollIndicator={false}
-      style={styles.container}
-    />
 }
 
 export default List
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    flex: 1,
   },
+  loading: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 })
