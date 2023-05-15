@@ -33,7 +33,13 @@ export const logoutUser = (dispatch, accessToken, axiosJWT) => {
   try {
     axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/auth/logout`, {
       headers: { token: `bear ${accessToken}` },
-    });
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (response) {
+        console.log(response);
+      });
     dispatch(logoutSuccess());
     Toast(TOAST.logout_success)
   } catch (error) {

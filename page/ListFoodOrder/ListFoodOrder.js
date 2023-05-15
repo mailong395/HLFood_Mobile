@@ -14,10 +14,8 @@ import List from "./List";
 import { priceTotal } from "../../common/common";
 import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
-
-const employee = {
-  _id: '63fb7060fc13ae34f3000492',
-};
+import { io } from 'socket.io-client';
+import { REACT_APP_HOST_API_SERVER as url } from "@env"
 
 const ListFoodOrder = ({ route, navigation }) => {
   const { numTable, idOrdered, countFood } = route.params;
@@ -27,6 +25,7 @@ const ListFoodOrder = ({ route, navigation }) => {
   const count = useRef(countFood);
   const userSelector = useSelector(state => state.auth);
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const socket = useRef();
 
   // Handle
   const handleAddFood = (value) => {
@@ -54,7 +53,6 @@ const ListFoodOrder = ({ route, navigation }) => {
     }
   }
 
-
   const handlerAddMoreFood = () => {
     navigation.navigate('ListFood', { numTable: numTable, idOrdered: idOrdered });
   }
@@ -66,7 +64,7 @@ const ListFoodOrder = ({ route, navigation }) => {
     const order = idOrdered ? idOrdered :
       await saveOrder(
         dispatch,
-        employee._id,
+        userSelector?.data?._id,
         listTable.join(","),
         dateNow,
         userSelector?.data.accessToken,
@@ -92,6 +90,7 @@ const ListFoodOrder = ({ route, navigation }) => {
       count.current = 0;
       navigation.popToTop();
     }
+    socket.current.emit('notification', 'Data send socket');
   }
 
   const handleGoBack = () => {
@@ -117,6 +116,14 @@ const ListFoodOrder = ({ route, navigation }) => {
     })
   }, []);
 
+  useEffect(() => {
+    if (userSelector?.data?.accessToken) {
+      socket.current = io(url, {
+        transports: ['websocket'],
+        'Access-Control-Allow-Credentials': true,
+      });
+    }
+  }, []);
 
   return (
     <View style={styles.container}>

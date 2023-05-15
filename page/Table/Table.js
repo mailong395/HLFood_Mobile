@@ -1,13 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Button, DrawerLayoutAndroid, StyleSheet, Text, View } from "react-native";
-import { OPTION_TABLE, CMS } from '../../config/config'
+import { StyleSheet, View } from "react-native";
+import { CMS } from '../../config/config'
 import { useDispatch, useSelector } from "react-redux";
 import { TableContext } from "../../context/TableContext";
-import { ActivityIndicator, Divider, MD2Colors } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 import Header from "../../common/Header";
-import Filter from "../../common/Filter";
 import List from "./List";
-import { getAllTable } from "../../redux/api/tableApi";
+import { getAllTable, updateTable } from "../../redux/api/tableApi";
 import ModalComp from "./ModalComp";
 import { getAllFood } from "../../redux/api/foodApi";
 import { FoodContext } from '../../context/FoodContext';
@@ -15,23 +14,17 @@ import { getOrderById } from "../../redux/api/orderApi";
 import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
 import React from "react";
+import Filter from "./Filter";
 
 const Table = ({ navigation }) => {
   const numTable = useRef();
   const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const { setTable, getData } = useContext(TableContext);
+  const { setTable, getData, setGetData } = useContext(TableContext);
   const { setFoodWaitContext } = useContext(FoodContext);
-  const [filterData, setFilterData] = useState(-1);
   const [modalVisible, setModalVisible] = useState(-1);
   const [orderId, setOrderId] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  // Handle 
-  const handleFilter = (idFilter = -1) => {
-    setFilterData(idFilter);
-  }
 
   const handleShowModal = (item = {}) => {
     item.status > 1 ? setOrderId(item.order) : setOrderId("");
@@ -64,6 +57,17 @@ const Table = ({ navigation }) => {
         console.log('token', userSelector?.data?.accessToken);
         navigation.navigate('DetailListFood');
         break;
+      case 4:
+        const res = await getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
+        console.log('res', res);
+        const isProcessing = res?.order_details?.filter(item => item?.quantity_finished < item?.quantity);
+        if (isProcessing.length === 0) {
+          res?.tables.forEach( async element => {
+            await updateTable(dispatch, element._id, 4, userSelector?.data.accessToken, axiosJWT);
+          });
+        }
+        setGetData(!getData);
+        break;
       default:
         break;
     }
@@ -74,30 +78,32 @@ const Table = ({ navigation }) => {
     navigation.openDrawer();
   }
 
+
   // Fetch Data
-  useEffect(() => {
+  const fetchData = async () => {
     const param = {};
     if (userSelector?.data?.job_title === 3) {
       param.employee = userSelector?.data._id;
     }
-    getAllTable(dispatch, param, userSelector?.data?.accessToken, axiosJWT);
+    await getAllTable(dispatch, param, userSelector?.data?.accessToken, axiosJWT);
+  }
+  useEffect(() => {
+    fetchData();
   }, [getData]);
+
 
   return (
     <View style={styles.container}>
       <Header isShowDrawer={true} title={CMS.logo} mode="center-aligned" openDrawer={handleOpenDrawer} />
-      <View>
-        <Filter data={OPTION_TABLE} props={handleFilter} />
-      </View>
+
+      <Filter />
+
       <Divider />
 
-      <View style={styles.tableList}>
-        <List
-          filterData={filterData}
-          props={handleShowModal}
-          isShowModal={modalVisible > -1}
-        />
-      </View>
+      <List
+        props={handleShowModal}
+        isShowModal={modalVisible > -1}
+      />
 
       <ModalComp
         isShow={modalVisible > -1}
@@ -106,10 +112,6 @@ const Table = ({ navigation }) => {
         navigation={navigation}
         props={handleMovePage}
       />
-
-      {loading && <View style={styles.loading}>
-        <ActivityIndicator animating={true} color={MD2Colors.red800} />
-      </View>}
     </View>
   );
 }
