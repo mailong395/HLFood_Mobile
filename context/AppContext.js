@@ -1,13 +1,16 @@
 import { TableContextProvider } from "./TableContext";
 import { FoodContextProvider } from './FoodContext';
+import { SocketContextProvider } from "./SocketIOContext";
 
 function AppContext({ children }) {
   return (
-    <TableContextProvider>
-      <FoodContextProvider>
-        {children}
-      </FoodContextProvider>
-    </TableContextProvider>
+    <SocketContextProvider>
+      <TableContextProvider>
+        <FoodContextProvider>
+          {children}
+        </FoodContextProvider>
+      </TableContextProvider>
+    </SocketContextProvider>
   );
 }
 

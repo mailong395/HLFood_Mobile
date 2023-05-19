@@ -12,6 +12,7 @@ import { deleteOrderDetail, updateOrderDetail } from '../../redux/api/orderApi';
 import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import { createAxios } from "../../redux/createInstance";
+import { SocketContext } from '../../context/SocketIOContext';
 
 const ListFoodOrdered = ({ route, navigation }) => {
   const { numTable, idOrdered } = route.params;
@@ -22,6 +23,7 @@ const ListFoodOrdered = ({ route, navigation }) => {
   const [isUpdate, setIsUpdate] = React.useState(false);
   const { setFoodWaitContext } = useContext(FoodContext);
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const { sendToCook } = useContext(SocketContext);
 
   // Handle
   const handleGoBack = () => {
@@ -34,36 +36,38 @@ const ListFoodOrdered = ({ route, navigation }) => {
   }
 
   const handleRemoveFood = (data) => {
-    const temp = {
-      index: -1,
-      id: '',
-    };
-    if (data.quantity > 0) {
-      const newArray = ordered.map((newFood, index) => {
-        if (newFood.quantity === 1) {
-          temp.index = index;
-          temp.id = newFood._id;
-        }
-        return newFood.food._id === data.food._id && {
-          ...newFood,
-          description: newFood.quantity === 1 ? '' : newFood.description,
-          quantity: newFood.quantity - 1
-        }
-      });
-      if (temp.index !== -1) {
-        const newOrder = selector?.data;
-        const array = [...newOrder.order_details];
-        array.shift(temp.index, 1);
-        const orderChange = {
-          ...newOrder,
-          order_details: [...array]
-        }
-        deleteOrderDetail(dispatch, temp.id, userSelector?.data.accessToken, axiosJWT);
-        dispatch(getOrderByIdSuccess(orderChange));
-      }
-      setOrdered(newArray);
-      setIsUpdate(temp.index === -1);
-    }
+    console.log('data', data);
+    // const temp = {
+    //   index: -1,
+    //   id: '',
+    // };
+    // if (data.quantity > 0) {
+    //   const newArray = ordered.map((newFood, index) => {
+    //     if (newFood.quantity === 1) {
+    //       temp.index = index;
+    //       temp.id = newFood._id;
+    //     }
+    //     return newFood.food._id === data.food._id && {
+    //       ...newFood,
+    //       description: newFood.quantity === 1 ? '' : newFood.description,
+    //       quantity: newFood.quantity - 1
+    //     }
+    //   });
+    //   if (temp.index !== -1) {
+    //     const newOrder = selector?.data;
+    //     const array = [...newOrder.order_details];
+    //     array.shift(temp.index, 1);
+    //     const orderChange = {
+    //       ...newOrder,
+    //       order_details: [...array]
+    //     }
+    //     deleteOrderDetail(dispatch, temp.id, userSelector?.data.accessToken, axiosJWT);
+    //     dispatch(getOrderByIdSuccess(orderChange));
+    //   }
+    //   setOrdered(newArray);
+    //   setIsUpdate(temp.index === -1);
+    //   sendToCook({cook: newArray})
+    // }
   };
 
   const handleRemove = (data) => {

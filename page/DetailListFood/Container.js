@@ -43,7 +43,7 @@ const Container = ({ data, openModal }) => {
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.supTitle}>{TABLE.id_order}</Text>
           <Text>:      </Text>
-          <Text style={styles.content}>{data.name_customer ? data.name_customer : ''}</Text>
+          <Text style={styles.content}>{data?.name_customer ? data?.name_customer : ''}</Text>
         </View>
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.supTitle}>{TABLE.Time}</Text>

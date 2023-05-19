@@ -14,8 +14,7 @@ import List from "./List";
 import { priceTotal } from "../../common/common";
 import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
-import { io } from 'socket.io-client';
-import { REACT_APP_HOST_API_SERVER as url } from "@env"
+import { SocketContext } from "../../context/SocketIOContext";
 
 const ListFoodOrder = ({ route, navigation }) => {
   const { numTable, idOrdered, countFood } = route.params;
@@ -25,7 +24,7 @@ const ListFoodOrder = ({ route, navigation }) => {
   const count = useRef(countFood);
   const userSelector = useSelector(state => state.auth);
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const socket = useRef();
+  const { sendToCook } = useContext(SocketContext);
 
   // Handle
   const handleAddFood = (value) => {
@@ -60,7 +59,8 @@ const ListFoodOrder = ({ route, navigation }) => {
   const handlerProcess = async () => {
     const dateNow = new Date();
     const listTable = [numTable];
-    const orderDetails = [];
+    const listOrderDetails = [];
+    const sendData = [];
     const order = idOrdered ? idOrdered :
       await saveOrder(
         dispatch,
@@ -79,18 +79,27 @@ const ListFoodOrder = ({ route, navigation }) => {
           description: element.description,
           order: order,
         };
-        orderDetails.push(newData);
+        listOrderDetails.push(newData);
+
+        const newSendData = {
+          food: element.food,
+          quantity: element.quantity,
+          quantity_finished: 0,
+          description: element.description,
+          order: order,
+        }
+        sendData.push(newSendData);
       }
     });
-    if (orderDetails.length) {
-      saveOrderDetails(dispatch, orderDetails, userSelector?.data.accessToken, axiosJWT);
+    if (listOrderDetails.length) {
+      saveOrderDetails(dispatch, listOrderDetails, userSelector?.data.accessToken, axiosJWT);
       updateTable(dispatch, table._id, 2, userSelector?.data.accessToken, axiosJWT);
       setGetData(!getData);
       setFoodOrdered([]);
       count.current = 0;
       navigation.popToTop();
     }
-    socket.current.emit('notification', 'Data send socket');
+    sendToCook({cook: sendData});
   }
 
   const handleGoBack = () => {
@@ -114,15 +123,6 @@ const ListFoodOrder = ({ route, navigation }) => {
     foodOrdered.map((item) => {
       count.current += item.quantity;
     })
-  }, []);
-
-  useEffect(() => {
-    if (userSelector?.data?.accessToken) {
-      socket.current = io(url, {
-        transports: ['websocket'],
-        'Access-Control-Allow-Credentials': true,
-      });
-    }
   }, []);
 
   return (
