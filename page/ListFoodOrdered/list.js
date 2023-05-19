@@ -1,14 +1,17 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
-import ItemFood from '../../component/ItemFood';
 import { FoodContext } from '../../context/FoodContext';
+import ItemFood from '../../component/ItemFood';
 
 const List = ({ data, onChangeText, propsRemove, onRemove }) => {
 
   // render
   const renderItem = ({ item }) => {
-    const handleAddFood = () => { }
+    const count = item?.quantity - item?.quantity_finished;
+
+    // handle
+    const handleAddFood = () => {}
 
     const handleRemoveFood = () => {
       propsRemove(item);
@@ -22,21 +25,20 @@ const List = ({ data, onChangeText, propsRemove, onRemove }) => {
       onRemove(item)
     }
 
-    return (
+    return count > 0 &&
       <ItemFood
         isEdit={false}
         isHiddenPlus={true}
         name={item?.food?.name}
-        image={item.food.image}
-        price={item.food.price}
-        quantity={item.quantity}
-        handleAddFood={handleAddFood}
-        handleRemoveFood={handleRemoveFood}
-        onchangeText={handleInputDescription}
+        image={item?.food?.image}
+        price={item?.food?.price}
         description={item.description}
-        onRemove={handleOnRemove}
+        quantity={count}
+        // handleAddFood={handleAddFood}
+        // handleRemoveFood={handleRemoveFood}
+        // onchangeText={handleInputDescription}
+        // onRemove={handleOnRemove}
       />
-    );
   }
 
   return (

@@ -35,6 +35,8 @@ const LABEL = {
   password: 'Mật khẩu',
   price: 'Giá tiền',
   money_of_cus: 'Nhập số tiền khách hàng',
+  quantity: 'Số lượng món',
+  quantity_finished: 'Hoàn thành',
 };
 
 const CONTENT = {

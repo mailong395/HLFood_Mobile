@@ -11,7 +11,7 @@ const DetailListFood = ({ navigation }) => {
   const [loading, setLoading] = React.useState(false);
   const [order, setOrder] = React.useState({});
   const [isActive, setIsActive] = React.useState(false);
-
+  
   // Handle
   const handleGoBack = () => {
     navigation.goBack();

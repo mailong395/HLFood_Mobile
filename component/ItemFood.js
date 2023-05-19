@@ -5,6 +5,7 @@ import { FoodContext } from "../context/FoodContext";
 import { IconButton, TextInput, useTheme } from "react-native-paper";
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { CONTENT, LABEL } from "../config/lang_vn";
+import { SelectCountry } from "react-native-element-dropdown";
 
 const ItemFood = ({
   image,
@@ -17,10 +18,25 @@ const ItemFood = ({
   isHiddenPlus = false,
   onchangeText,
   onRemove,
-  description }) => {
+  description
+}) => {
   const [note, setNote] = useState(false);
   const [edit, setEdit] = useState(isEdit);
   const theme = useTheme();
+  const [country, setCountry] = useState('' + quantity);
+  const dataSelected = [];
+  for (let index = 0; index < quantity; index++) {
+    const value = index + 1;
+    dataSelected.push({
+      value: '' + value,
+      label: '' + value,
+    })
+  }
+
+  const handleDone = () => {
+    note && setNote(false);
+    setEdit(!edit);
+  }
 
   return (
     <Card mode="contained" style={styles.container}>
@@ -43,18 +59,41 @@ const ItemFood = ({
 
       {edit ?
         <Card.Actions>
-          <IconButton
-            mode="contained"
-            icon="minus"
-            size={24}
-            onPress={() => handleRemoveFood()}
-          />
-          <Text>{quantity}</Text>
-          {!isHiddenPlus && <IconButton
-            icon="plus"
-            size={24}
-            onPress={() => handleAddFood()}
-          />}
+          {!isHiddenPlus ?
+            <>
+              <IconButton
+                mode="contained"
+                icon="minus"
+                size={24}
+                onPress={() => handleRemoveFood()}
+              />
+              <Text>{quantity}</Text>
+              <IconButton
+                icon="plus"
+                size={24}
+                onPress={() => handleAddFood()}
+              />
+            </>
+            :
+            <>
+              <SelectCountry
+                style={styles.dropdown}
+                selectedTextStyle={styles.selectedTextStyle}
+                placeholderStyle={styles.placeholderStyle}
+                value={country}
+                data={dataSelected}
+                valueField="value"
+                labelField="label"
+                onChange={e => {
+                  setCountry(e.value);
+                }}
+              />
+              <IconButton
+                icon="check-bold"
+                onPress={handleDone}
+              />
+            </>
+          }
           {!note &&
             <IconButton
               mode="contained"
@@ -120,8 +159,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
   },
-  textCount: {
-
+  dropdown: {
+    margin: 16,
+    height: 40,
+    width: 80,
+    backgroundColor: '#EEEEEE',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
   },
 });
 
