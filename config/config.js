@@ -24,7 +24,8 @@ const CMS = {
   dayStatistical: 'Thống kê theo ngày',
   nowStatistical: 'Thống kê ngày hôm nay',
   monthStatistical: 'Thống kê theo tháng',
-  yearStatistical: 'Thống kê theo năm'
+  yearStatistical: 'Thống kê theo năm',
+  table: 'Quản lý bàn'
 };
 
 // List kind of table
