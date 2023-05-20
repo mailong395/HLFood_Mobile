@@ -39,22 +39,21 @@ const List = ({ data = [] }) => {
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
 
       // update table
-      item?.order?.tables.forEach(async element => {
+      item?.order?.tables.forEach(async (element) => {
         await updateTable(dispatch, element._id, 3, userSelector?.data.accessToken, axiosJWT);
       });
 
       // add notified
       const body = {
-        description: "Notified waiter",
+        description: 'Notified waiter',
         order_detail: item._id,
         employee: userSelector?.data?._id,
       };
       const res = await addNotified(dispatch, body, userSelector?.data?.accessToken, axiosJWT);
-      console.log('res', res);
 
       setGetData(!getData);
       setListOrderDetail(newData);
-      sendSocketData({ chefToChef: newData });
+      sendSocketData({ chefToChef: newData, notifiWaiter: res });
     };
 
     return !isShow && <CookItem data={item} onPress={handleDone} />;

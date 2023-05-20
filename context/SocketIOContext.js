@@ -6,11 +6,13 @@ import { createAxios } from '../redux/createInstance';
 import { loginSuccess } from '../redux/slice/authSlice';
 import { getAllOrderDetail } from '../redux/api/orderDetailApi';
 import { getAllTable } from '../redux/api/tableApi';
+import { getAllNotifiedSuccess } from '../redux/slice/notifiedSlice';
 
 const SocketContext = createContext();
 
 const SocketContextProvider = ({ children }) => {
   const userSelector = useSelector((state) => state.auth);
+  const notifi = useSelector((state) => state?.notified?.data);
 
   const accessToken = userSelector?.data?.accessToken;
   const idEmployee = userSelector?.data?._id;
@@ -42,6 +44,12 @@ const SocketContextProvider = ({ children }) => {
 
       if (val?.updateOrderDetail !== undefined) {
         getAllOrderDetail(dispatch, accessToken, axiosJWT);
+      }
+
+      if (val?.notifiWaiter !== undefined) {
+        if (val?.notifiWaiter?.employee === idEmployee) {
+          dispatch(getAllNotifiedSuccess([...notifi, val?.notifiWaiter]));
+        }
       }
     };
     if (userSelector?.data?.accessToken) {
