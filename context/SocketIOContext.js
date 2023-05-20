@@ -7,6 +7,7 @@ import { loginSuccess } from '../redux/slice/authSlice';
 import { getAllOrderDetail } from '../redux/api/orderDetailApi';
 import { getAllTable } from '../redux/api/tableApi';
 import { getAllNotifiedSuccess } from '../redux/slice/notifiedSlice';
+import { getAllNotified } from '../redux/api/notifiedApi';
 
 const SocketContext = createContext();
 
@@ -48,7 +49,7 @@ const SocketContextProvider = ({ children }) => {
 
       if (val?.notifiWaiter !== undefined) {
         if (val?.notifiWaiter?.employee === idEmployee) {
-          dispatch(getAllNotifiedSuccess([...notifi, val?.notifiWaiter]));
+          getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
         }
       }
     };
