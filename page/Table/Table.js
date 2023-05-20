@@ -89,9 +89,6 @@ const Table = ({ navigation }) => {
   // Fetch Data
   const fetchData = async () => {
     const param = {};
-    if (userSelector?.data?.job_title === 3) {
-      param.employee = userSelector?.data._id;
-    }
     await getAllTable(dispatch, param, userSelector?.data?.accessToken, axiosJWT);
   }
   useEffect(() => {
