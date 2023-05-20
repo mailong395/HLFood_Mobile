@@ -12,13 +12,14 @@ import { useContext } from 'react';
 import { useEffect } from 'react';
 import { getAllOrderDetailSuccess } from '../../redux/slice/orderDetailSlice';
 import { useState } from 'react';
+import { addNotified } from '../../redux/api/notifiedApi';
 
 const List = ({ data = [] }) => {
   const userSelector = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const { getData, setGetData } = React.useContext(TableContext);
-  const { sendSocketData, listOrderDetail, setListOrderDetail, menuData } = useContext(SocketContext);
+  const { sendSocketData, listOrderDetail, setListOrderDetail } = useContext(SocketContext);
 
   const renderItem = ({ item, index }) => {
     const isShow = item.quantity === item.quantity_finished;
@@ -27,8 +28,6 @@ const List = ({ data = [] }) => {
       // update order details
       const newData = listOrderDetail.map((element, i) => {
         if (i === index) {
-          sendSocketData({ chefToWaiter: element });
-
           return {
             ...element,
             quantity_finished: count,
@@ -49,11 +48,12 @@ const List = ({ data = [] }) => {
         order_detail: item._id,
         employee: userSelector?.data?._id,
       };
-      const res = await addNotified(dispatch, body, userSelector?.data?.accessToken, axiosJWT);
+      await addNotified(dispatch, body, userSelector?.data?.accessToken, axiosJWT);
 
       setGetData(!getData);
       setListOrderDetail(newData);
-      sendSocketData({ chefToChef: newData, notifiWaiter: res });
+
+      sendSocketData({ chefToWaiter: newData, chefToChef: newData, notifiWaiter: newData });
     };
 
     return !isShow && <CookItem data={item} onPress={handleDone} />;
