@@ -1,5 +1,5 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, ToastAndroid, View } from 'react-native'
-import React from 'react'
+import { Image, SafeAreaView, ScrollView, StyleSheet, ToastAndroid, View } from 'react-native';
+import React from 'react';
 import { ActivityIndicator, Button, MD2Colors, Text, TextInput } from 'react-native-paper';
 import { BUTTON, HEADER_TITLE, LABEL, TOAST } from '../../config/lang_vn';
 import { useDispatch } from 'react-redux';
@@ -13,37 +13,16 @@ const Login = () => {
   const [loading, setLoading] = React.useState(false);
 
   const loginSuccess = () => {
-    ToastAndroid.showWithGravity(
-      TOAST.login_success,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-    );
+    ToastAndroid.showWithGravity(TOAST.login_success, ToastAndroid.SHORT, ToastAndroid.TOP);
   };
 
   const loginFail = () => {
-    ToastAndroid.showWithGravity(
-      TOAST.login_fail,
-      ToastAndroid.SHORT,
-      ToastAndroid.TOP,
-    );
+    ToastAndroid.showWithGravity(TOAST.login_fail, ToastAndroid.SHORT, ToastAndroid.TOP);
   };
 
-  const handleLogin = async () => {
-    try {
-      setLoading(true);
-      const res = await loginUser(dispatch, userName, password);
-      if (res) {
-        setLoading(false)
-        loginSuccess()
-      } else {
-        setLoading(false);
-        loginFail();
-      }
-    } catch (error) {
-      loginFail();
-      setLoading(false);
-    }
-  }
+  const handleLogin = () => {
+    loginUser(dispatch, userName, password);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -56,23 +35,25 @@ const Login = () => {
         />
       </View>
 
-      <Text style={styles.title} variant="displaySmall">{HEADER_TITLE.Login}</Text>
+      <Text style={styles.title} variant="displaySmall">
+        {HEADER_TITLE.Login}
+      </Text>
 
       <ScrollView style={styles.section}>
         <TextInput
           value={userName}
           style={styles.textInput}
-          mode='outlined'
+          mode="outlined"
           label={LABEL.user_name}
-          onChangeText={text => setUserName(text)}
+          onChangeText={(text) => setUserName(text)}
         />
         <TextInput
           value={password}
           style={styles.textInput}
-          mode='outlined'
+          mode="outlined"
           label={LABEL.password}
           secureTextEntry={isShow}
-          onChangeText={text => setPassword(text)}
+          onChangeText={(text) => setPassword(text)}
           right={<TextInput.Icon icon="eye" onPress={() => setIsShow(!isShow)} />}
         />
         <Button loading={loading} style={styles.button} mode="contained" onPress={handleLogin}>
@@ -80,10 +61,10 @@ const Login = () => {
         </Button>
       </ScrollView>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
@@ -116,4 +97,4 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 32,
   },
-})
+});

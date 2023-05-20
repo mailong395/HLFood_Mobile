@@ -53,14 +53,12 @@ const SocketContextProvider = ({ children }) => {
         }
       }
     };
-    if (userSelector?.data?.accessToken) {
-      socket.current = io(url, {
-        transports: ['websocket'],
-        'Access-Control-Allow-Credentials': true,
-      });
-      socket.current.on('sent-notification', handler);
-      return () => socket.current.off('sent-notification', handler);
-    }
+    socket.current = io(url, {
+      transports: ['websocket'],
+      'Access-Control-Allow-Credentials': true,
+    });
+    socket.current.on('sent-notification', handler);
+    return () => socket.current.off('sent-notification', handler);
   }, [sendData]);
 
   const value = {
