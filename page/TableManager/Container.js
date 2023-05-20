@@ -29,14 +29,9 @@ const Container = ({ navigation, emp }) => {
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const accessToken = userSelector?.data.accessToken;
 
-  const handleGoBack = () => {
-    setTableMerge([]);
-    navigation.goBack();
-  };
-
-  const handleAssignEmp = () => {
-    update(tableMerge);
-  };
+  const handlePlus = () => {
+    navigation.navigate('AddTable', {data: {is_edit: false}});
+  }
 
   const update = (tablesSelected) => {
     const numTables = tablesSelected?.map((table) => table?.table_num);
@@ -90,10 +85,7 @@ const Container = ({ navigation, emp }) => {
 
   const getListFloors = (dataFilter = 0) => {
     const newArray = [
-      {
-        key: 0,
-        label: 'Tất cả',
-      },
+
     ];
     tables?.forEach((element) => {
       const index = newArray.findIndex((item) => item.key === element.floor);
@@ -123,7 +115,7 @@ const Container = ({ navigation, emp }) => {
 
   React.useEffect(() => {
     setLoading(tables?.loading);
-    getListFloors();
+    getListFloors(1);
   }, [tables]);
 
   React.useEffect(() => {
@@ -137,36 +129,20 @@ const Container = ({ navigation, emp }) => {
     </View>
   ) : (
     <SafeAreaView style={styles.container}>
-     <Header
+      <Header
         isShowDrawer={true}
         title={CMS.table}
         mode="center-aligned"
         openDrawer={handleOpenDrawer}
         isPlus={true}
-        // handlePlus={handlePlus}
+        handlePlus={handlePlus}
       />
 
       <Filter floors={floors} onPress={getListFloors} />
 
       <View style={{ flex: 1 }}>
-        <List data={floors}/>
+        <List data={floors} navigation={navigation} />
       </View>
-
-      {tableMerge.length > 0 && (
-        <View style={styles.ButtonBottom}>
-          <Button style={styles.button} mode="contained" onPress={handleAssignEmp}>
-            {BUTTON.AssignEmp}
-          </Button>
-        </View>
-      )}
-
-      {tableMerge.length === 0 && (
-        <View style={styles.ButtonBottom}>
-          <Button style={styles.button} mode="contained" onPress={handleAssignEmp}>
-            {BUTTON.UnassignEmp}
-          </Button>
-        </View>
-      )}
     </SafeAreaView>
   );
 };

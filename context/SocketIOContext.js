@@ -49,6 +49,7 @@ const SocketContextProvider = ({ children }) => {
 
       if (val?.notifiWaiter !== undefined) {
         if (val?.notifiWaiter?.employee === idEmployee) {
+          
           getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
         }
       }

@@ -108,6 +108,7 @@ export const updateOrderDetail = async (dispatch, orderDetails, accessToken, axi
   } catch (error) {
     dispatch(updateOrderDetailFailed());
     console.log(error);
+    throw new Error('update order details failed!');
   }
 };
 

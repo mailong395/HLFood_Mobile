@@ -26,7 +26,7 @@ const Container = ({ openDrawer }) => {
 
   return (
     <View style={styles.container}>
-      <Header isShowDrawer={true} title={CMS.logo} mode="center-aligned" openDrawer={handleOpenDrawer} />
+      <Header isShowDrawer={true} title={CMS.cook} mode="center-aligned" openDrawer={handleOpenDrawer} />
       {loading &&
         <View style={styles.loading}>
           <ActivityIndicator animating={true} color={MD2Colors.red800} />

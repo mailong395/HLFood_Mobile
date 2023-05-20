@@ -6,6 +6,7 @@ import {
   getAllNotifiedFailed,
   getAllNotifiedStart,
   getAllNotifiedSuccess,
+  updateNotifiedFailed,
   updateNotifiedStart,
   updateNotifiedSuccess,
 } from '../slice/notifiedSlice';
@@ -28,12 +29,12 @@ export const updateStatusNotified = async (dispatch, params, accessToken, axiosJ
   dispatch(updateNotifiedStart());
   try {
     await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/notifi:status`, {
-      headers: { token: `bear ${accessToken}` },
+      headers: { token: `Bear ${accessToken}` },
       params: params,
     });
     dispatch(updateNotifiedSuccess());
   } catch (error) {
-    dispatch(updateStatusNotified());
+    dispatch(updateNotifiedFailed());
     console.log('error', error);
   }
 }
