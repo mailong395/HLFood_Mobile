@@ -219,6 +219,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
+  tableList: {
+    flex: 1,
+  }
 });
 
 export default EmployeeManager;

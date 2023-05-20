@@ -21,6 +21,7 @@ const BUTTON = {
   statisticalDay: 'Doanh thu trong ngày',
   statisticalMonth: 'Doanh thu trong tháng',
   statisticalYear: 'Doanh thu trong năm',
+  add_table: 'Thêm bàn',
 };
 
 const LABEL = {
@@ -37,6 +38,9 @@ const LABEL = {
   money_of_cus: 'Nhập số tiền khách hàng',
   quantity: 'Số lượng món',
   quantity_finished: 'Hoàn thành',
+  add_table: 'Số lượng bàn thêm',
+  num_floor: 'Số tầng',
+  num_chair: 'Số ghế'
 };
 
 const CONTENT = {
@@ -49,6 +53,7 @@ const HEADER_TITLE = {
   Login: 'Đăng nhập',
   AssignEmp: 'Giao phó bàn cho nhân viên',
   Notification: 'Thông báo đã có món',
+  add_table: 'Thêm bàn',
 };
 
 const TOAST = {
@@ -60,6 +65,10 @@ const TOAST = {
   Merge_fail: 'Ghép/Chuyển bàn không thành công',
   payment_success: 'Thanh toán thành công',
   payment_failed: 'Thanh toán không thành công',
+  error_empty: 'Không được để trống',
+  error_num_tables: 'Chấp nhận số lượng từ 1 đến 20',
+  update_success: 'Cập nhật thành công',
+  update_failed: 'Cập nhật thất bại',
 };
 
 const TABLE = {

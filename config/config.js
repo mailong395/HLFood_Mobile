@@ -25,7 +25,8 @@ const CMS = {
   nowStatistical: 'Thống kê ngày hôm nay',
   monthStatistical: 'Thống kê theo tháng',
   yearStatistical: 'Thống kê theo năm',
-  table: 'Quản lý bàn'
+  table: 'Quản lý bàn',
+  list_table: 'Danh sách bàn',
 };
 
 // List kind of table
@@ -171,4 +172,56 @@ const STATUS_TABLE = {
   },
 };
 
-export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE, CMS, ACTIVE_EMP, ACTIVE_FOOD };
+const FLOOR = [
+  {
+    key: 1,
+    value: '1',
+  },
+  {
+    key: 2,
+    value: '2',
+  },
+  {
+    key: 3,
+    value: '3',
+  },
+  {
+    key: 4,
+    value: '4',
+  },
+];
+
+const CHAIR = [
+  {
+    key: 2,
+    value: '2',
+  },
+  {
+    key: 4,
+    value: '4',
+  },
+  {
+    key: 6,
+    value: '6',
+  },
+  {
+    key: 8,
+    value: '8',
+  },
+  {
+    key: 10,
+    value: '10',
+  },
+];
+
+export { 
+  OPTION_TABLE,
+  OPTION_FOOD,
+  ACTIVE_TABLE,
+  STATUS_TABLE,
+  CMS,
+  ACTIVE_EMP,
+  ACTIVE_FOOD,
+  FLOOR,
+  CHAIR,
+};

@@ -8,6 +8,9 @@ import {
   tableMergeStart,
   tableMergeSuccess,
   tableMergeFailed,
+  addTableStart,
+  addTableSuccess,
+  addTableFailed,
 } from '../slice/tableSlice';
 
 import { REACT_APP_HOST_API } from '@env';
@@ -89,3 +92,29 @@ export const setEmpTable = async (dispatch, body, accessToken, axiosJWT) => {
     console.log(error);
   }
 };
+
+export const addTable = async (dispatch, body, accessToken, axiosJWT) => {
+  dispatch(addTableStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_HOST_API}/api/tables`, body, {
+      headers: { token: `bear ${accessToken}` },
+    });
+    dispatch(addTableSuccess());
+    return res?.data;
+  } catch (error) {
+    dispatch(addTableFailed());
+    console.log(error);
+  }
+};
+
+export const updateTableDetail = async (id, body, accessToken, axiosJWT) => {
+  try {
+    await axiosJWT.put(`${REACT_APP_HOST_API}/api/table`, body, {
+      headers: { token: `bear ${accessToken}` },
+      params: {id: id}
+    });
+  } catch (error) {
+    console.log(error);
+    throw new Error('Save Failed!');
+  }
+}; 
