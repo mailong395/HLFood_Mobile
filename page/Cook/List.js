@@ -7,12 +7,12 @@ import { createAxios } from '../../redux/createInstance'
 import { loginSuccess } from '../../redux/slice/authSlice'
 import { updateTable } from "../../redux/api/tableApi";
 import { TableContext } from '../../context/TableContext';
-import { SocketContext } from '../../context/SocketIOContext'
-import { useContext } from 'react'
-import { useEffect } from 'react'
-import { getAllOrderDetailSuccess } from '../../redux/slice/orderDetailSlice'
-import { useState } from 'react'
-import { addNotified } from '../../redux/api/notifiedApi'
+import { SocketContext } from '../../context/SocketIOContext';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+import { getAllOrderDetailSuccess } from '../../redux/slice/orderDetailSlice';
+import { useState } from 'react';
+import { addNotified } from '../../redux/api/notifiedApi';
 
 const List = ({ data = [] }) => {
   const userSelector = useSelector(state => state.auth);
@@ -54,8 +54,8 @@ const List = ({ data = [] }) => {
 
       setGetData(!getData);
       setListOrderDetail(newData);
-      sendToCook({cook: newData});
-    }
+      sendSocketData({ chefToChef: newData, notifiWaiter: res, chefToWaiter: newData });
+    };
 
     return !isShow && <CookItem
       data={item}
