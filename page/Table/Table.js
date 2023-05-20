@@ -15,6 +15,7 @@ import { createAxios } from "../../redux/createInstance";
 import { loginSuccess } from "../../redux/slice/authSlice";
 import React from "react";
 import Filter from "./Filter";
+import { getAllNotified } from "../../redux/api/notifiedApi";
 
 const Table = ({ navigation }) => {
   const numTable = useRef();
@@ -34,7 +35,12 @@ const Table = ({ navigation }) => {
   }
 
   const handleCloseModal = () => {
+    setGetData(!getData);
     setModalVisible(-1);
+  }
+
+  const handleOpenNotified = async () => {
+    navigation.navigate('Notified');
   }
 
   const handleMovePage = async (id) => {
@@ -54,18 +60,17 @@ const Table = ({ navigation }) => {
         break;
       case 3:
         getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
-        console.log('token', userSelector?.data?.accessToken);
         navigation.navigate('DetailListFood');
         break;
       case 4:
         const res = await getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
         const isProcessing = res?.order_details?.filter(item => item?.quantity_finished < item?.quantity);
         if (isProcessing.length === 0) {
-          res?.tables.forEach( async element => {
+          res?.tables.forEach(async element => {
             await updateTable(dispatch, element._id, 4, userSelector?.data.accessToken, axiosJWT);
           });
         } else {
-          res?.tables.forEach( async element => {
+          res?.tables.forEach(async element => {
             await updateTable(dispatch, element._id, 2, userSelector?.data.accessToken, axiosJWT);
           });
         }
@@ -81,7 +86,6 @@ const Table = ({ navigation }) => {
     navigation.openDrawer();
   }
 
-
   // Fetch Data
   const fetchData = async () => {
     const param = {};
@@ -94,10 +98,16 @@ const Table = ({ navigation }) => {
     fetchData();
   }, [getData]);
 
-
   return (
     <View style={styles.container}>
-      <Header isShowDrawer={true} title={CMS.logo} mode="center-aligned" openDrawer={handleOpenDrawer} />
+      <Header
+        isShowNotification
+        isShowDrawer={true}
+        title={CMS.logo}
+        mode="center-aligned"
+        openDrawer={handleOpenDrawer}
+        openNotified={handleOpenNotified}
+      />
 
       <Filter />
 

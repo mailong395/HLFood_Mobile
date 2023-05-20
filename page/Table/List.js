@@ -52,7 +52,6 @@ const List = ({ props, isShowModal = false }) => {
     }
   }
 
-
   // Fetch data
   React.useEffect(() => {
     const newData = [...selector?.data].sort((a, b) => a.table_num - b.table_num);

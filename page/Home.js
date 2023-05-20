@@ -18,6 +18,7 @@ import AssignEmp from './AssignEmp';
 import AddFood from './FoodManager/AddFood';
 import FoodManager from './FoodManager/FoodManager';
 import DetailListFood from './DetailListFood';
+import Notified from './Notified';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
 import Statistical from './Statistical/Statistical';
@@ -36,6 +37,7 @@ const Waiter = () => {
       <Stack.Screen name="DetailListFood" component={DetailListFood} />
       <Stack.Screen name="ListFoodOrder" component={ListFoodOrder} />
       <Stack.Screen name="ListFoodOrdered" component={ListFoodOrdered} />
+      <Stack.Screen name="Notified" component={Notified} />
     </Stack.Navigator>
   );
 };

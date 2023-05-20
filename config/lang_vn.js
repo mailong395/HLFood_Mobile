@@ -48,6 +48,7 @@ const HEADER_TITLE = {
   Logo: 'HLFood',
   Login: 'Đăng nhập',
   AssignEmp: 'Giao phó bàn cho nhân viên',
+  Notification: 'Thông báo đã có món',
 };
 
 const TOAST = {
