@@ -24,6 +24,7 @@ import { logoutUser } from '../redux/api/authApi';
 import Statistical from './Statistical/Statistical';
 import StatisticalDetail from './Statistical/StatisticalDetail';
 import { logoutSuccess } from '../redux/slice/authSlice';
+import TableManager from './TableManager';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -78,6 +79,14 @@ const Statis = () => {
   );
 };
 
+const TableMenu = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="TableManager" component={TableManager} />
+    </Stack.Navigator>
+  );
+};
+
 const Home = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.auth);
@@ -119,6 +128,7 @@ const Home = () => {
         <Drawer.Screen name="Nhân sự" component={Employee} />
         <Drawer.Screen name="Thực đơn" component={Food} />
         <Drawer.Screen name="Thống kê" component={Statis} />
+        <Drawer.Screen name="Bàn" component={TableMenu} />
       </Drawer.Navigator>
     );
   };
