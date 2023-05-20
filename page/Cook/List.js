@@ -52,7 +52,6 @@ const List = ({ data = [] }) => {
 
       setGetData(!getData);
       setListOrderDetail(newData);
-
       sendSocketData({ chefToWaiter: newData, chefToChef: newData, notifiWaiter: newData });
     };
 
