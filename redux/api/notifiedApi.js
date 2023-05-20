@@ -1,5 +1,8 @@
 import { REACT_APP_HOST_API_SERVER } from '@env';
 import { 
+  addNotifiedFailed,
+  addNotifiedStart,
+  addNotifiedSuccess,
   getAllNotifiedFailed,
   getAllNotifiedStart,
   getAllNotifiedSuccess,
@@ -31,6 +34,20 @@ export const updateStatusNotified = async (dispatch, params, accessToken, axiosJ
     dispatch(updateNotifiedSuccess());
   } catch (error) {
     dispatch(updateStatusNotified());
+    console.log('error', error);
+  }
+}
+
+export const addNotified = async (dispatch, body, accessToken, axiosJWT) => {
+  dispatch(addNotifiedStart());
+  try {
+    const res = await axiosJWT.post(`${REACT_APP_HOST_API_SERVER}/api/notifi`, body, {
+      headers: { token: `bear ${accessToken}` },
+    });
+    dispatch(addNotifiedSuccess());
+    return res?.data;
+  } catch (error) {
+    dispatch(addNotifiedFailed());
     console.log('error', error);
   }
 }
