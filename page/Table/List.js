@@ -3,13 +3,12 @@ import React from 'react'
 import { STATUS_TABLE } from '../../config/config'
 import TableComp from '../../component/TableComp';
 import { useSelector } from 'react-redux';
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 const List = ({ props, isShowModal = false }) => {
   const selector = useSelector(state => state.table);
   const [selected, setSelected] = React.useState(-1);
   const [tables, setTables] = React.useState(selector?.data);
-  const [loading, setLoading] = React.useState(false);
+  const userSelector = useSelector(state => state.auth);
 
   // Render
   const renderItem = ({ item }) => {
@@ -54,26 +53,25 @@ const List = ({ props, isShowModal = false }) => {
 
   // Fetch data
   React.useEffect(() => {
-    const newData = [...selector?.data].sort((a, b) => a.table_num - b.table_num);
-    setTables(newData);
-    setLoading(selector?.isFetching);
+    if (userSelector?.data?.job_title === 3) {
+      const arrayData = [...selector?.data]
+        .filter(element => element?.employee?._id === userSelector?.data?._id)
+        .sort((a, b) => a.table_num - b.table_num)
+      setTables(arrayData);
+    } else {
+      const newData = [...selector?.data].sort((a, b) => a.table_num - b.table_num);
+      setTables(newData);
+    }
   }, [selector]);
 
   return (
     <View style={styles.container}>
-
-      {
-        loading ? 
-        <View style={styles.loading}>
-          <ActivityIndicator animating={true} color={MD2Colors.red800} />
-        </View>
-          : <FlatList
-            data={tables}
-            renderItem={renderItem}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-          />
-      }
+      <FlatList
+        data={tables}
+        renderItem={renderItem}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   )
 
