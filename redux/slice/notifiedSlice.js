@@ -21,6 +21,17 @@ const notifiedSlice = createSlice({
       state.loading = false;
       state.error = true;
     },
+    addNotifiedStart: (state) => {
+      state.loading = true;
+    },
+    addNotifiedSuccess: (state) => {
+      state.loading = false;
+      state.success = true;
+    },
+    addNotifiedFailed: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
     updateNotifiedStart: (state) => {
       state.loading = true;
     },
@@ -42,6 +53,9 @@ export const {
   updateNotifiedStart,
   updateNotifiedSuccess,
   updateNotifiedFailed,
+  addNotifiedStart,
+  addNotifiedSuccess,
+  addNotifiedFailed,
 } = notifiedSlice.actions;
 
 export default notifiedSlice.reducer;

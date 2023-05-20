@@ -12,9 +12,11 @@ import { useContext } from 'react'
 import { useEffect } from 'react'
 import { getAllOrderDetailSuccess } from '../../redux/slice/orderDetailSlice'
 import { useState } from 'react'
+import { addNotified } from '../../redux/api/notifiedApi'
 
 const List = ({ data = [] }) => {
   const userSelector = useSelector(state => state.auth);
+  const notifiedSelector = useSelector(state => state.notified);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const { getData, setGetData } = React.useContext(TableContext);
@@ -25,6 +27,7 @@ const List = ({ data = [] }) => {
     const isShow = item.quantity === item.quantity_finished;
 
     const handleDone = async (count) => {
+      // update order details
       const newData = listOrderDetail.map((element, i) => {
         return i === index ?
           {
@@ -34,9 +37,21 @@ const List = ({ data = [] }) => {
           } : element;
       })
       await updateOrderDetail(dispatch, newData, userSelector?.data?.accessToken, axiosJWT);
+
+      // update table
       item?.order?.tables.forEach(async element => {
         await updateTable(dispatch, element._id, 3, userSelector?.data.accessToken, axiosJWT);
       });
+
+      // add notified
+      const body = {
+        description: "Notified waiter",
+        order_detail: item._id,
+        employee: userSelector?.data?._id,
+      };
+      const res = await addNotified(dispatch, body, userSelector?.data?.accessToken, axiosJWT);
+      console.log('res', res);
+
       setGetData(!getData);
       setListOrderDetail(newData);
       sendToCook({cook: newData});
@@ -51,7 +66,6 @@ const List = ({ data = [] }) => {
   useEffect(() => {
     setListOrderDetail(data);
   }, [data]);
-  
 
   return (
     <View style={styles.container}>

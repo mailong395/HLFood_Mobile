@@ -3,12 +3,14 @@ import { StyleSheet } from 'react-native';
 import { Avatar, Card, IconButton, Text } from 'react-native-paper';
 import { LABEL } from '../config/lang_vn';
 import { SelectCountry } from 'react-native-element-dropdown';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 const CookItem = ({ data, onPress }) => {
-  const count = data.quantity - data.quantity_finished;
-  const [country, setCountry] = useState('' + count);
+  const count = useRef(0);
+  const [country, setCountry] = useState('' + count.current);
   const dataSelected = [];
-  for (let index = 0; index < count; index++) {
+  for (let index = 0; index < count.current; index++) {
     const value = index + 1;
     dataSelected.push({
       value: '' + value,
@@ -36,9 +38,14 @@ const CookItem = ({ data, onPress }) => {
   // render
   const LeftContent = props => <Avatar.Text {...props} label={numTable()} />
 
+  useEffect(() => {
+    count.current = data?.quantity - data?.quantity_finished;
+    setCountry('' + count.current);
+  }, [data])
+
   return (
     <Card style={styles.container}>
-      <Card.Title title={data.food.name} subtitle={'Số lượng: ' + count} left={LeftContent} />
+      <Card.Title title={data.food.name} subtitle={'Số lượng: ' + count.current} left={LeftContent} />
       {
         data.description &&
         <Card.Content>
