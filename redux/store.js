@@ -12,6 +12,7 @@ import orderDetail from './slice/orderDetailSlice';
 import employeeReducer from './slice/employeeSlice';
 import fileReducer from './slice/fileSlice';
 import notifiedReducer from './slice/notifiedSlice';
+import customerReducer from './slice/customerSlice';
 
 const persistConfig = {
   key: 'root',
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   food: foodReducer,
   order: orderReducer,
   auth: authReducer,
+  cus: customerReducer,
   orderDetail: orderDetail,
   employee: employeeReducer,
   file: fileReducer,

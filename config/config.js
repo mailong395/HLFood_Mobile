@@ -15,11 +15,13 @@ const CMS = {
   add: 'Thêm Món',
   cook: 'Chế biến',
   emp: 'Quản lý nhân viên',
+  cus: 'Quản lý khách hàng',
   addFood: 'Thêm món ăn',
   food: 'Quản lý món ăn',
   editFood: 'Sửa thông tin món ăn',
   addEmp: 'Thêm nhân viên',
   editEmp: 'Sửa thông tin nhân viên',
+  editCus: 'Sửa thông tin khách hàng',
   statistical: 'Thống kê doanh thu',
   dayStatistical: 'Thống kê theo ngày',
   nowStatistical: 'Thống kê ngày hôm nay',
@@ -154,6 +156,19 @@ const ACTIVE_EMP = [
   },
 ];
 
+const ACTIVE_CUS = [
+  {
+    id: 0,
+    title: 'Chỉnh sửa thông tin',
+    icon: 'account-edit',
+  },
+  {
+    id: 1,
+    title: 'Xoá khách hàng',
+    icon: 'delete',
+  },
+];
+
 const STATUS_TABLE = {
   clean: {
     title: 'Bàn Trống',
@@ -224,4 +239,15 @@ const CHAIR = [
   },
 ];
 
-export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE, CMS, ACTIVE_EMP, ACTIVE_FOOD, FLOOR, CHAIR };
+export {
+  OPTION_TABLE,
+  OPTION_FOOD,
+  ACTIVE_TABLE,
+  STATUS_TABLE,
+  CMS,
+  ACTIVE_EMP,
+  ACTIVE_FOOD,
+  FLOOR,
+  CHAIR,
+  ACTIVE_CUS,
+};
