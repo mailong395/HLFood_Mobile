@@ -7,7 +7,7 @@ import { STATUS_TABLE } from '../../config/config';
 import { useContext } from 'react';
 import { TableContext } from '../../context/TableContext';
 
-const List = ({ data = [], emp }) => {
+const List = ({ data = [], navigation }) => {
   const { tableMerge, setTableMerge } = useContext(TableContext);
 
   const renderFloor = ({ item }) => {
@@ -17,16 +17,21 @@ const List = ({ data = [], emp }) => {
       const status = item.employee ? STATUS_TABLE.wait : STATUS_TABLE.clean;
 
       const handleSelected = () => {
-        if (!item?.employee) {
-          const newData = [...tableMerge, index === -1 && item];
-          index !== -1 && newData.splice(index, 1);
-          setTableMerge(newData.filter((element) => element !== false));
-        }
+        // if (!item?.employee) {
+        //   const newData = [...tableMerge, index === -1 && item];
+        //   index !== -1 && newData.splice(index, 1);
+        //   setTableMerge(newData.filter((element) => element !== false));
+        // }
       };
 
       return (
         <TableComp
+          isCheckBox
+          data={item}
+          isDeleted={item.is_deleted}
+          navigation={navigation}
           color={item.color}
+          nChair={item.chair}
           nTable={item.table_num}
           nFloor={item.floor}
           status={item.employee ? `Đã giao phó ${item?.employee?.name}` : 'Chưa giao phó'}
@@ -63,7 +68,7 @@ export default List;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
   },
   section: {
     paddingBottom: 16,

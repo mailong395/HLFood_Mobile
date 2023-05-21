@@ -20,11 +20,13 @@ import FoodManager from './FoodManager/FoodManager';
 import DetailListFood from './DetailListFood';
 import Notified from './Notified';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { logoutUser } from '../redux/api/authApi';
 import Statistical from './Statistical/Statistical';
 import StatisticalDetail from './Statistical/StatisticalDetail';
 import { logoutSuccess } from '../redux/slice/authSlice';
 import TableManager from './TableManager';
+import AddTable from './AddTable';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -83,6 +85,7 @@ const TableMenu = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="TableManager" component={TableManager} />
+      <Stack.Screen name="AddTable" component={AddTable} />
     </Stack.Navigator>
   );
 };
@@ -123,12 +126,36 @@ const Home = () => {
         useLegacyImplementation
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
-        <Drawer.Screen name="Gọi món" component={Waiter} />
-        <Drawer.Screen name="Bếp" component={Chef} />
-        <Drawer.Screen name="Nhân sự" component={Employee} />
-        <Drawer.Screen name="Thực đơn" component={Food} />
-        <Drawer.Screen name="Thống kê" component={Statis} />
-        <Drawer.Screen name="Bàn" component={TableMenu} />
+        <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
+          ),
+        }} name="Gọi món" component={Waiter} />
+        <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="chef-hat" size={size} color={color} />
+          ),
+        }} name="Bếp" component={Chef} />
+        <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }} name="Nhân sự" component={Employee} />
+        <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="menu" size={size} color={color} />
+          ),
+        }} name="Thực đơn" component={Food} />
+        <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="chart-line" size={size} color={color} />
+          ),
+        }} name="Thống kê" component={Statis} />
+        <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="table-chair" size={size} color={color} />
+          ),
+        }} name="Bàn" component={TableMenu} />
       </Drawer.Navigator>
     );
   };

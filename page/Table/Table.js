@@ -100,7 +100,7 @@ const Table = ({ navigation }) => {
       <Header
         isShowNotification
         isShowDrawer={true}
-        title={CMS.logo}
+        title={CMS.list_table}
         mode="center-aligned"
         openDrawer={handleOpenDrawer}
         openNotified={handleOpenNotified}

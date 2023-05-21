@@ -94,7 +94,7 @@ const List = ({ props, isShowModal = false, filterData, data }) => {
       case 0:
         return STATUS_TABLE.clean;
       case 1:
-        return STATUS_TABLE.booked;
+        return STATUS_TABLE.clean;
       case 2:
         return STATUS_TABLE.ship;
       case 3:
@@ -125,9 +125,10 @@ const styles = StyleSheet.create({
   containerItem: {
     flex: 1,
     padding: 8,
+
   },
   container: {
-    padding: 8,
+    paddingHorizontal: 8,
   },
   boxFlex: {
     flexDirection: 'row',

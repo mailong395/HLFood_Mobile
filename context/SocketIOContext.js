@@ -52,15 +52,17 @@ const SocketContextProvider = ({ children }) => {
           getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
         }
       }
+
+      if (val?.WaiterToWaiter !== undefined) {
+        getAllTable(dispatch, {}, accessToken, axiosJWT);
+      }
     };
-    if (userSelector?.data?.accessToken) {
-      socket.current = io(url, {
-        transports: ['websocket'],
-        'Access-Control-Allow-Credentials': true,
-      });
-      socket.current.on('sent-notification', handler);
-      return () => socket.current.off('sent-notification', handler);
-    }
+    socket.current = io(url, {
+      transports: ['websocket'],
+      'Access-Control-Allow-Credentials': true,
+    });
+    socket.current.on('sent-notification', handler);
+    return () => socket.current.off('sent-notification', handler);
   }, [sendData]);
 
   const value = {

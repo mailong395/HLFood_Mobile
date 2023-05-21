@@ -34,8 +34,8 @@ const ItemFood = ({
   }
 
   const handleDone = () => {
-    note && setNote(false);
-    setEdit(!edit);
+      note && setNote(false);
+      setEdit(!edit);
   }
 
   return (
@@ -49,12 +49,12 @@ const ItemFood = ({
       </Card.Content>
 
       {(note || description) && <Card.Content>
-        <TextInput
-          label={LABEL.detailsFood}
+          <TextInput
+            label={LABEL.detailsFood}
           value={description}
-          mode="outlined"
+            mode="outlined"
           onChangeText={text => onchangeText(text)}
-        />
+          />
       </Card.Content>}
 
       {edit ?

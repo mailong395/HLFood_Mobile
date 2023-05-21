@@ -4,7 +4,7 @@ import { SelectCountry } from 'react-native-element-dropdown';
 import { useTheme } from 'react-native-paper';
 
 const DropdownComponent = ({ title = '', data = [], onPress }) => {
-  const [country, setCountry] = useState();
+  const [country, setCountry] = useState(1);
   const theme = useTheme();
 
   const handleOnChange = (value) => {
