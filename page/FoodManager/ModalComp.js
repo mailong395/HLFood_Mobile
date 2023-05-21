@@ -27,6 +27,16 @@ const ModalComp = ({ isShow, props, handleCloseModal, itemSelected }) => {
         return true;
       case 1:
         return true;
+      case 2:
+        if (itemSelected?.is_outdated) {
+          return false;
+        }
+        return true;
+      case 3:
+        if (itemSelected?.is_outdated) {
+          return true;
+        }
+        return false;
       default:
         return false;
     }
@@ -47,7 +57,12 @@ const ModalComp = ({ isShow, props, handleCloseModal, itemSelected }) => {
               </Pressable>
             </View>
             <View style={styles.modalBody}>
-              <FlatList data={ACTIVE_FOOD} renderItem={renderItem} numColumns={2} showsVerticalScrollIndicator={false} />
+              <FlatList
+                data={ACTIVE_FOOD}
+                renderItem={renderItem}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>

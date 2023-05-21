@@ -63,3 +63,17 @@ export const deleteFood = async (dispatch, idFood, accessToken, axiosJWT) => {
     console.log(error);
   }
 };
+
+
+export const hiddenFood = async (dispatch, body, accessToken, axiosJWT) => {
+  dispatch(updateFoodStart());
+  try {
+    const res = await axiosJWT.put(`${REACT_APP_HOST_API_SERVER}/api/food:hidden`, body, {
+      headers: { token: `bear ${accessToken}` },
+    });
+    dispatch(updateFoodSuccess());
+  } catch (error) {
+    dispatch(updateFoodFailed());
+    console.log(error);
+  }
+};
