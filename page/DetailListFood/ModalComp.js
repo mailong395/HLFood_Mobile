@@ -23,6 +23,14 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
   const [loading, setLoading] = React.useState(false);
   const { getData, setGetData } = React.useContext(TableContext);
 
+  const getTotal = () => {
+    let total = 0;
+    data?.order_details?.map((item) => {
+      total += item?.total_detail_price;
+    })
+    return total;
+  }
+
   // handle 
   const handleAssert = async () => {
     try {
@@ -68,7 +76,7 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
   }
 
   const onChangeText = text => setMoney(text);
-  const resetMoney = () => {return money.split(' ').join('')};
+  const resetMoney = () => { return money.split(' ').join('') };
 
   const hasErrors = () => {
     if (!money) return false;
@@ -78,14 +86,14 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
   };
 
   const showMoney = () => {
-    const str = String(resetMoney()).replace(/(.)(?=(\d{3})+$)/g,'$1 ');
+    const str = String(resetMoney()).replace(/(.)(?=(\d{3})+$)/g, '$1 ');
     return str
   }
 
   React.useEffect(() => {
     setLoading(order?.isFetching);
   }, [order]);
-  
+
 
   return (
     <Modal
@@ -127,20 +135,20 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
                 <HelperText type="error" visible={hasErrors()}>
                   Số tiền chưa đủ
                 </HelperText>
-                <Divider style={{marginBottom: 10,}} />
+                <Divider style={{ marginBottom: 10, }} />
                 <View style={styles.priceBox}>
                   <Text>Tổng tiền:</Text>
-                  <Text>{formatCurrency({ amount: data?.total_order_price, code: "VND" })[0]}</Text>
+                  <Text>{formatCurrency({ amount: getTotal(), code: "VND" })[0]}</Text>
                 </View>
                 <View style={styles.priceBox}>
                   <Text>VAT:</Text>
                   <Text>{formatCurrency({ amount: getVAT(), code: "VND" })[0]}</Text>
                 </View>
-                 <View style={styles.priceBox}>
+                <View style={styles.priceBox}>
                   <Text>Thành tiền:</Text>
-                  <Text>{formatCurrency({ amount: getTotalPrice(), code: "VND" })[0]}</Text>
+                  <Text>{formatCurrency({ amount: getTotal() + getVAT(), code: "VND" })[0]}</Text>
                 </View>
-                <Divider style={{marginVertical: 10,}} />
+                <Divider style={{ marginVertical: 10, }} />
                 <View style={styles.priceBox}>
                   <Text>Tiền khách trả:</Text>
                   <Text>{money && formatCurrency({ amount: resetMoney(), code: "VND" })[0]}</Text>
@@ -151,7 +159,7 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
                 </View>
                 <Button
                   loading={loading}
-                  style={{marginTop: 16,}}
+                  style={{ marginTop: 16, }}
                   disabled={money ? hasErrors() : true}
                   mode='contained-tonal'
                   onPress={handleAssert}
@@ -159,7 +167,6 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
               </View>
               : <View style={styles.modalBody}>
                 <Button mode='contained-tonal' style={{ marginBottom: 16, }} onPress={() => setIsActive(true)}>Thanh toán bằng tiền mặt</Button>
-                <Button mode='contained-tonal' onPress={handlePayment}>Thanh toán bằng ví Momo</Button>
               </View>
             }
           </View>

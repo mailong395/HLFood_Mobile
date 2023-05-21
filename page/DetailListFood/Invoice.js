@@ -1,5 +1,6 @@
 import * as Print from 'expo-print';
 import { formatCurrency } from "react-native-format-currency";
+import { momo } from '../../assets/momo.jpg'
 
 export const print = async (isTemp, data, auth, money) => {
   const title = isTemp ? 'Hóa Đơn Tạm Tính' : 'Hóa Đơn'
@@ -48,18 +49,26 @@ export const print = async (isTemp, data, auth, money) => {
       </tr>
     `;
   });
+
+
   const cus_pay = !isTemp ?
-  `<hr style="width: 100%;" />
-  <table class="table-price">
-    <tr>
-      <td><b>Tiền khách trả:</b></td>
-      <td class="text-right">` + formatCurrency({ amount:  resetMoney(), code: "VND" })[0] + `</td>
-    </tr>
-    <tr>
-      <td><b>Tiền thối lại:</b></td>
-      <td class="text-right">` + formatCurrency({ amount:  getMoneyReturn(), code: "VND" })[0] + `</td>
-    </tr>
-  </table>` : ``;
+  `
+    <hr style="width: 100%;" />
+    <table class="table-price">
+      <tr>
+        <td><b>Tiền khách trả:</b></td>
+        <td class="text-right">` + formatCurrency({ amount:  resetMoney(), code: "VND" })[0] + `</td>
+      </tr>
+      <tr>
+        <td><b>Tiền thối lại:</b></td>
+        <td class="text-right">` + formatCurrency({ amount:  getMoneyReturn(), code: "VND" })[0] + `</td>
+      </tr>
+    </table>
+  ` : 
+  `
+    <p>Ví MOMO</p>
+    <img src="https://storage.googleapis.com/hlfood-image/qr_momo.jpg" />
+  `;
   const html = `
     <html lang="en">
       <head>
@@ -82,6 +91,7 @@ export const print = async (isTemp, data, auth, money) => {
             justify-content: center;
             align-items: center;
             padding: 16px;
+            height: 100vh;
           }
           .table-info {
             width: 100%;
@@ -139,7 +149,7 @@ export const print = async (isTemp, data, auth, money) => {
           <table class="table-price">
             <tr>
               <td><b>Tổng tiền:</b></td>
-              <td class="text-right">` + formatCurrency({ amount: data?.total_order_price, code: "VND" })[0] + `</td>
+              <td class="text-right">` + formatCurrency({ amount: getTotal(), code: "VND" })[0] + `</td>
             </tr>
             <tr>
               <td><b>VAT:</b></td>
@@ -150,7 +160,7 @@ export const print = async (isTemp, data, auth, money) => {
               <td class="text-right">` + formatCurrency({ amount: getTotalPrice(), code: "VND" })[0] + `</td>
             </tr>
           </table>
-          ` + cus_pay + `
+          ` + cus_pay +  `
         </div>
       </body>
     </html>

@@ -10,8 +10,6 @@ import { TableContext } from '../../context/TableContext';
 import { SocketContext } from '../../context/SocketIOContext';
 import { useContext } from 'react';
 import { useEffect } from 'react';
-import { getAllOrderDetailSuccess } from '../../redux/slice/orderDetailSlice';
-import { useState } from 'react';
 import { addNotified } from '../../redux/api/notifiedApi';
 
 const List = ({ data = [] }) => {
@@ -52,7 +50,6 @@ const List = ({ data = [] }) => {
 
       setGetData(!getData);
       setListOrderDetail(newData);
-
       sendSocketData({ chefToWaiter: newData, chefToChef: newData, notifiWaiter: newData });
     };
 

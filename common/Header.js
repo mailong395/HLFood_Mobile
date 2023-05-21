@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 import { Appbar, Badge, useTheme } from 'react-native-paper';
+import { SocketContext } from '../context/SocketIOContext';
 
 /**
  *
@@ -21,12 +22,14 @@ const Header = ({
   openNotified,
 }) => {
   const theme = useTheme();
+  const { badge, setBadge } = useContext(SocketContext);
 
   const handleCloseDrawer = () => {
     openDrawer();
   };
 
   const handleOpenNotified = () => {
+    setBadge(false);
     openNotified();
   };
 
@@ -50,7 +53,7 @@ const Header = ({
       <Appbar.Content title={title} style={styles.title} />
       {isPlus && <Appbar.Action icon="plus" onPress={handlePlus} />}
       {isShowNotification && <View>
-        <Badge size={14} style={styles.badge} />
+        {badge && <Badge size={14} style={styles.badge} />}
         <Appbar.Action icon="bell" onPress={handleOpenNotified} />
       </View>}
     </Appbar.Header>

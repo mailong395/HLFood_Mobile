@@ -25,6 +25,7 @@ const SocketContextProvider = ({ children }) => {
   const socket = useRef();
   const [sendData, setSendData] = useState([]);
   const [listOrderDetail, setListOrderDetail] = useState([]);
+  const [badge, setBadge] = useState(false);
 
   const sendSocketData = (data) => {
     socket.current.emit('notification', data);
@@ -49,6 +50,7 @@ const SocketContextProvider = ({ children }) => {
 
       if (val?.notifiWaiter !== undefined) {
         if (val?.notifiWaiter?.employee === idEmployee) {
+          setBadge(true);
           getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
         }
       }
@@ -70,6 +72,7 @@ const SocketContextProvider = ({ children }) => {
     listOrderDetail,
     sendSocketData,
     setListOrderDetail,
+    badge, setBadge
   };
 
   return <SocketContext.Provider value={value}>{children}</SocketContext.Provider>;
