@@ -95,6 +95,7 @@ const Home = () => {
   const selector = useSelector((state) => state.auth);
   const [isLogin, setIsLogin] = React.useState(true);
   const axiosJWT = createAxios(selector?.data, dispatch, logoutSuccess);
+  const rules = selector?.data?.job_title;
 
   const handleLogout = (props) => {
     if (selector?.data?.accessToken) {
@@ -119,6 +120,109 @@ const Home = () => {
     );
   };
 
+  const ScreenRules = () => {
+    switch (rules) {
+      case 0:
+        return <>
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="chef-hat" size={size} color={color} />
+            ),
+          }} name="Bếp" component={Chef} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
+            ),
+          }} name="Gọi món" component={Waiter} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <Ionicons name="person" size={size} color={color} />
+            ),
+          }} name="Nhân sự" component={Employee} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="menu" size={size} color={color} />
+            ),
+          }} name="Thực đơn" component={Food} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="chart-line" size={size} color={color} />
+            ),
+          }} name="Thống kê" component={Statis} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="table-chair" size={size} color={color} />
+            ),
+          }} name="Bàn" component={TableMenu} />
+        </>
+      case 1:
+        return <>
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="chef-hat" size={size} color={color} />
+            ),
+          }} name="Bếp" component={Chef} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
+            ),
+          }} name="Gọi món" component={Waiter} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <Ionicons name="person" size={size} color={color} />
+            ),
+          }} name="Nhân sự" component={Employee} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="menu" size={size} color={color} />
+            ),
+          }} name="Thực đơn" component={Food} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="chart-line" size={size} color={color} />
+            ),
+          }} name="Thống kê" component={Statis} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="table-chair" size={size} color={color} />
+            ),
+          }} name="Bàn" component={TableMenu} />
+        </>
+      case 2:
+        return <>
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
+            ),
+          }} name="Gọi món" component={Waiter} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="chart-line" size={size} color={color} />
+            ),
+          }} name="Thống kê" component={Statis} />
+        </>
+      case 3:
+        return <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
+          ),
+        }} name="Gọi món" component={Waiter} />
+      case 4:
+        return <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="chef-hat" size={size} color={color} />
+          ),
+        }} name="Bếp" component={Chef} />;
+      default:
+        return <Drawer.Screen options={{
+          drawerIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
+          ),
+        }} name="Gọi món" component={Waiter} />
+        break;
+    }
+  }
+
   const DrawerScreen = () => {
     return (
       <Drawer.Navigator
@@ -126,36 +230,7 @@ const Home = () => {
         useLegacyImplementation
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
-        <Drawer.Screen options={{
-          drawerIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
-          ),
-        }} name="Gọi món" component={Waiter} />
-        <Drawer.Screen options={{
-          drawerIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="chef-hat" size={size} color={color} />
-          ),
-        }} name="Bếp" component={Chef} />
-        <Drawer.Screen options={{
-          drawerIcon: ({ size, color }) => (
-            <Ionicons name="person" size={size} color={color} />
-          ),
-        }} name="Nhân sự" component={Employee} />
-        <Drawer.Screen options={{
-          drawerIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="menu" size={size} color={color} />
-          ),
-        }} name="Thực đơn" component={Food} />
-        <Drawer.Screen options={{
-          drawerIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="chart-line" size={size} color={color} />
-          ),
-        }} name="Thống kê" component={Statis} />
-        <Drawer.Screen options={{
-          drawerIcon: ({ size, color }) => (
-            <MaterialCommunityIcons name="table-chair" size={size} color={color} />
-          ),
-        }} name="Bàn" component={TableMenu} />
+        {ScreenRules()}
       </Drawer.Navigator>
     );
   };

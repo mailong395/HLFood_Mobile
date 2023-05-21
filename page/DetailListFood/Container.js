@@ -61,8 +61,8 @@ const Container = ({ data, openModal }) => {
       <Text style={styles.title}>Danh sách món ăn</Text>
       <List data={data?.order_details} />
     </View>
-    <Text style={styles.textTotal}>Thuế: {formatCurrency({ amount: getVAT(), code: "VND" })[0]}</Text>
     <Text style={styles.textTotal}>Tổng tiền: {formatCurrency({ amount: getTotal(), code: "VND" })[0]}</Text>
+    <Text style={styles.textTotal}>Thuế: {formatCurrency({ amount: getVAT(), code: "VND" })[0]}</Text>
     <Text style={styles.textTotal}>Thành tiền: {formatCurrency({ amount: getTotalPrice(), code: "VND" })[0]}</Text>
     <View style={styles.listButton}>
       <Button style={{ flex: 1, marginRight: 8, }} mode="contained" onPress={() => openModal()}>Thanh toán</Button>

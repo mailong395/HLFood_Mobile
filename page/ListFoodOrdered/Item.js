@@ -13,22 +13,23 @@ import { loginSuccess } from '../../redux/slice/authSlice';
 import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
 import { useContext } from 'react';
 import { SocketContext } from '../../context/SocketIOContext';
+import DialogComp from '../../component/DialogComp';
 
 const ItemFood = ({ isEdit = false, itemOrderDetail = {} }) => {
-  const { sendSocketData } = useContext(SocketContext);
-
-  const [infoOD, setInfoOD] = useState(itemOrderDetail);
-  const userSelector = useSelector((state) => state.auth);
+  const dataSelected = [];
+  const theme = useTheme();
   const dispatch = useDispatch();
-  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
-  const selector = useSelector((state) => state?.order);
   const [note, setNote] = useState(false);
   const [edit, setEdit] = useState(isEdit);
-  const theme = useTheme();
-  const [quantity, setQuantity] = useState(0);
   const [country, setCountry] = useState('');
+  const [quantity, setQuantity] = useState(0);
   const [textDescription, setDescription] = useState();
-  const dataSelected = [];
+  const { sendSocketData } = useContext(SocketContext);
+  const [infoOD, setInfoOD] = useState(itemOrderDetail);
+  const selector = useSelector((state) => state?.order);
+  const userSelector = useSelector((state) => state.auth);
+  const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
+  const [openDialog, setOpenDialog] = useState(false);
   for (let index = 0; index < quantity; index++) {
     const value = index + 1;
     dataSelected.push({
@@ -81,6 +82,15 @@ const ItemFood = ({ isEdit = false, itemOrderDetail = {} }) => {
     sendSocketData({ waiterToChef: orderChange });
     dispatch(getOrderByIdSuccess(orderChange));
   };
+
+  const handleAccess = () => {
+    onRemove();
+    setOpenDialog(false);
+  }
+
+  const handleCancel = () => {
+    setOpenDialog(false);
+  }
 
   useEffect(() => {
     if (itemOrderDetail) {
@@ -143,10 +153,17 @@ const ItemFood = ({ isEdit = false, itemOrderDetail = {} }) => {
             icon="delete-outline"
             size={24}
             iconColor={theme.colors.error}
-            onPress={onRemove}
+            onPress={() => setOpenDialog(true)}
           />
         </Card.Actions>
       )}
+
+      <DialogComp 
+        title='Thông báo'
+        content={'Bạn có thất sự muốn xóa không món?'}
+        visibleDefault={openDialog}
+        propsAddFood={handleAccess}
+        propsClose={handleCancel} />
     </Card>
   );
 };
