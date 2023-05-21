@@ -49,9 +49,12 @@ const SocketContextProvider = ({ children }) => {
 
       if (val?.notifiWaiter !== undefined) {
         if (val?.notifiWaiter?.employee === idEmployee) {
-          
           getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
         }
+      }
+
+      if (val?.WaiterToWaiter !== undefined) {
+        getAllTable(dispatch, {}, accessToken, axiosJWT);
       }
     };
     socket.current = io(url, {

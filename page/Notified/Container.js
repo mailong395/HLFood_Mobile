@@ -13,7 +13,6 @@ const Container = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const renderItem = ({ item, index }) => {
-    console.log('item', item, index);
 
     return <Element data={item} />
   }

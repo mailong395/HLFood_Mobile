@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
-import { formatCurrency } from "react-native-format-currency";
-import { IconButton, TextInput, useTheme } from "react-native-paper";
+import { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { formatCurrency } from 'react-native-format-currency';
+import { IconButton, TextInput, useTheme } from 'react-native-paper';
 import { Card, Text } from 'react-native-paper';
-import { SelectCountry } from "react-native-element-dropdown";
-import { useDispatch, useSelector } from "react-redux";
-import { CONTENT, LABEL, TOAST } from "../../config/lang_vn";
-import { deleteOrderDetail, updateOrderDetail } from "../../redux/api/orderApi";
-import { Toast } from "../../common/toast";
-import { createAxios } from "../../redux/createInstance";
-import { loginSuccess } from "../../redux/slice/authSlice";
-import { getOrderByIdSuccess } from "../../redux/slice/orderSlice";
+import { SelectCountry } from 'react-native-element-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { CONTENT, LABEL, TOAST } from '../../config/lang_vn';
+import { deleteOrderDetail, updateOrderDetail } from '../../redux/api/orderApi';
+import { Toast } from '../../common/toast';
+import { createAxios } from '../../redux/createInstance';
+import { loginSuccess } from '../../redux/slice/authSlice';
+import { getOrderByIdSuccess } from '../../redux/slice/orderSlice';
+import { useContext } from 'react';
+import { SocketContext } from '../../context/SocketIOContext';
 
-const ItemFood = ({
-  isEdit = false,
-  itemOrderDetail = {},
-}) => {
+const ItemFood = ({ isEdit = false, itemOrderDetail = {} }) => {
+  const { sendSocketData } = useContext(SocketContext);
+
   const [infoOD, setInfoOD] = useState(itemOrderDetail);
   const userSelector = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const ItemFood = ({
     dataSelected.push({
       value: '' + value,
       label: '' + value,
-    })
+    });
   }
 
   const handleDone = async () => {
@@ -42,9 +43,8 @@ const ItemFood = ({
       setEdit(!edit);
       const newOrder = selector?.data;
       const newListOrderDetail = [];
-      console.log('orderChange', orderChange);
-      newOrder.order_details.forEach(element => {
-        const newOD = { ...element }
+      newOrder.order_details.forEach((element) => {
+        const newOD = { ...element };
         if (element._id === itemOrderDetail._id) {
           newOD.quantity = +country + infoOD.quantity_finished;
           newOD.description = textDescription;
@@ -55,21 +55,20 @@ const ItemFood = ({
         ...newOrder,
         order_details: [...newListOrderDetail],
       };
-      console.log('orderChange', orderChange);
-      console.log('newListOrderDetail', newListOrderDetail);
       dispatch(getOrderByIdSuccess(orderChange));
       await updateOrderDetail(dispatch, newListOrderDetail, userSelector?.data?.accessToken, axiosJWT);
+      sendSocketData({ waiterToChef: newListOrderDetail });
       Toast(TOAST.update_success);
     } catch (error) {
       Toast(TOAST.update_failed);
       console.log('error', error);
     }
-  }
+  };
 
   const onRemove = () => {
     const newOrder = selector?.data;
     const newListOrderDetail = [];
-    newOrder.order_details.forEach(element => {
+    newOrder.order_details.forEach((element) => {
       if (element._id !== itemOrderDetail._id) {
         newListOrderDetail.push(element);
       }
@@ -79,8 +78,9 @@ const ItemFood = ({
       order_details: [...newListOrderDetail],
     };
     deleteOrderDetail(dispatch, infoOD._id, userSelector?.data.accessToken, axiosJWT);
+    sendSocketData({ waiterToChef: orderChange });
     dispatch(getOrderByIdSuccess(orderChange));
-  }
+  };
 
   useEffect(() => {
     if (itemOrderDetail) {
@@ -90,30 +90,33 @@ const ItemFood = ({
       setCountry('' + calculate);
       setQuantity(calculate);
     }
-  }, [itemOrderDetail])
-
+  }, [itemOrderDetail]);
 
   return (
     <Card mode="contained" style={styles.container}>
       <Card.Cover source={{ uri: infoOD?.food?.image }} />
       <Card.Content style={styles.content}>
         <Text variant="titleLarge">{infoOD?.food?.name}</Text>
-        <Text variant="titleMedium">{formatCurrency({ amount: infoOD?.food?.price, code: "VND" })[0]}</Text>
-        {!edit && <Text>{CONTENT.quantity} : <Text variant="titleMedium">{quantity}</Text></Text>}
+        <Text variant="titleMedium">{formatCurrency({ amount: infoOD?.food?.price, code: 'VND' })[0]}</Text>
+        {!edit && (
+          <Text>
+            {CONTENT.quantity} : <Text variant="titleMedium">{quantity}</Text>
+          </Text>
+        )}
         {infoOD?.description && !edit && <Text variant="titleMedium">{infoOD?.description}</Text>}
       </Card.Content>
-      {
-        note && <Card.Content>
+      {note && (
+        <Card.Content>
           <TextInput
             label={LABEL.detailsFood}
             value={textDescription}
             mode="outlined"
-            onChangeText={text => setDescription(text)}
+            onChangeText={(text) => setDescription(text)}
           />
         </Card.Content>
-      }
+      )}
 
-      {edit ?
+      {edit ? (
         <Card.Actions>
           <>
             <SelectCountry
@@ -124,31 +127,17 @@ const ItemFood = ({
               data={dataSelected}
               valueField="value"
               labelField="label"
-              onChange={e => {
+              onChange={(e) => {
                 setCountry(e.value);
               }}
             />
-            <IconButton
-              icon="check-bold"
-              onPress={handleDone}
-            />
+            <IconButton icon="check-bold" onPress={handleDone} />
           </>
-          {!note &&
-            <IconButton
-              mode="contained"
-              icon="square-edit-outline"
-              size={24}
-              onPress={() => setNote(!note)}
-            />}
+          {!note && <IconButton mode="contained" icon="square-edit-outline" size={24} onPress={() => setNote(!note)} />}
         </Card.Actions>
-        :
+      ) : (
         <Card.Actions>
-          <IconButton
-            mode="contained"
-            icon="pencil-outline"
-            size={24}
-            onPress={() => setEdit(true)}
-          />
+          <IconButton mode="contained" icon="pencil-outline" size={24} onPress={() => setEdit(true)} />
           <IconButton
             mode="contained"
             icon="delete-outline"
@@ -157,10 +146,10 @@ const ItemFood = ({
             onPress={onRemove}
           />
         </Card.Actions>
-      }
+      )}
     </Card>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -176,13 +165,13 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 16,
-    fontWeight: "500",
-    color: "#343434",
+    fontWeight: '500',
+    color: '#343434',
   },
   textPrice: {
     fontSize: 14,
     fontWeight: '500',
-    color: "#343434",
+    color: '#343434',
   },
   button: {
     justifyContent: 'center',
@@ -190,12 +179,12 @@ const styles = StyleSheet.create({
     width: 48,
     height: 40,
     borderWidth: 1,
-    borderColor: "#d9d9d9",
+    borderColor: '#d9d9d9',
     borderRadius: 4,
   },
   titleButton: {
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   dropdown: {
     margin: 16,
