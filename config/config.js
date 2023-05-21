@@ -109,8 +109,8 @@ const ACTIVE_TABLE = [
   {
     id: 4,
     title: 'Xác nhận chuyển món',
-    icon: 'check-bold'
-  }
+    icon: 'check-bold',
+  },
 ];
 
 const ACTIVE_FOOD = [
@@ -123,6 +123,16 @@ const ACTIVE_FOOD = [
     id: 1,
     title: 'Xoá món ăn',
     icon: 'delete',
+  },
+  {
+    id: 2,
+    title: 'Ngừng bán món ăn',
+    icon: 'food-drumstick-off',
+  },
+  {
+    id: 3,
+    title: 'Bán món ăn',
+    icon: 'food-drumstick',
   },
 ];
 
@@ -214,14 +224,4 @@ const CHAIR = [
   },
 ];
 
-export { 
-  OPTION_TABLE,
-  OPTION_FOOD,
-  ACTIVE_TABLE,
-  STATUS_TABLE,
-  CMS,
-  ACTIVE_EMP,
-  ACTIVE_FOOD,
-  FLOOR,
-  CHAIR,
-};
+export { OPTION_TABLE, OPTION_FOOD, ACTIVE_TABLE, STATUS_TABLE, CMS, ACTIVE_EMP, ACTIVE_FOOD, FLOOR, CHAIR };
