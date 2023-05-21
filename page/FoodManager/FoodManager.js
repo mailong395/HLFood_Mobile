@@ -6,7 +6,7 @@ import { ActivityIndicator, Divider, MD2Colors, Searchbar } from 'react-native-p
 import Header from '../../common/Header';
 import List from './List';
 import ModalComp from './ModalComp';
-import { deleteFood, getAllFood } from '../../redux/api/foodApi';
+import { deleteFood, getAllFood, hiddenFood } from '../../redux/api/foodApi';
 import { createAxios } from '../../redux/createInstance';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import React from 'react';
@@ -30,6 +30,8 @@ function FoodManager({ navigation }) {
   const [itemSelected, setItemSelected] = useState({});
   const [isShowConfirmDelete, setIsShowConfirmDelete] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isShowConfirmHide, setIsShowConfirmHide] = useState(false);
+  const [isShowConfirmUnhide, setIsShowConfirmUnhide] = useState(false);
 
   const onChangeSearch = (query) => {
     setSearchQuery(query);
@@ -64,6 +66,12 @@ function FoodManager({ navigation }) {
       case 1:
         setIsShowConfirmDelete(true);
         break;
+      case 2:
+        setIsShowConfirmHide(true);
+        break;
+      case 3:
+        setIsShowConfirmUnhide(true);
+        break;
       default:
         break;
     }
@@ -74,6 +82,22 @@ function FoodManager({ navigation }) {
     deleteFoodLocal(food);
     deleteFood(dispatch, food._id, accessToken, axiosJWT);
     setIsShowConfirmDelete(false);
+  };
+
+  const handleConfirmHideFood = (food) => {
+    const bodyAPI = {
+      id: food?._id,
+      is_outdated: !food.is_outdated,
+    };
+
+    hiddenFood(dispatch, bodyAPI, accessToken, axiosJWT);
+
+    if (food.is_outdated) {
+      setIsShowConfirmUnhide(false);
+    } else {
+      setIsShowConfirmHide(false);
+    }
+    getAllFood(dispatch, accessToken, axiosJWT);
   };
 
   const deleteFoodLocal = (food) => {
@@ -161,6 +185,20 @@ function FoodManager({ navigation }) {
           visibleDefault={isShowConfirmDelete}
           propsAddFood={() => handleConfirmDeleteEmp(itemSelected)}
           propsClose={() => setIsShowConfirmDelete(false)}
+        />
+
+        <DialogComp
+          content="Bạn có chắc chắn ẩn món ăn này không ?"
+          visibleDefault={isShowConfirmHide}
+          propsAddFood={() => handleConfirmHideFood(itemSelected)}
+          propsClose={() => setIsShowConfirmHide(false)}
+        />
+
+        <DialogComp
+          content="Bạn có chắc chắn hiện món ăn này không ?"
+          visibleDefault={isShowConfirmUnhide}
+          propsAddFood={() => handleConfirmHideFood(itemSelected)}
+          propsClose={() => setIsShowConfirmUnhide(false)}
         />
       </View>
     </View>

@@ -43,7 +43,7 @@ const List = ({ props, isShowModal = false, filterData, data }) => {
           }}
           onPress={handleMoveToDesTable}
         >
-          <Card.Content style={styles.content}>
+          <Card.Content style={[styles.content, item.is_outdated && { opacity: 0.4 }]}>
             <View style={styles.boxFlex}>
               <Card.Cover style={{ width: 70, height: 70 }} source={{ uri: item.image }} />
               <View>
