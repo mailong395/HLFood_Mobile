@@ -27,6 +27,8 @@ import StatisticalDetail from './Statistical/StatisticalDetail';
 import { logoutSuccess } from '../redux/slice/authSlice';
 import TableManager from './TableManager';
 import AddTable from './AddTable';
+import CustomerManager from './CustomerManager/CustomerManager';
+import AddCus from './AddEmp/AddCus';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -90,6 +92,15 @@ const TableMenu = () => {
   );
 };
 
+const CustomerMenu = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="CustomerManager" component={CustomerManager} />
+      <Stack.Screen name="AddCustomer" component={AddCus} />
+    </Stack.Navigator>
+  );
+};
+
 const Home = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.auth);
@@ -136,7 +147,7 @@ const Home = () => {
           }} name="Gọi món" component={Waiter} />
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
-              <Ionicons name="person" size={size} color={color} />
+              <MaterialCommunityIcons name="account-tie" size={size} color={color}/>
             ),
           }} name="Nhân sự" component={Employee} />
           <Drawer.Screen options={{
@@ -154,6 +165,12 @@ const Home = () => {
               <MaterialCommunityIcons name="table-chair" size={size} color={color} />
             ),
           }} name="Bàn" component={TableMenu} />
+           <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <Ionicons name="person" size={size} color={color} />
+
+            ),
+          }} name="Khách hàng" component={CustomerMenu} />
         </>
       case 1:
         return <>
@@ -187,6 +204,11 @@ const Home = () => {
               <MaterialCommunityIcons name="table-chair" size={size} color={color} />
             ),
           }} name="Bàn" component={TableMenu} />
+            <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="table-chair" size={size} color={color} />
+            ),
+          }} name="Khách hàng" component={CustomerMenu} />
         </>
       case 2:
         return <>

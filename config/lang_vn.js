@@ -14,6 +14,7 @@ const BUTTON = {
   UnassignEmp: 'Xoá giao phó nhân viên này',
   addEmp: 'Thêm nhân viên',
   editEmp: 'Sửa thông tin nhân viên',
+  editCus: 'Sửa thông tin Khách hàng',
   addFood: 'Thêm thức ăn',
   editFood: 'Sửa thông tin thức ăn',
   payment: 'Thanh Toán',
@@ -29,6 +30,7 @@ const LABEL = {
   Empty_Floor: 'Số lầu',
   Empty_Slot: 'Số lượng khách hàng',
   name_emp: 'Tên nhân viên',
+  name_cus: 'Tên khách hàng',
   name_food: 'Tên món ăn',
   number_emp: 'Số điện thoại',
   job_title: 'Chức vụ',
@@ -40,7 +42,7 @@ const LABEL = {
   quantity_finished: 'Hoàn thành',
   add_table: 'Số lượng bàn thêm',
   num_floor: 'Số tầng',
-  num_chair: 'Số ghế'
+  num_chair: 'Số ghế',
 };
 
 const CONTENT = {
@@ -77,7 +79,7 @@ const TABLE = {
   Name_cus: 'Tên khách hàng',
   Phone_cus: 'Số điện thoại',
   Table: 'Bàn',
-  id_order: 'Số HĐ'
-}
+  id_order: 'Số HĐ',
+};
 
 export { BUTTON, LABEL, CONTENT, HEADER_TITLE, TOAST, TABLE };
