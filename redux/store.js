@@ -13,6 +13,7 @@ import employeeReducer from './slice/employeeSlice';
 import fileReducer from './slice/fileSlice';
 import notifiedReducer from './slice/notifiedSlice';
 import customerReducer from './slice/customerSlice';
+import bookingReducer from './slice/bookingSlice';
 
 const persistConfig = {
   key: 'root',
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   employee: employeeReducer,
   file: fileReducer,
   notified: notifiedReducer,
+  booking: bookingReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

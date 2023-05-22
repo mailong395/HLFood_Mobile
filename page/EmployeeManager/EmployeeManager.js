@@ -124,7 +124,6 @@ function EmployeeManager({ navigation }) {
   }, []);
 
   useEffect(() => {
-
     if (searchQuery) {
       const regex = new RegExp(searchQuery, 'gi');
 
