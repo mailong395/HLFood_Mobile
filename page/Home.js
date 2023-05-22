@@ -29,6 +29,11 @@ import TableManager from './TableManager';
 import AddTable from './AddTable';
 import CustomerManager from './CustomerManager/CustomerManager';
 import AddCus from './AddEmp/AddCus';
+import Profile from './Profile';
+import { Avatar } from 'react-native-paper';
+import BookingTable from './BookingTable';
+import AddBooking from './AddBooking';
+import ListTable from './ListTable';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -100,6 +105,15 @@ const CustomerMenu = () => {
     </Stack.Navigator>
   );
 };
+const Booking = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="BookingTable" component={BookingTable} />
+      <Stack.Screen name="AddBooking" component={AddBooking} />
+      <Stack.Screen name="ListTable" component={ListTable} />
+    </Stack.Navigator>
+  );
+};
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -107,6 +121,7 @@ const Home = () => {
   const [isLogin, setIsLogin] = React.useState(true);
   const axiosJWT = createAxios(selector?.data, dispatch, logoutSuccess);
   const rules = selector?.data?.job_title;
+  let name = '';
 
   const handleLogout = (props) => {
     if (selector?.data?.accessToken) {
@@ -115,25 +130,10 @@ const Home = () => {
     props.navigation.closeDrawer();
   };
 
-  // render
-  const CustomDrawerContent = (props) => {
-    return (
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-        <DrawerItem
-          icon={({ focused, color, size }) => (
-            <MaterialCommunityIcons name={focused ? 'logout-variant' : 'logout'} size={size} color={color} />
-          )}
-          label="Đăng xuất"
-          onPress={() => handleLogout(props)}
-        />
-      </DrawerContentScrollView>
-    );
-  };
-
   const ScreenRules = () => {
     switch (rules) {
       case 0:
+        name = selector?.data?.name + ' - ' + 'Quản lý';
         return <>
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
@@ -147,7 +147,7 @@ const Home = () => {
           }} name="Gọi món" component={Waiter} />
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
-              <MaterialCommunityIcons name="account-tie" size={size} color={color}/>
+              <MaterialCommunityIcons name="account-tie" size={size} color={color} />
             ),
           }} name="Nhân sự" component={Employee} />
           <Drawer.Screen options={{
@@ -165,14 +165,20 @@ const Home = () => {
               <MaterialCommunityIcons name="table-chair" size={size} color={color} />
             ),
           }} name="Bàn" component={TableMenu} />
-           <Drawer.Screen options={{
+          <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
               <Ionicons name="person" size={size} color={color} />
 
             ),
           }} name="Khách hàng" component={CustomerMenu} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="calendar" size={size} color={color} />
+            ),
+          }} name="Đặt bàn" component={Booking} />
         </>
       case 1:
+        name = selector?.data?.name + ' - ' + 'Quản lý';
         return <>
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
@@ -204,13 +210,19 @@ const Home = () => {
               <MaterialCommunityIcons name="table-chair" size={size} color={color} />
             ),
           }} name="Bàn" component={TableMenu} />
-            <Drawer.Screen options={{
+          <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
               <MaterialCommunityIcons name="table-chair" size={size} color={color} />
             ),
           }} name="Khách hàng" component={CustomerMenu} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="calendar" size={size} color={color} />
+            ),
+          }} name="Đặt bàn" component={Booking} />
         </>
       case 2:
+        name = selector?.data?.name + ' - ' + 'Thống kê';
         return <>
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
@@ -222,14 +234,22 @@ const Home = () => {
               <MaterialCommunityIcons name="chart-line" size={size} color={color} />
             ),
           }} name="Thống kê" component={Statis} />
+          <Drawer.Screen options={{
+            drawerIcon: ({ size, color }) => (
+              <MaterialCommunityIcons name="calendar" size={size} color={color} />
+            ),
+          }} name="Đặt bàn" component={Booking} />
         </>
       case 3:
+        name = selector?.data?.name + ' - ' + 'Phục vụ';
         return <Drawer.Screen options={{
           drawerIcon: ({ size, color }) => (
             <MaterialCommunityIcons name="food-fork-drink" size={size} color={color} />
           ),
         }} name="Gọi món" component={Waiter} />
       case 4:
+        namePage = 'Bếp';
+        name = selector?.data?.name + ' - ' + 'Đầu bếp';
         return <Drawer.Screen options={{
           drawerIcon: ({ size, color }) => (
             <MaterialCommunityIcons name="chef-hat" size={size} color={color} />
@@ -245,14 +265,61 @@ const Home = () => {
     }
   }
 
+  // render
+  const CustomDrawerContent = (props) => {
+    // <MaterialCommunityIcons name={focused ? 'logout-variant' : 'logout'} size={size} color={color} />
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          icon={({ focused, color, size }) => (
+            <MaterialCommunityIcons name={focused ? 'logout-variant' : 'logout'} size={size} color={color} />
+          )}
+          label="Đăng xuất"
+          onPress={() => handleLogout(props)}
+        />
+      </DrawerContentScrollView>
+    );
+  };
+
   const DrawerScreen = () => {
+    let namePage = '';
+
+    switch (rules) {
+      case 0:
+        namePage = 'Bếp'
+        break;
+      case 1:
+        namePage = 'Bếp'
+        break;
+      case 2:
+        namePage = 'Thống kê'
+        break;
+      case 3:
+        namePage = 'Gọi món'
+        break;
+      case 4:
+        namePage = 'Bếp'
+        break;
+      default:
+        break;
+    }
+
     return (
       <Drawer.Navigator
+        initialRouteName={namePage}
         screenOptions={{ headerShown: false }}
         useLegacyImplementation
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
+        <Drawer.Screen options={{
+          title: name,
+          drawerIcon: () => (
+            <Avatar.Text size={40} label={name[0]} />
+          ),
+        }} name={'profile'} component={Profile} />
         {ScreenRules()}
+
       </Drawer.Navigator>
     );
   };

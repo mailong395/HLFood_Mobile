@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerCard: {
-    // borderBottomWidth: 1,
-    // paddingBottom: 8,
+    
   },
 });

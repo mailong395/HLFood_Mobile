@@ -29,6 +29,8 @@ const CMS = {
   yearStatistical: 'Thống kê theo năm',
   table: 'Quản lý bàn',
   list_table: 'Danh sách bàn',
+  profile: 'Thông tin cá nhân',
+  booking: 'Đặt bàn',
 };
 
 // List kind of table
