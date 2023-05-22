@@ -168,7 +168,6 @@ const Home = () => {
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
               <Ionicons name="person" size={size} color={color} />
-
             ),
           }} name="Khách hàng" component={CustomerMenu} />
           <Drawer.Screen options={{
