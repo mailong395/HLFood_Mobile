@@ -72,7 +72,7 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
   }
 
   const getMoneyReturn = () => {
-    return +resetMoney() - +getTotalPrice();
+    return +resetMoney() - (getTotal() + getVAT());
   }
 
   const onChangeText = text => setMoney(text);
@@ -80,8 +80,7 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
 
   const hasErrors = () => {
     if (!money) return false;
-    const total = data?.total_order_price + data?.total_order_price * data?.vat;
-    if (+resetMoney() >= total) return false;
+    if (+resetMoney() >= (getTotal() + getVAT())) return false;
     else return true;
   };
 
