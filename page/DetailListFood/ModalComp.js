@@ -1,5 +1,5 @@
-import { Modal, Pressable, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import React from 'react'
+import { Modal, Pressable, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 import { ACTIVE_TABLE } from '../../config/config';
@@ -12,26 +12,29 @@ import { paymentOrder } from '../../redux/api/orderApi';
 import { loginSuccess } from '../../redux/slice/authSlice';
 import { createAxios } from '../../redux/createInstance';
 import { TableContext } from '../../context/TableContext';
+import { useContext } from 'react';
+import { SocketContext } from '../../context/SocketIOContext';
 
 const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
   const [isActive, setIsActive] = React.useState(false);
-  const [money, setMoney] = React.useState("");
-  const auth = useSelector(state => state.auth);
-  const order = useSelector(state => state.order);
+  const [money, setMoney] = React.useState('');
+  const auth = useSelector((state) => state.auth);
+  const order = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(auth?.data, dispatch, loginSuccess);
   const [loading, setLoading] = React.useState(false);
   const { getData, setGetData } = React.useContext(TableContext);
-  
+  const { sendSocketData } = useContext(SocketContext);
+
   const getTotal = () => {
     let total = 0;
     data?.order_details?.map((item) => {
       total += item?.total_detail_price;
-    })
+    });
     return total;
-  }
+  };
 
-  // handle 
+  // handle
   const handleAssert = async () => {
     try {
       setIsActive(false);
@@ -39,100 +42,90 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
       setMoney('');
       print(false, data, auth, money);
       const params = {
-        id: data?._id
-      }
-      const body = data?.customer ?
-      {
-        exchange_price: getMoneyReturn(),
-        cus_give_price: getTotalPrice(),
-        customer: data?.customer
-      }
-      : 
-      {
-        exchange_price: getMoneyReturn(),
-        cus_give_price: getTotalPrice(),
+        id: data?._id,
       };
+      const body = data?.customer
+        ? {
+            exchange_price: getMoneyReturn(),
+            cus_give_price: getTotalPrice(),
+            customer: data?.customer,
+          }
+        : {
+            exchange_price: getMoneyReturn(),
+            cus_give_price: getTotalPrice(),
+          };
       await paymentOrder(dispatch, params, body, auth?.data.accessToken, axiosJWT);
+      sendSocketData({ WaiterToWaiter: body });
       setGetData(!getData);
       navigation.popToTop();
     } catch (error) {
       console.log('error', error);
     }
-  }
+  };
 
   const closeModal = () => {
     handleCloseModal();
     setIsActive(false);
     setMoney('');
-  }
+  };
 
   const handlePayment = () => {
     print(false, data, auth, money);
-  }
+  };
 
   const getVAT = () => {
     return data?.vat * data?.total_order_price;
-  }
+  };
 
   const getTotalPrice = () => {
     return data?.total_order_price + getVAT();
-  }
+  };
 
   const getMoneyReturn = () => {
     return +resetMoney() - (getTotal() + getVAT());
-  }
+  };
 
-  const onChangeText = text => setMoney(text);
-  const resetMoney = () => { return money.split(' ').join('') };
+  const onChangeText = (text) => setMoney(text);
+  const resetMoney = () => {
+    return money.split(' ').join('');
+  };
 
   const hasErrors = () => {
     if (!money) return false;
-    if (+resetMoney() >= (getTotal() + getVAT())) return false;
+    if (+resetMoney() >= getTotal() + getVAT()) return false;
     else return true;
   };
 
   const showMoney = () => {
     const str = String(resetMoney()).replace(/(.)(?=(\d{3})+$)/g, '$1 ');
-    return str
-  }
+    return str;
+  };
 
   React.useEffect(() => {
     setLoading(order?.isFetching);
   }, [order]);
 
-
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isShow}
-      onRequestClose={closeModal}
-    >
-      <Pressable
-        style={styles.centeredView}
-        onPress={closeModal}
-      >
+    <Modal animationType="slide" transparent={true} visible={isShow} onRequestClose={closeModal}>
+      <Pressable style={styles.centeredView} onPress={closeModal}>
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
-            <View style={{ alignItems: "center", paddingTop: 10, }}>
-              <View style={{ height: 4, width: 40, backgroundColor: "#d9d9d9", borderRadius: 10, }}></View>
+            <View style={{ alignItems: 'center', paddingTop: 10 }}>
+              <View style={{ height: 4, width: 40, backgroundColor: '#d9d9d9', borderRadius: 10 }}></View>
             </View>
             <View style={styles.modalHeader}>
               <Text style={styles.modalText}>Chức năng</Text>
-              <Pressable
-                style={styles.buttonClose}
-                onPress={closeModal}
-              >
-                <Icon name="close" size={24} color={"#c4c4c4"} />
+              <Pressable style={styles.buttonClose} onPress={closeModal}>
+                <Icon name="close" size={24} color={'#c4c4c4'} />
               </Pressable>
             </View>
-            {isActive ?
+            {isActive ? (
               <View style={styles.modalBody}>
                 <TextInput
-                  mode='outlined'
+                  mode="outlined"
                   label={LABEL.money_of_cus}
                   value={showMoney()}
-                  keyboardType='number-pad'
+                  keyboardType="number-pad"
                   onChangeText={onChangeText}
                   error={hasErrors()}
                   right={<TextInput.Affix text="VNĐ" />}
@@ -141,48 +134,53 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
                 <HelperText type="error" visible={hasErrors()}>
                   Số tiền chưa đủ
                 </HelperText>
-                <Divider style={{ marginBottom: 10, }} />
+                <Divider style={{ marginBottom: 10 }} />
                 <View style={styles.priceBox}>
                   <Text>Tổng tiền:</Text>
-                  <Text>{formatCurrency({ amount: getTotal(), code: "VND" })[0]}</Text>
+                  <Text>{formatCurrency({ amount: getTotal(), code: 'VND' })[0]}</Text>
                 </View>
                 <View style={styles.priceBox}>
                   <Text>VAT:</Text>
-                  <Text>{formatCurrency({ amount: getVAT(), code: "VND" })[0]}</Text>
+                  <Text>{formatCurrency({ amount: getVAT(), code: 'VND' })[0]}</Text>
                 </View>
                 <View style={styles.priceBox}>
                   <Text>Thành tiền:</Text>
-                  <Text>{formatCurrency({ amount: getTotal() + getVAT(), code: "VND" })[0]}</Text>
+                  <Text>{formatCurrency({ amount: getTotal() + getVAT(), code: 'VND' })[0]}</Text>
                 </View>
-                <Divider style={{ marginVertical: 10, }} />
+                <Divider style={{ marginVertical: 10 }} />
                 <View style={styles.priceBox}>
                   <Text>Tiền khách trả:</Text>
-                  <Text>{money && formatCurrency({ amount: resetMoney(), code: "VND" })[0]}</Text>
+                  <Text>{money && formatCurrency({ amount: resetMoney(), code: 'VND' })[0]}</Text>
                 </View>
                 <View style={styles.priceBox}>
                   <Text>Tiền thối lại:</Text>
-                  <Text>{money && !hasErrors() && formatCurrency({ amount: getMoneyReturn(), code: "VND" })[0]}</Text>
+                  <Text>{money && !hasErrors() && formatCurrency({ amount: getMoneyReturn(), code: 'VND' })[0]}</Text>
                 </View>
                 <Button
                   loading={loading}
-                  style={{ marginTop: 16, }}
+                  style={{ marginTop: 16 }}
                   disabled={money ? hasErrors() : true}
-                  mode='contained-tonal'
+                  mode="contained-tonal"
                   onPress={handleAssert}
-                >{BUTTON.Assert}</Button>
+                >
+                  {BUTTON.Assert}
+                </Button>
               </View>
-              : <View style={styles.modalBody}>
-                <Button mode='contained-tonal' style={{ marginBottom: 16, }} onPress={() => setIsActive(true)}>Thanh toán bằng tiền mặt</Button>
+            ) : (
+              <View style={styles.modalBody}>
+                <Button mode="contained-tonal" style={{ marginBottom: 16 }} onPress={() => setIsActive(true)}>
+                  Thanh toán bằng tiền mặt
+                </Button>
               </View>
-            }
+            )}
           </View>
         </TouchableWithoutFeedback>
       </Pressable>
     </Modal>
-  )
-}
+  );
+};
 
-export default ModalComp
+export default ModalComp;
 
 const styles = StyleSheet.create({
   // Style Modal
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalView: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -199,7 +197,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d9d9d9',
 
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -210,16 +208,16 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#d9d9d9",
+    borderBottomColor: '#d9d9d9',
   },
   buttonClose: {
-    justifyContent: "center",
-    alignItems: "flex-end",
+    justifyContent: 'center',
+    alignItems: 'flex-end',
     paddingVertical: 10,
     width: 48,
   },
@@ -228,11 +226,11 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
-    fontWeight: "600",
-    textTransform: "uppercase",
+    fontWeight: '600',
+    textTransform: 'uppercase',
   },
   priceBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-})
+});
