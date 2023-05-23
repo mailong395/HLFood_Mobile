@@ -19,10 +19,11 @@ import React from 'react';
 import { deleteEmployee, getAllEmplyee } from '../../redux/api/employeeApi';
 import DialogComp from '../../component/DialogComp';
 import { getAllEmployeeSuccess } from '../../redux/slice/employeeSlice';
+import { getAllCustomer } from '../../redux/api/bookingApi';
 
 function CustomerManager({ navigation }) {
   const userSelector = useSelector((state) => state.auth);
-  const employeesApiData = useSelector((state) => state?.employee?.data);
+  const employeesApiData = useSelector((state) => state?.booking?.data);
   const accessToken = userSelector?.data?.accessToken;
 
   const numTable = useRef();
@@ -111,7 +112,7 @@ function CustomerManager({ navigation }) {
 
   useEffect(() => {
     if (userSelector?.data) {
-      getAllEmplyee(dispatch, accessToken, axiosJWT);
+      getAllCustomer(dispatch, accessToken, axiosJWT);
       getAllTable(dispatch, {}, accessToken, axiosJWT);
     }
   }, []);

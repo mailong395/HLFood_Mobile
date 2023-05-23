@@ -15,19 +15,25 @@ const List = () => {
   const renderItem = ({ index, item }) => {
     const isSelect = tableSelected.findIndex(element => element._id === item._id) > -1;
 
-    const handleSelect = () => {
-      const newArray = [...tableSelected, {
-        _id: item._id,
-        table_num: item.table_num,
-      }]
-      setTableSelected(newArray);
+    const handleSelect = (value) => {
+      const index = tableSelected.find(element => element._id === value._id);
+      if (index) {
+        const newArray = [...tableSelected].filter(element => element._id !== value._id);
+        setTableSelected(newArray);
+      } else {
+        const newArray = [...tableSelected, {
+          _id: item._id,
+          table_num: item.table_num,
+        }]
+        setTableSelected(newArray);
+      }
     }
     
     return <Item data={item} isSelect={isSelect} onSelect={handleSelect} />
   }
 
   useEffect(() => {
-    const newArray = [...selector?.data].sort((a, b) => a.table_num - b.table_num);
+    const newArray = [...selector?.data].filter(element => element.status === 0).sort((a, b) => a.table_num - b.table_num);
     setListTable(newArray);
   }, [selector])
 

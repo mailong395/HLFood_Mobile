@@ -36,7 +36,6 @@ const ListFoodOrdered = ({ route, navigation }) => {
   };
 
   const handleRemoveFood = (data) => {
-    console.log('data', data);
     // const temp = {
     //   index: -1,
     //   id: '',

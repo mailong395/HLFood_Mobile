@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 
 const BookingTable = () => {
-  const userSelector = useSelector(state => console.log('state', state));
+  const userSelector = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
 

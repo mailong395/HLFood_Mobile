@@ -23,8 +23,8 @@ export const saveOrder = async (dispatch, body, accessToken, axiosJWT) => {
   dispatch(saveOrderStart());
   try {
     const res = await axiosJWT.post(`${REACT_APP_HOST_API}/api/order`, body, {
-        headers: { token: `bear ${accessToken}` },
-      },
+      headers: { token: `bear ${accessToken}` },
+    },
     );
     dispatch(saveOrderSuccess());
     return res?.data;
@@ -34,3 +34,13 @@ export const saveOrder = async (dispatch, body, accessToken, axiosJWT) => {
     throw new Error('Save Failed!');
   }
 };
+
+export const startBooking = async (body, accessToken, axiosJWT) => {
+  try {
+    await axiosJWT.post(`${REACT_APP_HOST_API}/api/tables:order`, body, {
+      headers: { token: `bear ${accessToken}` },
+    });
+  } catch (error) {
+    console.log('error', error);
+  }
+}

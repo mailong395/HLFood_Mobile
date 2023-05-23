@@ -15,6 +15,7 @@ function TableContextProvider({ children }) {
         tableMerge, setTableMerge, 
         drawer,
         tableSelected, setTableSelected,
+        
     };
 
     return <TableContext.Provider value={value}>

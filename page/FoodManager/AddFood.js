@@ -216,7 +216,6 @@ function AddFood({ navigation, route }) {
       quality: 1,
     });
 
-    // console.log(result);
 
     if (!result.canceled) {
       const files = result;

@@ -11,7 +11,7 @@ const Container = () => {
   return (
     <View>
       <Header
-        title={isEdit? "Sửa Bàn Đặt" : "Thêm Bàn Đặt"}
+        title={isEdit? "Chỉnh sửa" : "Tạo mới"}
         mode="center-aligned"
         isShowButtonGoBack={true}
         props={() => navigation.goBack()}

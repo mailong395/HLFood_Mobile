@@ -211,7 +211,7 @@ const Home = () => {
           }} name="Bàn" component={TableMenu} />
           <Drawer.Screen options={{
             drawerIcon: ({ size, color }) => (
-              <MaterialCommunityIcons name="table-chair" size={size} color={color} />
+              <Ionicons name="person" size={size} color={color} />
             ),
           }} name="Khách hàng" component={CustomerMenu} />
           <Drawer.Screen options={{
@@ -286,13 +286,13 @@ const Home = () => {
 
     switch (rules) {
       case 0:
-        namePage = 'Bếp'
+        namePage = 'Thống kê'
         break;
       case 1:
-        namePage = 'Bếp'
+        namePage = 'Thống kê'
         break;
       case 2:
-        namePage = 'Thống kê'
+        namePage = 'Gọi món'
         break;
       case 3:
         namePage = 'Gọi món'
@@ -301,6 +301,7 @@ const Home = () => {
         namePage = 'Bếp'
         break;
       default:
+        namePage = 'Bếp'
         break;
     }
 

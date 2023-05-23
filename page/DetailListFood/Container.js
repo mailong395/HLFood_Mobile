@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 const Container = ({ data, openModal }) => {
   const auth = useSelector(state => state.auth);
+  console.log('auth', auth?.data);
 
   const d = new Date(data?.time_booking);
   const dateStr = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " +
@@ -64,10 +65,13 @@ const Container = ({ data, openModal }) => {
     <Text style={styles.textTotal}>Tổng tiền: {formatCurrency({ amount: getTotal(), code: "VND" })[0]}</Text>
     <Text style={styles.textTotal}>Thuế: {formatCurrency({ amount: getVAT(), code: "VND" })[0]}</Text>
     <Text style={styles.textTotal}>Thành tiền: {formatCurrency({ amount: getTotalPrice(), code: "VND" })[0]}</Text>
-    <View style={styles.listButton}>
-      <Button style={{ flex: 1, marginRight: 8, }} mode="contained" onPress={() => openModal()}>Thanh toán</Button>
-      <Button style={{ flex: 1, marginLeft: 8, }} mode="contained" onPress={() => print(true, data, auth)}>In hóa đơn tạm tính</Button>
-    </View>
+    {
+      auth?.data?.job_title !== 3 &&
+      <View style={styles.listButton}>
+        <Button style={{ flex: 1, marginRight: 8, }} mode="contained" onPress={() => openModal()}>Thanh toán</Button>
+        <Button style={{ flex: 1, marginLeft: 8, }} mode="contained" onPress={() => print(true, data, auth)}>In hóa đơn tạm tính</Button>
+      </View>
+    }
   </View>
 }
 

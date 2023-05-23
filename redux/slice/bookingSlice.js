@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const bookingSlide = createSlice({
-  name: 'auth',
+  name: 'booking',
   initialState: {
     data: null,
     loading: false,

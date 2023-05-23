@@ -22,7 +22,7 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
   const axiosJWT = createAxios(auth?.data, dispatch, loginSuccess);
   const [loading, setLoading] = React.useState(false);
   const { getData, setGetData } = React.useContext(TableContext);
-
+  
   const getTotal = () => {
     let total = 0;
     data?.order_details?.map((item) => {
@@ -41,7 +41,14 @@ const ModalComp = ({ isShow, handleCloseModal, data, navigation }) => {
       const params = {
         id: data?._id
       }
-      const body = {
+      const body = data?.customer ?
+      {
+        exchange_price: getMoneyReturn(),
+        cus_give_price: getTotalPrice(),
+        customer: data?.customer
+      }
+      : 
+      {
         exchange_price: getMoneyReturn(),
         cus_give_price: getTotalPrice(),
       };

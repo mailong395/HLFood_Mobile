@@ -17,7 +17,6 @@ import { useEffect } from 'react';
 import { Toast } from '../../common/toast';
 
 const Form = ({ onPress, data }) => {
-  console.log('data', data);
 
   const [body, setBody] = useState({
     numTables: '',

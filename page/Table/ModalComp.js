@@ -4,8 +4,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 import { ACTIVE_TABLE } from '../../config/config';
 import { Button } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 
 const ModalComp = ({ isShow, props, handleCloseModal, modalVisible }) => {
+  const selectorAuth = useSelector(state => state.auth);
+
   const renderItem = ({ item }) => {
     const isShow = checkStatus(item.id);
 

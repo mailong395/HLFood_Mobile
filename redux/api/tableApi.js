@@ -111,10 +111,20 @@ export const updateTableDetail = async (id, body, accessToken, axiosJWT) => {
   try {
     await axiosJWT.put(`${REACT_APP_HOST_API}/api/table`, body, {
       headers: { token: `bear ${accessToken}` },
-      params: {id: id}
+      params: { id: id }
     });
   } catch (error) {
     console.log(error);
     throw new Error('Save Failed!');
   }
-}; 
+};
+
+export const updateOrderInTable = async (body, accessToken, axiosJWT) => {
+  try {
+    await axiosJWT.put(`${REACT_APP_HOST_API}/api/tables:order`, body, {
+      headers: { token: `bear ${accessToken}` },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}

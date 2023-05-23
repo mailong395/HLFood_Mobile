@@ -9,8 +9,8 @@ const Item = ({ data, isSelect = false, onSelect }) => {
   const [select, setSelect] = useState(isSelect);
 
   const handleSelect = () => {
-    onSelect();
     setSelect(!select);
+    onSelect(data);
   }
 
   useEffect(() => {
@@ -28,31 +28,7 @@ const Item = ({ data, isSelect = false, onSelect }) => {
           <Text variant="titleLarge">Bàn {data?.table_num}</Text>
           <Text variant="bodyMedium">{data?.chair} {CMS.nChair}</Text>
         </View>
-        {/*   <Text variant="bodyMedium" style={{ color: color }}>{status}</Text> */}
       </Card.Content>
-      {/* <Card.Actions>
-          {
-            isCheckBox &&
-            <>
-              <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-              <IconButton
-                icon="square-edit-outline"
-                onPress={handleEdit}
-              />
-            </>
-          }
-        </Card.Actions>
-        <Card.Content>
-          <View style={[styles.headerCard, styles.boxFlex, { borderColor: color }]}>
-            <Text variant="bodyMedium" style={{ color: color }}>tầng {nFloor}</Text>
-            <Text variant="bodyMedium" style={{ color: color }}>{time}</Text>
-          </View>
-          <View style={styles.boxFlex}>
-            <Text variant="titleLarge" style={{ color: color, marginTop: 8 }}>Bàn {nTable}</Text>
-            <Text variant="bodyMedium" style={{ color: color }}>{nChair} {CMS.nChair}</Text>
-          </View>
-          <Text variant="bodyMedium" style={{ color: color }}>{status}</Text>
-        </Card.Content> */}
     </Card>
   )
 }
