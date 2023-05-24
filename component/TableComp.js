@@ -41,7 +41,7 @@ const TableComp = ({
           {
             isCheckBox &&
             <>
-              <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+              {/* <Switch value={isSwitchOn} onValueChange={onToggleSwitch} /> */}
               <IconButton
                 icon="square-edit-outline"
                 onPress={handleEdit}
