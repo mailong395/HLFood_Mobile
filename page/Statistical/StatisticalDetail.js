@@ -1,8 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../common/Header';
 import { CMS } from '../../config/config';
-import { Button, TextInput } from 'react-native-paper';
-import { BUTTON, LABEL } from '../../config/lang_vn';
+import { Divider, TextInput } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import StatisticalTable from './StatisticalTable';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -128,10 +127,6 @@ function StatisticalDetail({ navigation, route }) {
     navigation.goBack();
   };
 
-  const handleOpenDrawer = () => {
-    navigation.openDrawer();
-  };
-
   useEffect(() => {
     setRenderOrder(date, orderRedux, mode);
   }, []);
@@ -144,33 +139,31 @@ function StatisticalDetail({ navigation, route }) {
     <View style={styles.container}>
       <Header title={getHeaderTitle(mode)} mode="center-aligned" isShowButtonGoBack={true} props={handleGoBack} />
 
-      <View style={styles.dateInput}>
-        <TextInput
-          value={formatDate(date, mode)}
-          disabled={true}
-          style={[styles.textInput, { flex: 1 }]}
-          mode="outlined"
+      <TextInput
+        style={styles.filter}
+        editable={false}
+        value={formatDate(date, mode)}
+        mode="outlined"
+        right={
+          mode !== 'dayNow' &&
+          <TextInput.Icon icon='calendar' onPress={() => setShow(true)} />
+        }
+      />
+
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={'date'}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
         />
+      )}
 
-        {mode !== 'dayNow' && (
-          <Button style={styles.button} onPress={() => setShow(true)} mode="contained" title="Show date picker!">
-            Chọn ngày
-          </Button>
-        )}
-
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={'date'}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-          />
-        )}
-      </View>
       <StatisticalTable dataCsv={dataCsv} />
-
+      
+      <Divider />
       <View style={styles.total}>
         <Text>Tổng doanh thu:</Text>
         <Text> {formatCurrency({ amount: getTotalPriceOrder(dataCsv), code: 'VND' })[0]}</Text>
@@ -186,45 +179,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
   },
-  boxSearch: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  loading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  listFood: {
-    flex: 1,
-    padding: 8,
-  },
-  buttonBottom: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  dropdownCompnent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 8,
-  },
-  button: {
-    marginHorizontal: 5,
-    verticalAlign: 'middle',
-    justifyContent: 'center',
-    padding: 3,
-  },
-  dateInput: {
-    flexDirection: 'row',
-    padding: 15,
+  filter: {
+    marginVertical8m: 8,
+    marginHorizontal: 16,
   },
   total: {
-    borderTopWidth: 1,
-    padding: 15,
-    margin: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 16,
   },
 });
