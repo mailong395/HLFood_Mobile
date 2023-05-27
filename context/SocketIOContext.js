@@ -32,31 +32,31 @@ const SocketContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const handler = (val) => {
+    const handler = async (val) => {
       setSendData(val);
       if (val?.chefToChef !== undefined) {
-        setListOrderDetail(val.chefToChef);
+        await setListOrderDetail(val.chefToChef);
       }
       if (val?.waiterToChef !== undefined) {
-        getAllOrderDetail(dispatch, accessToken, axiosJWT);
+        await getAllOrderDetail(dispatch, accessToken, axiosJWT);
       }
       if (val?.chefToWaiter !== undefined) {
-        getAllTable(dispatch, {}, accessToken, axiosJWT);
+        await getAllTable(dispatch, {}, accessToken, axiosJWT);
       }
 
       if (val?.updateOrderDetail !== undefined) {
-        getAllOrderDetail(dispatch, accessToken, axiosJWT);
+        await getAllOrderDetail(dispatch, accessToken, axiosJWT);
       }
 
       if (val?.notifiWaiter !== undefined) {
         if (val?.notifiWaiter?.employee === idEmployee) {
           setBadge(true);
-          getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
+          await getAllNotified(dispatch, { employee: idEmployee }, accessToken, axiosJWT);
         }
       }
 
       if (val?.WaiterToWaiter !== undefined) {
-        getAllTable(dispatch, {}, accessToken, axiosJWT);
+        await getAllTable(dispatch, {}, accessToken, axiosJWT);
       }
     };
     socket.current = io(url, {

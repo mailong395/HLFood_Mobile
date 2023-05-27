@@ -43,14 +43,6 @@ function Statistical({ navigation }) {
           loading={loading}
           style={styles.button}
           mode="contained"
-          onPress={() => navigation.navigate('StatisticalDetail', { mode: 'dayNow' })}
-        >
-          {BUTTON.statisticalDay}
-        </Button>
-        <Button
-          loading={loading}
-          style={styles.button}
-          mode="contained"
           onPress={() => navigation.navigate('StatisticalDetail', { mode: 'month' })}
         >
           {BUTTON.statisticalMonth}

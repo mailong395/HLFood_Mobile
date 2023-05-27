@@ -27,11 +27,11 @@ const Container = ({ openDrawer }) => {
   return (
     <View style={styles.container}>
       <Header isShowDrawer={true} title={CMS.cook} mode="center-aligned" openDrawer={handleOpenDrawer} />
+      <List data={listOrderDetail} />
       {loading &&
         <View style={styles.loading}>
           <ActivityIndicator animating={true} color={MD2Colors.red800} />
         </View>}
-      <List data={listOrderDetail} />
     </View>
   )
 }
