@@ -3,11 +3,14 @@ import React from 'react'
 import { STATUS_TABLE } from '../../config/config'
 import TableComp from '../../component/TableComp';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 const List = ({ props, isShowModal = false }) => {
   const selector = useSelector(state => state.table);
   const [selected, setSelected] = React.useState(-1);
   const [tables, setTables] = React.useState(selector?.data);
+  const [loading, setLoading] = useState(false);
   const userSelector = useSelector(state => state.auth);
 
   // Render
@@ -62,6 +65,7 @@ const List = ({ props, isShowModal = false }) => {
       const newData = [...selector?.data].sort((a, b) => a.table_num - b.table_num);
       setTables(newData);
     }
+    setLoading(selector.isFetching);
   }, [selector]);
 
   return (
@@ -72,6 +76,11 @@ const List = ({ props, isShowModal = false }) => {
         numColumns={2}
         showsVerticalScrollIndicator={false}
       />
+
+      {loading &&
+        <View style={styles.loading}>
+          <ActivityIndicator animating={true} color={MD2Colors.red800} />
+        </View>}
     </View>
   )
 
@@ -89,5 +98,12 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  loading: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })

@@ -5,10 +5,13 @@ import { TABLE } from "../../config/lang_vn";
 import List from "./List";
 import { print } from "./Invoice";
 import { useSelector } from "react-redux";
+import { useRoute } from "@react-navigation/native";
+import { Divider } from 'react-native-paper';
+
 
 const Container = ({ data, openModal }) => {
   const auth = useSelector(state => state.auth);
-  console.log('auth', auth?.data);
+  const { readOnly } = useRoute().params;
 
   const d = new Date(data?.time_booking);
   const dateStr = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + " " +
@@ -35,6 +38,10 @@ const Container = ({ data, openModal }) => {
 
   const getTotalPrice = () => {
     return getTotal() + getVAT();
+  }
+
+  const getPriceReturn = () => {
+    return (+data?.cus_give_price - +getTotalPrice());
   }
 
   return <View style={styles.container}>
@@ -66,7 +73,15 @@ const Container = ({ data, openModal }) => {
     <Text style={styles.textTotal}>Thuế: {formatCurrency({ amount: getVAT(), code: "VND" })[0]}</Text>
     <Text style={styles.textTotal}>Thành tiền: {formatCurrency({ amount: getTotalPrice(), code: "VND" })[0]}</Text>
     {
-      auth?.data?.job_title !== 3 &&
+      readOnly &&
+      <>
+        <Divider />
+        <Text style={styles.textTotal}>Tiền Khách trả: {formatCurrency({ amount: +data.cus_give_price, code: "VND" })[0]}</Text>
+        <Text style={styles.textTotal}>Tiền thối: {formatCurrency({ amount: getPriceReturn(), code: "VND" })[0]}</Text>
+      </>
+    }
+    {
+      auth?.data?.job_title !== 3 && !readOnly &&
       <View style={styles.listButton}>
         <Button style={{ flex: 1, marginRight: 8, }} mode="contained" onPress={() => openModal()}>Thanh toán</Button>
         <Button style={{ flex: 1, marginLeft: 8, }} mode="contained" onPress={() => print(true, data, auth)}>In hóa đơn tạm tính</Button>

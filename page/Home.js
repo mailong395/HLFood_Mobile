@@ -34,6 +34,7 @@ import { Avatar } from 'react-native-paper';
 import BookingTable from './BookingTable';
 import AddBooking from './AddBooking';
 import ListTable from './ListTable';
+import TableReadOnly from './TableReadOnly';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -48,6 +49,7 @@ const Waiter = () => {
       <Stack.Screen name="ListFoodOrder" component={ListFoodOrder} />
       <Stack.Screen name="ListFoodOrdered" component={ListFoodOrdered} />
       <Stack.Screen name="Notified" component={Notified} />
+      <Stack.Screen name="TableReadOnly" component={TableReadOnly} />
     </Stack.Navigator>
   );
 };
@@ -84,6 +86,7 @@ const Statis = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Statistical" component={Statistical} />
       <Stack.Screen name="StatisticalDetail" component={StatisticalDetail} />
+      <Stack.Screen name="DetailListFood" component={DetailListFood} />
     </Stack.Navigator>
   );
 };
