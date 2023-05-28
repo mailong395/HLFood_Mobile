@@ -38,7 +38,7 @@ function StatisticalTable({ dataCsv }) {
 
   const handleMoveOrderDetail = async (orderId) => {
     await getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
-    navigation.navigate('DetailListFood', {readOnly: true});
+    navigation.navigate('DetailListFood', { readOnly: true });
   }
 
   useEffect(() => {
@@ -53,7 +53,6 @@ function StatisticalTable({ dataCsv }) {
     setItemsPerPage(newData[0])
   }, [dataCsv])
 
-
   return (
     <DataTable style={styles.container}>
       <ScrollView horizontal>
@@ -67,10 +66,13 @@ function StatisticalTable({ dataCsv }) {
             <DataTable.Title style={{ minWidth: 100 }} numeric>Chi tiết</DataTable.Title>
           </DataTable.Header>
           {itemsPerPage?.map((order, index) => {
+            const numTable = order?.tables.map(element => element.table_num).join();
+            if (order?.customer) console.log('order?.customer', order?.customer);
+            const customer = order?.customer ? order?.customer?.name : '-'
             return (
               <DataTable.Row key={index}>
-                <DataTable.Cell style={{ minWidth: 50 }}>1</DataTable.Cell>
-                <DataTable.Cell style={{ minWidth: 200 }}>Nguyễn Công Phượng</DataTable.Cell>
+                <DataTable.Cell style={{ minWidth: 50 }}>{numTable}</DataTable.Cell>
+                <DataTable.Cell style={{ minWidth: 200 }}>{customer}</DataTable.Cell>
                 <DataTable.Cell style={{ minWidth: 100 }}>
                   {formatTime(new Date(order.time_created))}
                 </DataTable.Cell>
