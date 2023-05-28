@@ -8,9 +8,11 @@ import { useContext } from 'react';
 import { TableContext } from "../../context/TableContext";
 
 const List = ({ data = [] }) => {
-  const { tableMerge, setTableMerge } =useContext(TableContext);
+  const { tableMerge, setTableMerge } = useContext(TableContext);
 
   const renderFloor = ({ item }) => {
+    const listTable = item?.tables?.filter(element => element.employee);
+
     const renderItem = ({ item }) => {
       const index = tableMerge.findIndex(element => item._id === element);
       const borderWidth = index === -1 ? 0 : 4;
@@ -39,11 +41,11 @@ const List = ({ data = [] }) => {
     }
 
     return (
-      item.tables &&
+      listTable &&
       <View style={styles.section}>
         <Text variant="titleLarge">{item.label}</Text>
         <FlatList
-          data={item.tables.sort((a, b) => a.table_num - b.table_num)}
+          data={listTable.sort((a, b) => a.table_num - b.table_num)}
           renderItem={renderItem}
           numColumns={2}
           showsVerticalScrollIndicator={false}

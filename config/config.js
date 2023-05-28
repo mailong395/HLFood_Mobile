@@ -199,6 +199,39 @@ const STATUS_TABLE = {
   },
 };
 
+const STATUS_TABLE_READ_ONLY = [
+  {
+    _id: 0,
+    title: 'Bàn Trống',
+    color: '#343434',
+    backgroundColor: '#fff',
+  },
+  {
+    _id: 1,
+    title: 'Bàn Trống',
+    color: '#343434',
+    backgroundColor: '#fff',
+  },
+  {
+    _id: 2,
+    title: 'Đã có món',
+    color: '#fafafa',
+    backgroundColor: '#EE6F57',
+  },
+  {
+    _id: 3,
+    title: 'Đợi món',
+    color: '#343434',
+    backgroundColor: '#F9E060',
+  },
+  {
+    _id: 4,
+    title: 'Hoàn thành',
+    color: '#fafafa',
+    backgroundColor: '#379237',
+  },
+];
+
 const FLOOR = [
   {
     key: 1,
@@ -215,6 +248,25 @@ const FLOOR = [
   {
     key: 4,
     value: '4',
+  },
+];
+
+const FLOOR_READ_ONLY = [
+  {
+    key: 1,
+    value: 'Tầng 1',
+  },
+  {
+    key: 2,
+    value: 'Tầng 2',
+  },
+  {
+    key: 3,
+    value: 'Tầng 3',
+  },
+  {
+    key: 4,
+    value: 'Tầng 4',
   },
 ];
 
@@ -252,4 +304,6 @@ export {
   FLOOR,
   CHAIR,
   ACTIVE_CUS,
+  FLOOR_READ_ONLY,
+  STATUS_TABLE_READ_ONLY,
 };
