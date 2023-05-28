@@ -54,34 +54,26 @@ const List = ({ props, isShowModal = false, filterData, data }) => {
           onPress={handleMoveToDesTable}
         >
           <Card.Content>
-            <View style={[styles.headerCard, styles.boxFlex, { borderColor: status.color }]}>
+            <Text variant="bodyMedium" style={{ color: status.color, fontWeight: 'bold' }}>
+              {item.name}
+            </Text>
+            <Text variant="bodyMedium" style={{ color: status.color, fontWeight: 'bold' }}>
+              {item.phone_num}
+            </Text>
+            <Text variant="titleLarge" style={{ color: status.color, marginTop: 5 }}>
+              Chức vụ:{' '}
               <Text variant="bodyMedium" style={{ color: status.color, fontWeight: 'bold' }}>
-                {item.name}
+                {renderPosition(item.job_title)}
               </Text>
-            </View>
-            <View style={[styles.headerCard, styles.boxFlex, { borderColor: status.color, marginTop: 5 }]}>
-              <Text variant="bodyMedium" style={{ color: status.color, fontWeight: 'bold' }}>
-                {item.phone_num}
-              </Text>
-            </View>
-            <View style={styles.boxFlex}>
-              <Text variant="titleLarge" style={{ color: status.color, marginTop: 5 }}>
-                Chức vụ:{' '}
-                <Text variant="bodyMedium" style={{ color: status.color, fontWeight: 'bold' }}>
-                  {renderPosition(item.job_title)}
-                </Text>
-              </Text>
-            </View>
+            </Text>
             {item.job_title === 3 && (
-              <View style={styles.boxFlex}>
-                <Text variant="titleLarge" style={{ color: status.color, marginTop: 5 }}>
-                  Bàn đang quản lý:
-                  <Text style={{ fontWeight: 'bold' }}>
-                    {' '}
-                    {getArrayNumTables(item?.tables).length === 0 ? 'Trống' : getArrayNumTables(item?.tables).join(',')}
-                  </Text>
+              <Text variant="titleLarge" style={{ color: status.color, marginTop: 5 }}>
+                Bàn đang quản lý:
+                <Text style={{ fontWeight: 'bold' }}>
+                  {' '}
+                  {getArrayNumTables(item?.tables).length === 0 ? 'Trống' : getArrayNumTables(item?.tables).join(',')}
                 </Text>
-              </View>
+              </Text>
             )}
           </Card.Content>
         </Card>
@@ -136,6 +128,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerCard: {
-    
+
   },
 });

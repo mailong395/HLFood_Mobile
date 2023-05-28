@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Header from '../../common/Header';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 import ModalComp from './ModalComp';
+import { useRoute } from '@react-navigation/native';
 
 const DetailListFood = ({ navigation }) => {
   const selector = useSelector(state => state.order);

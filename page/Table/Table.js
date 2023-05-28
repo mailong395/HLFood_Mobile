@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { CMS } from '../../config/config'
 import { useDispatch, useSelector } from "react-redux";
 import { TableContext } from "../../context/TableContext";
-import { Divider } from 'react-native-paper';
+import { Button, Divider, IconButton } from 'react-native-paper';
 import Header from "../../common/Header";
 import List from "./List";
 import { getAllTable, updateTable } from "../../redux/api/tableApi";
@@ -35,7 +35,6 @@ const Table = ({ navigation }) => {
   }
 
   const handleCloseModal = () => {
-    setGetData(!getData);
     setModalVisible(-1);
   }
 
@@ -60,7 +59,7 @@ const Table = ({ navigation }) => {
         break;
       case 3:
         getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
-        navigation.navigate('DetailListFood');
+        navigation.navigate('DetailListFood', {readOnly: false});
         break;
       case 4:
         const res = await getOrderById(dispatch, orderId, userSelector?.data?.accessToken, axiosJWT);
@@ -107,6 +106,8 @@ const Table = ({ navigation }) => {
       />
 
       <Filter />
+
+      <Button icon={'account-details'} onPress={() => navigation.navigate('TableReadOnly')}>Xem danh sách tất cả bàn</Button>
 
       <Divider />
 
