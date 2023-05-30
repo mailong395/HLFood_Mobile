@@ -67,7 +67,6 @@ function StatisticalTable({ dataCsv }) {
           </DataTable.Header>
           {itemsPerPage?.map((order, index) => {
             const numTable = order?.tables.map(element => element.table_num).join();
-            if (order?.customer) console.log('order?.customer', order?.customer);
             const customer = order?.customer ? order?.customer?.name : '-'
             return (
               <DataTable.Row key={index}>

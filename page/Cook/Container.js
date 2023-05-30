@@ -12,15 +12,18 @@ const Container = ({ openDrawer }) => {
   const selector = useSelector(state => state.orderDetail);
   const [loading, setLoading] = useState(false);
   const [listOrderDetail, setListOrderDetail] = useState([]);
+  console.log('selector', selector);
 
   const handleOpenDrawer = () => {
     openDrawer();
   }
 
   useEffect(() => {
-    setLoading(selector?.loading);
-    const newListData = selector?.data?.filter(item => item?.quantity_finished < item?.quantity)
-    setListOrderDetail(newListData);
+    if (selector?.data) {
+      setLoading(selector?.loading);
+      const newListData = selector?.data?.filter(item => item?.quantity_finished < item?.quantity)
+      setListOrderDetail(newListData);
+    }
   }, [selector])
 
 
