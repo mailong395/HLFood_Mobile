@@ -15,10 +15,11 @@ export const getAllOrderDetail = async (dispatch, accessToken, axiosJWT) => {
     const res = await axiosJWT.get(`${REACT_APP_HOST_API_SERVER}/api/order_details`, {
       headers: { token: `Bear ${accessToken}` },
     });
+    console.log('res', res);
     dispatch(getAllOrderDetailSuccess(res?.data));
   } catch (error) {
-    dispatch(getAllOrderDetailFailed());
     console.log('error', error);
+    dispatch(getAllOrderDetailFailed());
   }
 }
 export const updateOrderDetail = async (dispatch, body, accessToken, axiosJWT) => {

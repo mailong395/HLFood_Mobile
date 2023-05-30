@@ -13,6 +13,8 @@ const Cook = ({ navigation }) => {
   const axiosJWT = createAxios(userSelector?.data, dispatch, loginSuccess);
   const { getData } = React.useContext(TableContext);
 
+  console.log('userSelector?.data?.accessToken', userSelector?.data?.accessToken)
+
   // handle
   const handleOpenDrawer = () => {
     navigation.openDrawer();
@@ -20,8 +22,11 @@ const Cook = ({ navigation }) => {
 
   // fetch data
   React.useEffect(() => {
-    getAllOrderDetail(dispatch, userSelector?.data?.accessToken, axiosJWT);
-  }, [getData]);
+    const fetchData = async () => {
+      await getAllOrderDetail(dispatch, userSelector?.data?.accessToken, axiosJWT);
+    }
+    fetchData();
+  }, []);
 
   return (
     <Container openDrawer={handleOpenDrawer} />

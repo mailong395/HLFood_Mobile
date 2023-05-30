@@ -93,13 +93,12 @@ const ListFoodOrder = ({ route, navigation }) => {
       }
     });
     if (listOrderDetails.length) {
-      saveOrderDetails(dispatch, listOrderDetails, userSelector?.data.accessToken, axiosJWT);
-      updateTable(dispatch, table._id, 2, userSelector?.data.accessToken, axiosJWT);
-      setGetData(!getData);
-      setFoodOrdered([]);
       count.current = 0;
-      sendSocketData({ waiterToChef: listOrderDetails });
-      navigation.popToTop();
+      await saveOrderDetails(dispatch, listOrderDetails, userSelector?.data.accessToken, axiosJWT);
+      await updateTable(dispatch, table._id, 2, userSelector?.data.accessToken, axiosJWT);
+      await setFoodOrdered([]);
+      await sendSocketData({ waiterToChef: listOrderDetails });
+      await navigation.popToTop();
     }
   };
 
